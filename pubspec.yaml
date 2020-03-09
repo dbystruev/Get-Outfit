@@ -1,7 +1,7 @@
 name: get_outfit
 description: A new Flutter project.
 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -13,8 +13,6 @@ dependencies:
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.4
-  flutter_test:
-    sdk: flutter
 
 flutter_icons:
   android: "launcher_icon" 
@@ -54,3 +52,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  fonts:
+    - family: Futura
+      fonts:
+        - asset: 'assets/fonts/unicode.futurab.ttf'
+    - family: FuturaMediumC
+      fonts:
+        - asset: 'assets/fonts/futura medium condensed bt.ttf'
