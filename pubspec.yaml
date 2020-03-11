@@ -56,7 +56,7 @@ flutter:
   fonts:
     - family: Futura
       fonts:
-        - asset: 'assets/fonts/unicode.futurab.ttf'
+        - asset: assets/fonts/futur.ttf
     - family: FuturaMediumC
       fonts:
         - asset: 'assets/fonts/futura medium condensed bt.ttf'
