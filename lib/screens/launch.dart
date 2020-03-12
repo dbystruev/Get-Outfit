@@ -7,6 +7,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/screens/login.dart';
+import 'package:get_outfit/widgets/logo.dart';
+import 'package:get_outfit/widgets/title.dart';
 
 class LaunchScreen extends StatelessWidget with Scale {
   static bool built = false;
@@ -21,26 +23,9 @@ class LaunchScreen extends StatelessWidget with Scale {
       body: Center(
         child: Column(
           children: <Widget>[
-            Text(
-              'GET OUTFIT',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Futura',
-                fontSize: 48 * scale,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            LogoWidget(fontSize: 48 * scale),
             SizedBox(height: 20 * scale),
-            Text(
-              'Выглядеть стильно\nтеперь просто',
-              style: TextStyle(
-                color: const Color(0xFF54615F),
-                fontFamily: 'FuturaMediumC',
-                fontSize: 23 * scale,
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.center,
-            ),
+            TitleWidget('Выглядеть стильно\nтеперь просто', fontSize: 23 * scale),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),
