@@ -8,7 +8,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 mixin Scale {
-  final Color background = const Color(0xFFFFFFFF);
   static const double defaultHeight = 375;
   static const double defaultWidth = 375;
 

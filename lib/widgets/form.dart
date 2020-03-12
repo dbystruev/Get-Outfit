@@ -9,12 +9,14 @@ import 'package:flutter/material.dart';
 class FormWidget extends StatelessWidget {
   final TextEditingController controller;
   final double fontSize;
+  final TextInputType keyboardType;
   final String labelText;
   final bool obscureText;
 
   FormWidget({
     this.controller,
     this.fontSize,
+    this.keyboardType,
     this.labelText,
     this.obscureText = false,
   });
@@ -31,7 +33,7 @@ class FormWidget extends StatelessWidget {
           filled: true,
           labelText: labelText,
         ),
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: keyboardType,
         obscureText: obscureText,
         style: TextStyle(
           fontFamily: 'FuturaMediumC',

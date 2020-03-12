@@ -20,19 +20,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> with Scale {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final GlobalKey<State<StatefulWidget>> sizingKey = GlobalKey();
-
+  
   @override
   Widget build(BuildContext context) {
     print('DEBUG in lib/screens/login.dart line 27: _LoginScreenState.build');
     final double scale = getScale(context, height: 512);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final double height =
-          (sizingKey.currentContext?.findRenderObject() as RenderBox)
-              .size
-              .height;
-      print('DEBUG in lib/screens/login.dart line 34: height = $height');
-    });
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -51,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                   controller: emailController,
                   fontSize: 17 * scale,
                   labelText: 'Почта',
+                  keyboardType: TextInputType.emailAddress,
                 ),
                 SizedBox(height: 15 * scale),
                 FormWidget(
@@ -116,7 +109,6 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                 )
               ],
             ),
-            key: sizingKey,
             padding: EdgeInsets.all(19 * scale),
           ),
         ),
