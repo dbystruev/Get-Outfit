@@ -24,13 +24,14 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
 
   @override
   Widget build(BuildContext context) {
-    final double scale = getScale(context, height: 660);
+    print('DEBUG in lib/screens/login.dart line 27: _LoginScreenState.build');
+    final double scale = getScale(context, height: 512);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final double height =
           (sizingKey.currentContext?.findRenderObject() as RenderBox)
               .size
               .height;
-      print('DEBUG in lib/screens/login.dart line 33: height = $height');
+      print('DEBUG in lib/screens/login.dart line 34: height = $height');
     });
     return Scaffold(
       body: SafeArea(
@@ -39,9 +40,13 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
             child: ListView(
               children: <Widget>[
                 LogoWidget(fontSize: 32 * scale),
-                SizedBox(height: 132 * scale),
+                SizedBox(
+                    height: (isHorizontal(context) && scale < 1 ? 15 : 132) *
+                        scale),
                 TitleWidget('Добро пожаловать!', fontSize: 23 * scale),
-                SizedBox(height: 45 * scale),
+                SizedBox(
+                    height:
+                        (isHorizontal(context) && scale < 1 ? 15 : 45) * scale),
                 FormWidget(
                   controller: emailController,
                   fontSize: 17 * scale,
@@ -54,12 +59,13 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                   labelText: 'Пароль',
                   obscureText: true,
                 ),
-                SizedBox(height: 45 * scale),
+                SizedBox(height: 15 * scale),
                 ButtonWidget(
                   'Войти',
                   buttonColor: Color(0xFF54615F),
                   onPressed: () {
-                    print('DEBUG in lib/screens/login.dart line 62: e-mail selected');
+                    print(
+                        'DEBUG in lib/screens/login.dart line 62: e-mail selected');
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -70,13 +76,16 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                   scale: scale,
                   textColor: Colors.white,
                 ),
-                SizedBox(height: 45 * scale),
+                SizedBox(
+                    height:
+                        (isHorizontal(context) && scale < 1 ? 15 : 45) * scale),
                 ButtonWidget(
                   'Войти через Google',
                   borderColor: Color(0xFF54615F),
                   imageName: 'assets/images/g.png',
                   onPressed: () {
-                    print('DEBUG in lib/screens/login.dart line 79: google selected');
+                    print(
+                        'DEBUG in lib/screens/login.dart line 79: google selected');
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -87,6 +96,24 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                   scale: scale,
                   textColor: Color(0xFF54615F),
                 ),
+                SizedBox(height: 15 * scale),
+                FlatButton(
+                  onPressed: () {
+                    print(
+                        'DEBUG in lib/screens/login.dart line 105: forgot password');
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Забыли пароль?',
+                    style: TextStyle(
+                      color: const Color.fromARGB(102, 0, 0, 0),
+                      fontFamily: 'FuturaMediumC',
+                      fontSize: 16 * scale,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                )
               ],
             ),
             key: sizingKey,

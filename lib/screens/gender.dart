@@ -15,7 +15,7 @@ class GenderScreen extends StatelessWidget with Scale {
 
   @override
   Widget build(BuildContext context) {
-    final double scale = getScale(context, height: 684);
+    final double scale = getScale(context, height: 420);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final double height =
           (sizingKey.currentContext?.findRenderObject() as RenderBox)
@@ -28,14 +28,17 @@ class GenderScreen extends StatelessWidget with Scale {
         child: Column(
           children: <Widget>[
             LogoWidget(fontSize: 32 * scale),
-            SizedBox(height: 205 * scale),
+            SizedBox(
+                height:
+                    (isHorizontal(context) && scale < 1 ? 15 : 205) * scale),
             TitleWidget('Для кого подбираем образ?', fontSize: 23 * scale),
-            SizedBox(height: 41 * scale),
+            SizedBox(
+                height: (isHorizontal(context) && scale < 1 ? 15 : 41) * scale),
             ButtonWidget(
               'для мужчины',
               buttonColor: Color(0xFF54615F),
               onPressed: () {
-                print('DEBUG in lib/screens/gender.dart line 38: men selected');
+                print('DEBUG in lib/screens/gender.dart line 41: men selected');
                 Navigator.pop(context);
               },
               scale: scale,
@@ -46,7 +49,8 @@ class GenderScreen extends StatelessWidget with Scale {
               'для женщины',
               borderColor: Color(0xFF54615F),
               onPressed: () {
-                print('DEBUG in lib/screens/gender.dart line 49: women selected');
+                print(
+                    'DEBUG in lib/screens/gender.dart line 53: women selected');
                 Navigator.pop(context);
               },
               scale: scale,
