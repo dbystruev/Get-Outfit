@@ -4,4 +4,8 @@ The app following Get Outfit [website](https://getoutfit.ru).
 
 ## Launch Screen
 
-![Launch Screen](https://github.com/dbystruev/Get-Outfit/blob/master/screenshots/screenshot.png?raw=true)
+![Launch Screen](https://github.com/dbystruev/Get-Outfit/blob/master/screenshots/screenshot1.png?raw=true)
+
+## Login Screen
+
+![Login Screen](https://github.com/dbystruev/Get-Outfit/blob/master/screenshots/screenshot2.png?raw=true)

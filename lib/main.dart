@@ -1,3 +1,9 @@
+//
+//  main.dart
+//
+//  Created by Denis Bystruev on 09/03/2020.
+//
+
 import 'package:flutter/material.dart';
 import 'package:get_outfit/screens/launch.dart';
 
@@ -10,6 +16,13 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
         home: LaunchScreen(),
+        theme: ThemeData(
+          inputDecorationTheme: const InputDecorationTheme(
+            labelStyle: TextStyle(
+              color: const Color.fromARGB(102, 0, 0, 0),
+            ),
+          ),
+        ),
         title: 'Get Outfit',
       );
 }

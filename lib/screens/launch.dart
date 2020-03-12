@@ -1,19 +1,22 @@
-import 'dart:math';
+//
+//  launch.dart
+//
+//  Created by Denis Bystruev on 09/03/2020.
+//
+
 import 'package:flutter/material.dart';
+import 'package:get_outfit/design/scale.dart';
+import 'package:get_outfit/screens/login.dart';
 
-class LaunchScreen extends StatelessWidget {
-  final Color background = const Color(0xFFFFFFFF);
-  final double designHeight = 375;
-  final double designWidth = 375;
-
+class LaunchScreen extends StatelessWidget with Scale {
+  static bool built = false;
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double horizontalScale = screenWidth / designWidth;
-    final double verticalScale = screenHeight / designHeight;
-    final double scale = min(horizontalScale, verticalScale);
-    print('DEBUG in lib/screens/launch.dart line 11: scale = $scale');
+    if (!built) {
+      built = true;
+      navigateWithDelay(context, 3);
+    }
+    final double scale = getScale(context);
     return Scaffold(
       body: Center(
         child: Column(
@@ -37,10 +40,21 @@ class LaunchScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.center,
-            )
+            ),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),
+      ),
+    );
+  }
+
+  void navigateWithDelay(BuildContext context, int seconds) async {
+    final duration = Duration(seconds: seconds);
+    await Future.delayed(duration);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginScreen(),
       ),
     );
   }
