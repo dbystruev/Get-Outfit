@@ -5,6 +5,7 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get_outfit/design/scale.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,9 +14,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> with Scale {
+  GlobalKey<State<StatefulWidget>> sizingKey = GlobalKey();
+
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      final double height = (sizingKey.currentContext?.findRenderObject() as RenderBox).size.height;
+      print('DEBUG in lib/screens/login.dart line 23: height = $height');
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final double scale = getScale(context, height: 524);
+    final double minSpace = 15;
+    final double scale = getScale(context, height: 660);
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -31,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 132 * scale),
+                SizedBox(height: (scale < 1 ? minSpace : 132) * scale),
                 Text(
                   'Добро пожаловать!',
                   style: TextStyle(
@@ -42,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 45 * scale),
+                SizedBox(height: (scale < 1 ? minSpace : 45) * scale),
                 TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -60,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 15 * scale),
+                SizedBox(height: (scale < 1 ? minSpace : 15) * scale),
                 TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -77,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 45 * scale),
+                SizedBox(height: (scale < 1 ? minSpace : 45) * scale),
                 ButtonTheme(
                   child: Padding(
                     child: FlatButton(
@@ -91,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                         ),
                       ),
                       onPressed: () {
-                        print('DEBUG in lib/screens/login.dart line 94');
+                        print('DEBUG in lib/screens/login.dart line 107');
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(9 * scale),
@@ -103,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                   height: 50 * scale,
                   minWidth: 228 * scale,
                 ),
-                SizedBox(height: 45 * scale),
+                SizedBox(height: (scale < 1 ? minSpace : 45) * scale),
                 ButtonTheme(
                   child: Padding(
                     child: FlatButton(
@@ -124,9 +137,10 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                             ),
                           ),
                         ],
+                        mainAxisAlignment: MainAxisAlignment.center,
                       ),
                       onPressed: () {
-                        print('DEBUG in lib/screens/login.dart line 115');
+                        print('DEBUG in lib/screens/login.dart line 143');
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(9 * scale),
@@ -144,6 +158,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                 ),
               ],
             ),
+            key: sizingKey,
             padding: EdgeInsets.all(19 * scale),
           ),
         ),
