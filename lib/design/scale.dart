@@ -12,6 +12,9 @@ mixin Scale {
   static const double defaultHeight = 375;
   static const double defaultWidth = 375;
 
+  bool isHorizontal(BuildContext context) =>
+      MediaQuery.of(context).size.height < MediaQuery.of(context).size.width;
+
   double getScale(
     BuildContext context, {
     double height = defaultHeight,
@@ -22,7 +25,7 @@ mixin Scale {
     final double horizontalScale = screenWidth / width;
     final double verticalScale = screenHeight / height;
     final double scale = min(horizontalScale, verticalScale);
-    print('DEBUG in lib/design/scale.dart line 25: scale = $scale');
+    print('DEBUG in lib/design/scale.dart line 28: scale = $scale');
     return scale;
   }
 }

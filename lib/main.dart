@@ -17,6 +17,7 @@ class Main extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: LaunchScreen(),
         theme: ThemeData(
+          canvasColor: Color(0xFFE5E5E5),
           inputDecorationTheme: const InputDecorationTheme(
             labelStyle: TextStyle(
               color: const Color.fromARGB(102, 0, 0, 0),
