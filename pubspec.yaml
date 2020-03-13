@@ -15,7 +15,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.7.4
 
 flutter_icons:
-  android: "launcher_icon" 
+  android: "launcher_icon"
   ios: true
   image_path: "assets/icon/icon.png"
 
@@ -24,7 +24,7 @@ flutter:
 
   assets:
     - assets/images/
-  
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
@@ -55,6 +55,9 @@ flutter:
     - family: Futura
       fonts:
         - asset: assets/fonts/futur.ttf
+    - family: FuturaBookC
+      fonts:
+        - asset: "assets/fonts/Futura Book font.ttf"
     - family: FuturaMediumC
       fonts:
-        - asset: 'assets/fonts/futura medium condensed bt.ttf'
+        - asset: "assets/fonts/futura medium condensed bt.ttf"

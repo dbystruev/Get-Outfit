@@ -20,95 +20,85 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> with Scale {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  
+
   @override
   Widget build(BuildContext context) {
-    print('DEBUG in lib/screens/login.dart line 27: _LoginScreenState.build');
-    final double scale = getScale(context, height: 512);
+    print('DEBUG in lib/screens/login.dart line 26: _LoginScreenState.build');
+    final double scale = getScale(context, height: 680);
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Padding(
-            child: ListView(
-              children: <Widget>[
-                LogoWidget(fontSize: 32 * scale),
-                SizedBox(
-                    height: (isHorizontal(context) && scale < 1 ? 15 : 132) *
-                        scale),
-                TitleWidget('Добро пожаловать!', fontSize: 23 * scale),
-                SizedBox(
-                    height:
-                        (isHorizontal(context) && scale < 1 ? 15 : 45) * scale),
-                FormWidget(
-                  controller: emailController,
-                  fontSize: 17 * scale,
-                  labelText: 'Почта',
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                SizedBox(height: 15 * scale),
-                FormWidget(
-                  controller: passwordController,
-                  fontSize: 17 * scale,
-                  labelText: 'Пароль',
-                  obscureText: true,
-                ),
-                SizedBox(height: 15 * scale),
-                ButtonWidget(
-                  'Войти',
-                  buttonColor: Color(0xFF54615F),
-                  onPressed: () {
-                    print(
-                        'DEBUG in lib/screens/login.dart line 62: e-mail selected');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GenderScreen(),
-                      ),
-                    );
-                  },
-                  scale: scale,
-                  textColor: Colors.white,
-                ),
-                SizedBox(
-                    height:
-                        (isHorizontal(context) && scale < 1 ? 15 : 45) * scale),
-                ButtonWidget(
-                  'Войти через Google',
-                  borderColor: Color(0xFF54615F),
-                  imageName: 'assets/images/g.png',
-                  onPressed: () {
-                    print(
-                        'DEBUG in lib/screens/login.dart line 79: google selected');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GenderScreen(),
-                      ),
-                    );
-                  },
-                  scale: scale,
-                  textColor: Color(0xFF54615F),
-                ),
-                SizedBox(height: 15 * scale),
-                FlatButton(
-                  onPressed: () {
-                    print(
-                        'DEBUG in lib/screens/login.dart line 105: forgot password');
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Забыли пароль?',
-                    style: TextStyle(
-                      color: const Color.fromARGB(102, 0, 0, 0),
-                      fontFamily: 'FuturaMediumC',
-                      fontSize: 16 * scale,
-                      fontWeight: FontWeight.w500,
+          child: ListView(
+            children: <Widget>[
+              LogoWidget(fontSize: 32 * scale),
+              SizedBox(
+                  height:
+                      (isHorizontal(context) && scale < 1 ? 15 : 132) * scale),
+              TitleWidget('Добро пожаловать!', fontSize: 23 * scale),
+              SizedBox(
+                  height:
+                      (isHorizontal(context) && scale < 1 ? 15 : 45) * scale),
+              FormWidget(
+                controller: emailController,
+                fontSize: 17 * scale,
+                labelText: 'Почта',
+                keyboardType: TextInputType.emailAddress,
+              ),
+              SizedBox(height: 15 * scale),
+              FormWidget(
+                controller: passwordController,
+                fontSize: 17 * scale,
+                labelText: 'Пароль',
+                obscureText: true,
+              ),
+              SizedBox(height: 15 * scale),
+              ButtonWidget(
+                'Войти',
+                buttonColor: Color(0xFF54615F),
+                onPressed: () {
+                  print(
+                      'DEBUG in lib/screens/login.dart line 60: e-mail selected');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GenderScreen(),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                )
-              ],
-            ),
+                  );
+                },
+                scale: scale,
+              ),
+              SizedBox(
+                  height:
+                      (isHorizontal(context) && scale < 1 ? 15 : 45) * scale),
+              ButtonWidget(
+                'Войти через Google',
+                borderColor: Color(0xFF54615F),
+                imageName: 'assets/images/g.png',
+                onPressed: () {
+                  print(
+                      'DEBUG in lib/screens/login.dart line 79: google selected');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GenderScreen(),
+                    ),
+                  );
+                },
+                scale: scale,
+                textColor: Color(0xFF54615F),
+              ),
+              SizedBox(height: 15 * scale),
+              FlatButton(
+                onPressed: () {
+                  print(
+                      'DEBUG in lib/screens/login.dart line 94: forgot password');
+                  Navigator.pop(context);
+                },
+                child: TitleWidget('Забыли пароль?',
+                    color: const Color.fromARGB(102, 0, 0, 0),
+                    fontSize: 16 * scale),
+              )
+            ],
             padding: EdgeInsets.all(19 * scale),
           ),
         ),
@@ -129,12 +119,12 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
     emailController.addListener(() {
       final String text = emailController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 113 emailController.text = $text');
+          'DEBUG in lib/screens/login.dart line 122 emailController.text = $text');
     });
     passwordController.addListener(() {
       final String text = passwordController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 118 passwordController.text = $text');
+          'DEBUG in lib/screens/login.dart line 127 passwordController.text = $text');
     });
   }
 }

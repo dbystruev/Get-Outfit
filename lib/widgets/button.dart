@@ -14,10 +14,12 @@ class ButtonWidget extends StatelessWidget {
   final double imageHeight;
   final String imageName;
   final double imageWidth;
+  final double height;
   final void Function() onPressed;
   final double scale;
   final String text;
   final Color textColor;
+  final double width;
 
   ButtonWidget(
     this.text, {
@@ -25,12 +27,14 @@ class ButtonWidget extends StatelessWidget {
     this.borderWidth = 2,
     this.buttonColor,
     this.fontSize = 16,
+    this.height = 50,
     this.imageHeight = 18,
     this.imageName,
     this.imageWidth = 18,
     this.onPressed,
     this.scale = 1,
-    this.textColor,
+    this.textColor = Colors.white,
+    this.width = 228,
   });
 
   @override
@@ -43,8 +47,8 @@ class ButtonWidget extends StatelessWidget {
         fontWeight: FontWeight.w500,
       ),
     );
-    return ButtonTheme(
-      child: Padding(
+    return Center(
+      child: SizedBox(
         child: FlatButton(
           color: buttonColor,
           child: imageName == null
@@ -75,10 +79,9 @@ class ButtonWidget extends StatelessWidget {
                 ),
           textColor: textColor,
         ),
-        padding: EdgeInsets.symmetric(horizontal: 54 * scale),
+        height: height * scale,
+        width: width * scale,
       ),
-      height: 50 * scale,
-      minWidth: 228 * scale,
     );
   }
 }
