@@ -18,7 +18,7 @@ class _QuestionScreenState extends State<QuestionScreen> with Scale {
   @override
   Widget build(BuildContext context) {
     print(
-        'DEBUG in lib/screens/question.dart line 21: _LoginScreenState.build');
+        'DEBUG in lib/screens/questions.dart line 21: _LoginScreenState.build');
     final double scale = getScale(context);
     return Scaffold(
       body: SafeArea(
@@ -35,7 +35,7 @@ class _QuestionScreenState extends State<QuestionScreen> with Scale {
                 middleText: '1 из 5',
                 onRightPressed: () {
                   print(
-                      'DEBUG in lib/screens/question.dart line 38: next pressed');
+                      'DEBUG in lib/screens/questions.dart line 38: next pressed');
                   Navigator.pop(context);
                 },
                 rightText: 'Далее',
