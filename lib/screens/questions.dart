@@ -1,5 +1,5 @@
 //
-//  question.dart
+//  lib/screens/questions.dart
 //
 //  Created by Denis Bystruev on 12/03/2020.
 //

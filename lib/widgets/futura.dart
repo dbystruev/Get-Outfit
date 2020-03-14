@@ -1,5 +1,5 @@
 //
-//  futura.dart
+//  lib/widgets/futura.dart
 //
 //  Created by Denis Bystruev on 13/03/2020.
 //

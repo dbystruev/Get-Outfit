@@ -1,5 +1,5 @@
 //
-//  footer_button.dart
+//  lib/widgets/footer_button.dart
 //
 //  Created by Denis Bystruev on 13/03/2020.
 //

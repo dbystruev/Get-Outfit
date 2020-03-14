@@ -1,5 +1,5 @@
 //
-//  scale.dart
+//  lib/design/scale.dart
 //
 //  Created by Denis Bystruev on 11/03/2020.
 //

@@ -1,12 +1,12 @@
 //
-//  gender.dart
+//  lib/screens/gender.dart
 //
 //  Created by Denis Bystruev on 12/03/2020.
 //
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
-import 'package:get_outfit/screens/question.dart';
+import 'package:get_outfit/screens/questions.dart';
 import 'package:get_outfit/widgets/button.dart';
 import 'package:get_outfit/widgets/futura.dart';
 
