@@ -9,8 +9,7 @@ import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/screens/gender.dart';
 import 'package:get_outfit/widgets/button.dart';
 import 'package:get_outfit/widgets/form.dart';
-import 'package:get_outfit/widgets/logo.dart';
-import 'package:get_outfit/widgets/title.dart';
+import 'package:get_outfit/widgets/futura.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -23,18 +22,18 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
 
   @override
   Widget build(BuildContext context) {
-    print('DEBUG in lib/screens/login.dart line 26: _LoginScreenState.build');
+    print('DEBUG in lib/screens/login.dart line 25: _LoginScreenState.build');
     final double scale = getScale(context, height: 680);
     return Scaffold(
       body: SafeArea(
         child: Center(
           child: ListView(
             children: <Widget>[
-              LogoWidget(fontSize: 32 * scale),
+              FuturaText.bold('GET OUTFIT', fontSize: 28 * scale),
               SizedBox(
                   height:
                       (isHorizontal(context) && scale < 1 ? 15 : 132) * scale),
-              TitleWidget('Добро пожаловать!', fontSize: 23 * scale),
+              FuturaDemiText.w500('Добро пожаловать!', fontSize: 20 * scale),
               SizedBox(
                   height:
                       (isHorizontal(context) && scale < 1 ? 15 : 45) * scale),
@@ -57,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                 buttonColor: Color(0xFF54615F),
                 onPressed: () {
                   print(
-                      'DEBUG in lib/screens/login.dart line 60: e-mail selected');
+                      'DEBUG in lib/screens/login.dart line 59: e-mail selected');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -76,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                 imageName: 'assets/images/g.png',
                 onPressed: () {
                   print(
-                      'DEBUG in lib/screens/login.dart line 79: google selected');
+                      'DEBUG in lib/screens/login.dart line 78: google selected');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -91,10 +90,10 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               FlatButton(
                 onPressed: () {
                   print(
-                      'DEBUG in lib/screens/login.dart line 94: forgot password');
+                      'DEBUG in lib/screens/login.dart line 93: forgot password');
                   Navigator.pop(context);
                 },
-                child: TitleWidget('Забыли пароль?',
+                child: FuturaMediumText.w500('Забыли пароль?',
                     color: const Color.fromARGB(102, 0, 0, 0),
                     fontSize: 16 * scale),
               )
@@ -119,12 +118,12 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
     emailController.addListener(() {
       final String text = emailController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 122 emailController.text = $text');
+          'DEBUG in lib/screens/login.dart line 121 emailController.text = $text');
     });
     passwordController.addListener(() {
       final String text = passwordController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 127 passwordController.text = $text');
+          'DEBUG in lib/screens/login.dart line 126 passwordController.text = $text');
     });
   }
 }

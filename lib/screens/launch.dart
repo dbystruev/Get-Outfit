@@ -7,8 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/screens/login.dart';
-import 'package:get_outfit/widgets/logo.dart';
-import 'package:get_outfit/widgets/title.dart';
+import 'package:get_outfit/widgets/futura.dart';
 
 class LaunchScreen extends StatelessWidget with Scale {
   static bool built = false;
@@ -18,17 +17,19 @@ class LaunchScreen extends StatelessWidget with Scale {
       built = true;
       navigateWithDelay(context, 3);
     }
-    print('DEBUG in lib/screens/launch.dart line 21: _LoginScreenState.build');
+    print('DEBUG in lib/screens/launch.dart line 20: _LoginScreenState.build');
     final double scale = getScale(context);
     return Scaffold(
       body: GestureDetector(
         child: Center(
           child: Column(
             children: <Widget>[
-              LogoWidget(fontSize: 48 * scale),
+              FuturaText.bold('GET OUTFIT', fontSize: 42 * scale),
               SizedBox(height: 20 * scale),
-              TitleWidget('Выглядеть стильно\nтеперь просто',
-                  fontSize: 23 * scale),
+              FuturaMediumText.w500(
+                'Выглядеть стильно\nтеперь просто',
+                fontSize: 22 * scale,
+              ),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),

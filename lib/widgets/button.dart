@@ -5,6 +5,7 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:get_outfit/widgets/futura.dart';
 
 class ButtonWidget extends StatelessWidget {
   final Color borderColor;
@@ -39,13 +40,10 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Text textWidget = Text(
+    final FuturaMediumText textWidget = FuturaMediumText.w500(
       text,
-      style: TextStyle(
-        fontFamily: 'FuturaMediumC',
-        fontSize: fontSize * scale,
-        fontWeight: FontWeight.w500,
-      ),
+      color: textColor,
+      fontSize: fontSize * scale,
     );
     return Center(
       child: SizedBox(

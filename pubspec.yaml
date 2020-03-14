@@ -58,6 +58,9 @@ flutter:
     - family: FuturaBookC
       fonts:
         - asset: "assets/fonts/Futura Book font.ttf"
+    - family: FuturaDemiC
+      fonts:
+        - asset: "assets/fonts/Futura Book font.ttf"
     - family: FuturaMediumC
       fonts:
         - asset: "assets/fonts/futura medium condensed bt.ttf"

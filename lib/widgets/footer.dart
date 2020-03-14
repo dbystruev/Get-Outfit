@@ -6,7 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/widgets/footer_button.dart';
-import 'package:get_outfit/widgets/text.dart';
+import 'package:get_outfit/widgets/futura.dart';
 
 class FooterWidget extends StatelessWidget {
   final String leftText;
@@ -30,7 +30,7 @@ class FooterWidget extends StatelessWidget {
     return Row(
       children: <Widget>[
         FooterButtonWidget(leftText, onPressed: onLeftPressed, scale: scale),
-        TextWidget(middleText, fontSize: 14 * scale),
+        FuturaBookText.normal(middleText, fontSize: 14 * scale),
         FooterButtonWidget(
           rightText,
           onPressed: onRightPressed,

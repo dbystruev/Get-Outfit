@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/widgets/footer.dart';
-import 'package:get_outfit/widgets/title.dart';
+import 'package:get_outfit/widgets/futura.dart';
 
 class QuestionScreen extends StatefulWidget {
   @override
@@ -25,7 +25,7 @@ class _QuestionScreenState extends State<QuestionScreen> with Scale {
         child: Center(
           child: ListView(
             children: <Widget>[
-              TitleWidget(
+              FuturaDemiText.w500(
                 'Здравствуйте!\nРасскажите нам о себе,\nэто займет не более 8 минут.',
                 fontSize: 20 * scale,
               ),
