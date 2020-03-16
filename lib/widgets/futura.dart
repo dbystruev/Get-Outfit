@@ -12,25 +12,22 @@ class FuturaBookText extends StatelessWidget {
   final String text;
   final FontWeight fontWeight;
 
-  FuturaBookText.bold(
-    this.text, {
-    this.color = const Color(0xFF54615F),
-    this.fontSize,
-    this.fontWeight = FontWeight.bold,
-  });
+  FuturaBookText(this.text,
+      {this.color = const Color(0xFF54615F), this.fontSize, this.fontWeight});
 
-  FuturaBookText.normal(
-    this.text, {
-    this.color = const Color(0xFF54615F),
-    this.fontSize,
-    this.fontWeight = FontWeight.normal,
-  });
+  factory FuturaBookText.bold(String text, {Color color, double fontSize}) =>
+      FuturaBookText(text,
+          color: color, fontSize: fontSize, fontWeight: FontWeight.bold);
+
+  factory FuturaBookText.normal(String text, {Color color, double fontSize}) =>
+      FuturaBookText(text,
+          color: color, fontSize: fontSize, fontWeight: FontWeight.normal);
 
   @override
   Widget build(BuildContext context) => FuturaText(
         text,
         color: color,
-        fontFamily: 'FuturaBookC',
+        fontFamily: 'FuturaBook',
         fontSize: fontSize,
         fontWeight: fontWeight,
       );
@@ -42,18 +39,22 @@ class FuturaDemiText extends StatelessWidget {
   final String text;
   final FontWeight fontWeight;
 
-  FuturaDemiText.w500(
-    this.text, {
-    this.color = const Color(0xFF54615F),
-    this.fontSize,
-    this.fontWeight = FontWeight.w500,
-  });
+  FuturaDemiText(this.text,
+      {this.color = const Color(0xFF54615F), this.fontSize, this.fontWeight});
+
+  factory FuturaDemiText.w500(String text, {Color color, double fontSize}) =>
+      FuturaDemiText(text,
+          color: color, fontSize: fontSize, fontWeight: FontWeight.w500);
+
+  factory FuturaDemiText.w600(String text, {Color color, double fontSize}) =>
+      FuturaDemiText(text,
+          color: color, fontSize: fontSize, fontWeight: FontWeight.w600);
 
   @override
-  Widget build(BuildContext context) => FuturaText.bold(
+  Widget build(BuildContext context) => FuturaText(
         text,
         color: color,
-        fontFamily: 'FuturaDemiC',
+        fontFamily: 'FuturaDemi',
         fontSize: fontSize,
         fontWeight: fontWeight,
       );
@@ -65,18 +66,18 @@ class FuturaMediumText extends StatelessWidget {
   final FontWeight fontWeight;
   final String text;
 
-  FuturaMediumText.w500(
-    this.text, {
-    this.color = const Color(0xFF54615F),
-    this.fontSize,
-    this.fontWeight = FontWeight.w500,
-  });
+  FuturaMediumText(this.text,
+      {this.color = const Color(0xFF54615F), this.fontSize, this.fontWeight});
+
+  factory FuturaMediumText.w500(String text, {Color color, double fontSize}) =>
+      FuturaMediumText(text,
+          color: color, fontSize: fontSize, fontWeight: FontWeight.w500);
 
   @override
   Widget build(BuildContext context) => FuturaText(
         text,
         color: color,
-        fontFamily: 'FuturaMediumC',
+        fontFamily: 'FuturaMedium',
         fontSize: fontSize,
         fontWeight: fontWeight,
       );
@@ -89,29 +90,16 @@ class FuturaText extends StatelessWidget {
   final FontWeight fontWeight;
   final String text;
 
-  FuturaText(
-    this.text, {
-    this.color,
-    this.fontFamily = 'Futura',
-    this.fontSize,
-    this.fontWeight,
-  });
+  FuturaText(this.text,
+      {this.color, this.fontFamily = 'Futura', this.fontSize, this.fontWeight});
 
-  FuturaText.bold(
-    this.text, {
-    this.color,
-    this.fontFamily = 'Futura',
-    this.fontSize,
-    this.fontWeight = FontWeight.bold,
-  });
+  factory FuturaText.bold(String text, {Color color, double fontSize}) =>
+      FuturaText(text,
+          color: color, fontSize: fontSize, fontWeight: FontWeight.bold);
 
-  FuturaText.normal(
-    this.text, {
-    this.color,
-    this.fontFamily = 'Futura',
-    this.fontSize,
-    this.fontWeight = FontWeight.normal,
-  });
+  factory FuturaText.normal(String text, {Color color, double fontSize}) =>
+      FuturaText(text,
+          color: color, fontSize: fontSize, fontWeight: FontWeight.normal);
 
   @override
   Widget build(BuildContext context) => Text(

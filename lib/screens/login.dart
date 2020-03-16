@@ -72,10 +72,11 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               ButtonWidget(
                 'Войти через Google',
                 borderColor: Color(0xFF54615F),
+                fontSize: 18,
                 imageName: 'assets/images/g.png',
                 onPressed: () {
                   print(
-                      'DEBUG in lib/screens/login.dart line 78: google selected');
+                      'DEBUG in lib/screens/login.dart line 79: google selected');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -90,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               FlatButton(
                 onPressed: () {
                   print(
-                      'DEBUG in lib/screens/login.dart line 93: forgot password');
+                      'DEBUG in lib/screens/login.dart line 94: forgot password');
                   Navigator.pop(context);
                 },
                 child: FuturaMediumText.w500('Забыли пароль?',
@@ -118,12 +119,12 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
     emailController.addListener(() {
       final String text = emailController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 121 emailController.text = $text');
+          'DEBUG in lib/screens/login.dart line 122 emailController.text = $text');
     });
     passwordController.addListener(() {
       final String text = passwordController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 126 passwordController.text = $text');
+          'DEBUG in lib/screens/login.dart line 127 passwordController.text = $text');
     });
   }
 }

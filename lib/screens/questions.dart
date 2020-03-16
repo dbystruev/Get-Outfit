@@ -25,7 +25,7 @@ class _QuestionScreenState extends State<QuestionScreen> with Scale {
         child: Center(
           child: ListView(
             children: <Widget>[
-              FuturaDemiText.w500(
+              FuturaDemiText.w600(
                 'Здравствуйте!\nРасскажите нам о себе,\nэто займет не более 8 минут.',
                 fontSize: 20 * scale,
               ),

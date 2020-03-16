@@ -36,7 +36,7 @@ class FormWidget extends StatelessWidget {
         keyboardType: keyboardType,
         obscureText: obscureText,
         style: TextStyle(
-          fontFamily: 'FuturaMediumC',
+          fontFamily: 'FuturaMedium',
           fontSize: fontSize,
           fontWeight: FontWeight.w500,
         ),

@@ -54,13 +54,13 @@ flutter:
   fonts:
     - family: Futura
       fonts:
-        - asset: assets/fonts/futur.ttf
-    - family: FuturaBookC
+        - asset: assets/fonts/FuturaPT-Bold.ttf
+    - family: FuturaBook
       fonts:
-        - asset: "assets/fonts/Futura Book font.ttf"
-    - family: FuturaDemiC
+        - asset: assets/fonts/FuturaPT-Book.ttf
+    - family: FuturaDemi
       fonts:
-        - asset: "assets/fonts/Futura Book font.ttf"
-    - family: FuturaMediumC
+        - asset: assets/fonts/FuturaPT-Demi.ttf
+    - family: FuturaMedium
       fonts:
-        - asset: "assets/fonts/futura medium condensed bt.ttf"
+        - asset: assets/fonts/FuturaPT-Medium.ttf
