@@ -27,17 +27,18 @@ class FooterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        FooterButtonWidget(leftText, onPressed: onLeftPressed, scale: scale),
-        FuturaBookText.normal(middleText, fontSize: 14 * scale),
-        FooterButtonWidget(
-          rightText,
-          onPressed: onRightPressed,
-          scale: scale,
-        ),
-      ],
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Padding(
+      padding:
+          EdgeInsets.fromLTRB(30 * scale, 20 * scale, 30 * scale, 45 * scale),
+      child: Row(
+        children: <Widget>[
+          FooterButtonWidget(leftText, onPressed: onLeftPressed, scale: scale),
+          FuturaBookText.normal(middleText, fontSize: 14 * scale),
+          FooterButtonWidget(rightText,
+              onPressed: onRightPressed, scale: scale),
+        ],
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      ),
     );
   }
 }

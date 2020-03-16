@@ -46,7 +46,7 @@ class Question {
         title,
         answers: answers,
         defaultAnswer: defaultAnswer,
-        gender: gender,
+        gender: gender ?? Gender.both,
         isDropdown: true,
         subtitle: subtitle,
         type: QuestionType.singleChoice,
@@ -91,12 +91,12 @@ class Question {
         defaultAnswer: defaultAnswer,
         gender: Gender.female,
         hint: hint,
-        isDropdown: isDropdown,
-        isVisual: isVisual,
+        isDropdown: isDropdown ?? false,
+        isVisual: isVisual ?? false,
         maxValue: maxValue,
         minValue: minValue,
         subtitle: subtitle,
-        type: type,
+        type: type ?? QuestionType.text,
         value: value,
       );
 
@@ -119,19 +119,19 @@ class Question {
         defaultAnswer: defaultAnswer,
         gender: Gender.male,
         hint: hint,
-        isDropdown: isDropdown,
-        isVisual: isVisual,
+        isDropdown: isDropdown ?? false,
+        isVisual: isVisual ?? false,
         maxValue: maxValue,
         minValue: minValue,
         subtitle: subtitle,
-        type: type,
+        type: type ?? QuestionType.text,
         value: value,
       );
 
   factory Question.header(String title, {Gender gender, String subtitle}) =>
       Question(
         title,
-        gender: gender,
+        gender: gender ?? Gender.both,
         subtitle: subtitle,
         type: QuestionType.header,
       );
@@ -156,7 +156,7 @@ class Question {
       Question(
         title,
         answers: answers,
-        gender: gender,
+        gender: gender ?? Gender.both,
         subtitle: subtitle,
         type: QuestionType.multiChoice,
       );
@@ -184,7 +184,7 @@ class Question {
       Question(
         title,
         answers: urls,
-        gender: gender,
+        gender: gender ?? Gender.both,
         isVisual: true,
         subtitle: subtitle,
         type: QuestionType.multiChoice,
@@ -212,7 +212,7 @@ class Question {
           {Gender gender, String subtitle}) =>
       Question(
         title,
-        gender: gender,
+        gender: gender ?? Gender.both,
         maxValue: maxValue,
         minValue: minValue,
         subtitle: subtitle,
@@ -237,7 +237,7 @@ class Question {
       Question(
         title,
         answers: answers,
-        gender: gender,
+        gender: gender ?? Gender.both,
         subtitle: subtitle,
         type: QuestionType.singleChoice,
       );
@@ -246,7 +246,23 @@ class Question {
       Question.singleChoice(
         title,
         answers: ['Да', 'Нет'],
-        gender: gender,
+        gender: gender ?? Gender.both,
         subtitle: subtitle,
       );
+
+  @override
+  String toString() => '''{
+  'title': $title,
+  'answers': $answers,
+  'defaultAnswer': $defaultAnswer,
+  'gender': $gender,
+  'hint': $hint,
+  'isDropdown': $isDropdown,
+  'isVisual': $isVisual,
+  'maxValue': $maxValue,
+  'minValue': $minValue,
+  'subtitle': $subtitle,
+  'type': $type,
+  'value': $value,
+}''';
 }

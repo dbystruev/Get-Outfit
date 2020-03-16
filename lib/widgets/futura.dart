@@ -11,17 +11,35 @@ class FuturaBookText extends StatelessWidget {
   final double fontSize;
   final String text;
   final FontWeight fontWeight;
+  final TextAlign textAlign;
 
-  FuturaBookText(this.text,
-      {this.color = const Color(0xFF54615F), this.fontSize, this.fontWeight});
+  FuturaBookText(
+    this.text, {
+    this.color = const Color(0xFF54615F),
+    this.fontSize,
+    this.fontWeight,
+    this.textAlign = TextAlign.center,
+  });
 
-  factory FuturaBookText.bold(String text, {Color color, double fontSize}) =>
-      FuturaBookText(text,
-          color: color, fontSize: fontSize, fontWeight: FontWeight.bold);
+  factory FuturaBookText.bold(String text,
+          {Color color, double fontSize, TextAlign textAlign}) =>
+      FuturaBookText(
+        text,
+        color: color ?? const Color(0xFF54615F),
+        fontSize: fontSize,
+        fontWeight: FontWeight.bold,
+        textAlign: textAlign ?? TextAlign.center,
+      );
 
-  factory FuturaBookText.normal(String text, {Color color, double fontSize}) =>
-      FuturaBookText(text,
-          color: color, fontSize: fontSize, fontWeight: FontWeight.normal);
+  factory FuturaBookText.normal(String text,
+          {Color color, double fontSize, TextAlign textAlign}) =>
+      FuturaBookText(
+        text,
+        color: color ?? const Color(0xFF54615F),
+        fontSize: fontSize,
+        fontWeight: FontWeight.normal,
+        textAlign: textAlign ?? TextAlign.center,
+      );
 
   @override
   Widget build(BuildContext context) => FuturaText(
@@ -30,6 +48,7 @@ class FuturaBookText extends StatelessWidget {
         fontFamily: 'FuturaBook',
         fontSize: fontSize,
         fontWeight: fontWeight,
+        textAlign: textAlign,
       );
 }
 
@@ -38,17 +57,43 @@ class FuturaDemiText extends StatelessWidget {
   final double fontSize;
   final String text;
   final FontWeight fontWeight;
+  final TextAlign textAlign;
 
-  FuturaDemiText(this.text,
-      {this.color = const Color(0xFF54615F), this.fontSize, this.fontWeight});
+  FuturaDemiText(
+    this.text, {
+    this.color = const Color(0xFF54615F),
+    this.fontSize,
+    this.fontWeight,
+    this.textAlign = TextAlign.center,
+  });
 
-  factory FuturaDemiText.w500(String text, {Color color, double fontSize}) =>
-      FuturaDemiText(text,
-          color: color, fontSize: fontSize, fontWeight: FontWeight.w500);
+  factory FuturaDemiText.w500(
+    String text, {
+    Color color,
+    double fontSize,
+    TextAlign textAlign,
+  }) =>
+      FuturaDemiText(
+        text,
+        color: color ?? const Color(0xFF54615F),
+        fontSize: fontSize,
+        fontWeight: FontWeight.w500,
+        textAlign: textAlign ?? TextAlign.center,
+      );
 
-  factory FuturaDemiText.w600(String text, {Color color, double fontSize}) =>
-      FuturaDemiText(text,
-          color: color, fontSize: fontSize, fontWeight: FontWeight.w600);
+  factory FuturaDemiText.w600(
+    String text, {
+    Color color,
+    double fontSize,
+    TextAlign textAlign,
+  }) =>
+      FuturaDemiText(
+        text,
+        color: color ?? const Color(0xFF54615F),
+        fontSize: fontSize,
+        fontWeight: FontWeight.w600,
+        textAlign: textAlign ?? TextAlign.center,
+      );
 
   @override
   Widget build(BuildContext context) => FuturaText(
@@ -57,6 +102,7 @@ class FuturaDemiText extends StatelessWidget {
         fontFamily: 'FuturaDemi',
         fontSize: fontSize,
         fontWeight: fontWeight,
+        textAlign: textAlign,
       );
 }
 
@@ -65,13 +111,29 @@ class FuturaMediumText extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final String text;
+  final TextAlign textAlign;
 
-  FuturaMediumText(this.text,
-      {this.color = const Color(0xFF54615F), this.fontSize, this.fontWeight});
+  FuturaMediumText(
+    this.text, {
+    this.color = const Color(0xFF54615F),
+    this.fontSize,
+    this.fontWeight,
+    this.textAlign = TextAlign.center,
+  });
 
-  factory FuturaMediumText.w500(String text, {Color color, double fontSize}) =>
-      FuturaMediumText(text,
-          color: color, fontSize: fontSize, fontWeight: FontWeight.w500);
+  factory FuturaMediumText.w500(
+    String text, {
+    Color color,
+    double fontSize,
+    TextAlign textAlign,
+  }) =>
+      FuturaMediumText(
+        text,
+        color: color ?? const Color(0xFF54615F),
+        fontSize: fontSize,
+        fontWeight: FontWeight.w500,
+        textAlign: textAlign ?? TextAlign.center,
+      );
 
   @override
   Widget build(BuildContext context) => FuturaText(
@@ -80,6 +142,7 @@ class FuturaMediumText extends StatelessWidget {
         fontFamily: 'FuturaMedium',
         fontSize: fontSize,
         fontWeight: fontWeight,
+        textAlign: textAlign,
       );
 }
 
@@ -89,9 +152,16 @@ class FuturaText extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final String text;
+  final TextAlign textAlign;
 
-  FuturaText(this.text,
-      {this.color, this.fontFamily = 'Futura', this.fontSize, this.fontWeight});
+  FuturaText(
+    this.text, {
+    this.color,
+    this.fontFamily = 'Futura',
+    this.fontSize,
+    this.fontWeight,
+    this.textAlign = TextAlign.center,
+  });
 
   factory FuturaText.bold(String text, {Color color, double fontSize}) =>
       FuturaText(text,
@@ -104,12 +174,12 @@ class FuturaText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
         text,
-        textAlign: TextAlign.center,
         style: TextStyle(
           color: color,
           fontFamily: fontFamily,
           fontSize: fontSize,
           fontWeight: fontWeight,
         ),
+        textAlign: textAlign,
       );
 }

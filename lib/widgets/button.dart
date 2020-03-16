@@ -45,41 +45,44 @@ class ButtonWidget extends StatelessWidget {
       color: textColor,
       fontSize: fontSize * scale,
     );
-    return Center(
-      child: SizedBox(
-        child: FlatButton(
-          color: buttonColor,
-          child: imageName == null
-              ? textWidget
-              : Row(
-                  children: <Widget>[
-                    Image.asset(
-                      imageName,
-                      height: imageHeight * scale,
-                      width: imageWidth * scale,
-                    ),
-                    SizedBox(width: 8 * scale),
-                    textWidget
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.center,
-                ),
-          onPressed: onPressed,
-          shape: borderColor == null
-              ? RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(9 * scale),
-                )
-              : RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(9 * scale),
-                  side: BorderSide(
-                    color: borderColor,
-                    width: borderWidth * scale,
+    return Row(
+      children: <Widget>[
+        SizedBox(
+          child: FlatButton(
+            color: buttonColor,
+            child: imageName == null
+                ? textWidget
+                : Row(
+                    children: <Widget>[
+                      Image.asset(
+                        imageName,
+                        height: imageHeight * scale,
+                        width: imageWidth * scale,
+                      ),
+                      SizedBox(width: 8 * scale),
+                      textWidget
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
                   ),
-                ),
-          textColor: textColor,
+            onPressed: onPressed,
+            shape: borderColor == null
+                ? RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9 * scale),
+                  )
+                : RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9 * scale),
+                    side: BorderSide(
+                      color: borderColor,
+                      width: borderWidth * scale,
+                    ),
+                  ),
+            textColor: textColor,
+          ),
+          height: height * scale,
+          width: width * scale,
         ),
-        height: height * scale,
-        width: width * scale,
-      ),
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
     );
   }
 }

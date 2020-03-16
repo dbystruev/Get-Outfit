@@ -6,13 +6,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
-import 'package:get_outfit/screens/questions.dart';
+import 'package:get_outfit/screens/quiz.dart';
 import 'package:get_outfit/widgets/button.dart';
 import 'package:get_outfit/widgets/futura.dart';
 
 class GenderScreen extends StatelessWidget with Scale {
   @override
   Widget build(BuildContext context) {
+    print('DEBUG in lib/screens/launch.dart line 16: GenderScreen.build');
     final double scale = getScale(context, height: 460);
     return Scaffold(
       body: Center(
@@ -32,11 +33,11 @@ class GenderScreen extends StatelessWidget with Scale {
               'для мужчины',
               buttonColor: Color(0xFF54615F),
               onPressed: () {
-                print('DEBUG in lib/screens/gender.dart line 35: men selected');
+                print('DEBUG in lib/screens/gender.dart line 36: men selected');
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => QuestionScreen(),
+                    builder: (context) => QuizScreen(),
                   ),
                 );
               },
@@ -48,7 +49,7 @@ class GenderScreen extends StatelessWidget with Scale {
               borderColor: Color(0xFF54615F),
               onPressed: () {
                 print(
-                    'DEBUG in lib/screens/gender.dart line 51: women selected');
+                    'DEBUG in lib/screens/gender.dart line 52: women selected');
                 Navigator.pop(context);
               },
               scale: scale,

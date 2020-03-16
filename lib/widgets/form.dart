@@ -8,21 +8,46 @@ import 'package:flutter/material.dart';
 
 class FormWidget extends StatelessWidget {
   final TextEditingController controller;
+  final InputDecoration decoration;
+  final String fontFamily;
   final double fontSize;
+  final FontWeight fontWeight;
   final TextInputType keyboardType;
   final String labelText;
   final bool obscureText;
 
   FormWidget({
     this.controller,
+    this.decoration,
+    this.fontFamily,
     this.fontSize,
+    this.fontWeight,
     this.keyboardType,
     this.labelText,
     this.obscureText = false,
   });
 
-  @override
-  Widget build(BuildContext context) => TextFormField(
+  factory FormWidget.quiz({
+    TextEditingController controller,
+    double fontSize,
+    String labelText,
+  }) =>
+      FormWidget(
+        controller: controller,
+        fontFamily: 'FuturaBook',
+        fontSize: fontSize,
+        fontWeight: FontWeight.normal,
+        labelText: labelText,
+      );
+
+  factory FormWidget.login({
+    TextEditingController controller,
+    double fontSize,
+    TextInputType keyboardType,
+    String labelText,
+    bool obscureText,
+  }) =>
+      FormWidget(
         controller: controller,
         decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -33,12 +58,24 @@ class FormWidget extends StatelessWidget {
           filled: true,
           labelText: labelText,
         ),
+        fontFamily: 'FuturaMedium',
+        fontSize: fontSize,
+        fontWeight: FontWeight.w500,
+        keyboardType: keyboardType,
+        labelText: labelText,
+        obscureText: obscureText ?? false,
+      );
+
+  @override
+  Widget build(BuildContext context) => TextFormField(
+        controller: controller,
+        decoration: decoration,
         keyboardType: keyboardType,
         obscureText: obscureText,
         style: TextStyle(
-          fontFamily: 'FuturaMedium',
+          fontFamily: fontFamily,
           fontSize: fontSize,
-          fontWeight: FontWeight.w500,
+          fontWeight: fontWeight,
         ),
       );
 }

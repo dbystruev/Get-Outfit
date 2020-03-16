@@ -15,13 +15,15 @@ class FooterButtonWidget extends StatelessWidget {
   FooterButtonWidget(this.text, {this.onPressed, this.scale = 1});
 
   @override
-  Widget build(BuildContext context) => ButtonWidget(
-        text,
-        buttonColor: Color.fromARGB(179, 84, 97, 95),
-        fontSize: 14,
-        height: 40,
-        onPressed: onPressed,
-        scale: scale,
-        width: 90,
-      );
+  Widget build(BuildContext context) => text == null
+      ? SizedBox(height: 40 * scale, width: 90 * scale)
+      : ButtonWidget(
+          text,
+          buttonColor: Color.fromARGB(179, 84, 97, 95),
+          fontSize: 14,
+          height: 40,
+          onPressed: onPressed,
+          scale: scale,
+          width: 90,
+        );
 }

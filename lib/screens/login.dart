@@ -37,14 +37,14 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               SizedBox(
                   height:
                       (isHorizontal(context) && scale < 1 ? 15 : 45) * scale),
-              FormWidget(
+              FormWidget.login(
                 controller: emailController,
                 fontSize: 17 * scale,
                 labelText: 'Почта',
                 keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(height: 15 * scale),
-              FormWidget(
+              FormWidget.login(
                 controller: passwordController,
                 fontSize: 17 * scale,
                 labelText: 'Пароль',

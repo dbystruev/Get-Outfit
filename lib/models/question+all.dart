@@ -7,11 +7,12 @@
 import 'package:get_outfit/models/question.dart';
 
 extension AllQuestions on Question {
-  static List<List<Question>> get all => [
+  static List<List<Question>> get local => [
         // Page 1 of 5
         [
+          Question.header('Здравствуйте!\nРасскажите нам о себе,\nэто займет не более 8 минут.'),
           Question('Давайте познакомимся. Как вас зовут?'),
-          Question.header('Образ жизни'),
+          // Question.header('Образ жизни'),
           Question.singleChoice(
             'На сколько лет вы себя ощущаете?',
             answers: [
@@ -22,7 +23,7 @@ extension AllQuestions on Question {
               '>50',
             ],
           ),
-          Question('Как мы можем найти вас в Instagram/Facebook/VK?'),
+          Question('Как мы можем найти вас в соц. сетях?'),
           Question('Ваша профессия (род деятельности)?'),
           Question(
             'Опишите ваш образ жизни в процентном соотношении.',

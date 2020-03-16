@@ -17,7 +17,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       built = true;
       navigateWithDelay(context, 3);
     }
-    print('DEBUG in lib/screens/launch.dart line 20: _LoginScreenState.build');
+    print('DEBUG in lib/screens/launch.dart line 20: LaunchScreen.build');
     final double scale = getScale(context);
     return Scaffold(
       body: GestureDetector(
