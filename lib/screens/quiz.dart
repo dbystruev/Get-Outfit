@@ -6,22 +6,36 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
+import 'package:get_outfit/models/gender.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/question+all.dart';
 import 'package:get_outfit/widgets/footer.dart';
 import 'package:get_outfit/widgets/question.dart';
 
 class QuizScreen extends StatefulWidget {
+  final Gender gender;
+
+  QuizScreen(this.gender);
+
   @override
-  _QuizScreenState createState() => _QuizScreenState();
+  _QuizScreenState createState() => _QuizScreenState(gender);
 }
 
 class _QuizScreenState extends State<QuizScreen> with Scale {
   final List<List<Question>> allQuestions = AllQuestions.local;
+  final Gender gender;
   int pageIndex = 0;
+
+  _QuizScreenState(this.gender);
+
   @override
   Widget build(BuildContext context) {
-    final List<Question> questions = allQuestions[pageIndex];
+    final List<Question> questions = allQuestions[pageIndex]
+        .where(
+          (question) =>
+              question.gender == gender || question.gender == Gender.both,
+        )
+        .toList();
     print('DEBUG in lib/screens/quiz.dart line 25: _QuizScreenState.build');
     final double scale = getScale(context);
     return Scaffold(

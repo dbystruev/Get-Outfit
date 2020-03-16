@@ -35,8 +35,16 @@ class QuestionWidget extends StatelessWidget {
                 fontSize: 16 * scale,
                 textAlign: TextAlign.start,
               ),
+              question.subtitle == null
+                  ? null
+                  : FuturaBookText.normal(
+                      question.subtitle,
+                      fontSize: 10 * scale,
+                      textAlign: TextAlign.start,
+                    ),
               FormWidget.quiz(fontSize: 14 * scale),
-            ],
+            ].where((element) => element != null).toList(),
+            crossAxisAlignment: CrossAxisAlignment.start,
           ),
           padding: EdgeInsets.only(bottom: 15 * scale, top: 10 * scale),
         );

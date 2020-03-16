@@ -60,7 +60,7 @@ class ButtonWidget extends StatelessWidget {
                         width: imageWidth * scale,
                       ),
                       SizedBox(width: 8 * scale),
-                      textWidget
+                      textWidget,
                     ],
                     mainAxisAlignment: MainAxisAlignment.center,
                   ),

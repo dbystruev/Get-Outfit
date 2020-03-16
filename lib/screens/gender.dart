@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
+import 'package:get_outfit/models/gender.dart';
 import 'package:get_outfit/screens/quiz.dart';
 import 'package:get_outfit/widgets/button.dart';
 import 'package:get_outfit/widgets/futura.dart';
@@ -33,11 +34,10 @@ class GenderScreen extends StatelessWidget with Scale {
               'для мужчины',
               buttonColor: Color(0xFF54615F),
               onPressed: () {
-                print('DEBUG in lib/screens/gender.dart line 36: men selected');
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => QuizScreen(),
+                    builder: (context) => QuizScreen(Gender.male),
                   ),
                 );
               },
@@ -48,9 +48,12 @@ class GenderScreen extends StatelessWidget with Scale {
               'для женщины',
               borderColor: Color(0xFF54615F),
               onPressed: () {
-                print(
-                    'DEBUG in lib/screens/gender.dart line 52: women selected');
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => QuizScreen(Gender.female),
+                  ),
+                );
               },
               scale: scale,
               textColor: Color(0xFF54615F),

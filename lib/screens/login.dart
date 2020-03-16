@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               ButtonWidget(
                 'Войти через Google',
                 borderColor: Color(0xFF54615F),
-                fontSize: 18,
+                fontSize: 17,
                 imageName: 'assets/images/g.png',
                 onPressed: () {
                   print(

@@ -34,6 +34,7 @@ class FormWidget extends StatelessWidget {
   }) =>
       FormWidget(
         controller: controller,
+        decoration: InputDecoration(isDense: true),
         fontFamily: 'FuturaBook',
         fontSize: fontSize,
         fontWeight: FontWeight.normal,
