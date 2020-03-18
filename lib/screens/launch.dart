@@ -13,11 +13,11 @@ class LaunchScreen extends StatelessWidget with Scale {
   static bool built = false;
   @override
   Widget build(BuildContext context) {
+    print('DEBUG in lib/screens/launch.dart line 16: LaunchScreen.build');
     if (!built) {
       built = true;
       navigateWithDelay(context, 3);
     }
-    print('DEBUG in lib/screens/launch.dart line 20: LaunchScreen.build');
     final double scale = getScale(context);
     return Scaffold(
       body: GestureDetector(

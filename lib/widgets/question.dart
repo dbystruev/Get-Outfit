@@ -10,18 +10,20 @@ import 'package:get_outfit/widgets/form.dart';
 import 'package:get_outfit/widgets/futura.dart';
 
 class QuestionWidget extends StatelessWidget {
+  final int index;
   final Question question;
   final double scale;
 
-  QuestionWidget(this.question, {this.scale});
+  QuestionWidget(this.index, this.question, {this.scale});
 
   @override
   Widget build(BuildContext context) {
+    final double top = index == 0 ? 0 : 50 * scale;
     switch (question.type) {
       case QuestionType.header:
         return Padding(
           child: FuturaDemiText.w600(question.title, fontSize: 20 * scale),
-          padding: EdgeInsets.only(bottom: 30 * scale, top: 50 * scale),
+          padding: EdgeInsets.only(bottom: 30 * scale, top: top),
         );
       case QuestionType.multiChoice:
       case QuestionType.range:
@@ -49,7 +51,7 @@ class QuestionWidget extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 15 * scale, top: 10 * scale),
         );
     }
-    print('ERROR in lib/widgets/question.dart line 44: question = $question');
+    print('ERROR in lib/widgets/question.dart line 54: question = $question');
     return FuturaText.bold('Unknown question type: ${question.type}',
         color: Colors.red, fontSize: 20 * scale);
   }

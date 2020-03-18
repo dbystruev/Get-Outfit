@@ -14,22 +14,19 @@ import 'package:get_outfit/widgets/futura.dart';
 class GenderScreen extends StatelessWidget with Scale {
   @override
   Widget build(BuildContext context) {
-    print('DEBUG in lib/screens/launch.dart line 16: GenderScreen.build');
-    final double scale = getScale(context, height: 460);
+    print('DEBUG in lib/screens/launch.dart line 17: GenderScreen.build');
+    final double scale = getScale(context);
     return Scaffold(
       body: Center(
         child: Column(
           children: <Widget>[
             FuturaText.bold('GET OUTFIT', fontSize: 28 * scale),
-            SizedBox(
-                height:
-                    (isHorizontal(context) && scale < 1 ? 15 : 205) * scale),
+            SizedBox(height: (isHorizontal(context) ? 15 : 205) * scale),
             FuturaDemiText.w500(
               'Для кого подбираем образ?',
               fontSize: 20 * scale,
             ),
-            SizedBox(
-                height: (isHorizontal(context) && scale < 1 ? 15 : 41) * scale),
+            SizedBox(height: (isHorizontal(context) ? 15 : 41) * scale),
             ButtonWidget(
               'для мужчины',
               buttonColor: Color(0xFF54615F),

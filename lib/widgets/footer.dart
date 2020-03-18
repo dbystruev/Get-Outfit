@@ -29,13 +29,17 @@ class FooterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding:
-          EdgeInsets.fromLTRB(30 * scale, 20 * scale, 30 * scale, 45 * scale),
+          EdgeInsets.fromLTRB(30 * scale, 20 * scale, 30 * scale, 10 * scale),
       child: Row(
         children: <Widget>[
           FooterButtonWidget(leftText, onPressed: onLeftPressed, scale: scale),
           FuturaBookText.normal(middleText, fontSize: 14 * scale),
-          FooterButtonWidget(rightText,
-              onPressed: onRightPressed, scale: scale),
+          FooterButtonWidget(
+            rightText,
+            buttonColor: Color.fromARGB(179, 84, 97, 95),
+            onPressed: onRightPressed,
+            scale: scale,
+          ),
         ],
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
       ),

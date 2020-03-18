@@ -10,7 +10,8 @@ extension AllQuestions on Question {
   static List<List<Question>> get local => [
         // Page 1 of 5
         [
-          Question.header('Здравствуйте!\nРасскажите нам о себе,\nэто займет не более 8 минут.'),
+          Question.header(
+              'Здравствуйте!\nРасскажите нам о себе,\nэто займет не более 8 минут.'),
           Question('Давайте познакомимся. Как вас зовут?'),
           // Question.header('Образ жизни'),
           Question.singleChoice(
@@ -159,7 +160,7 @@ extension AllQuestions on Question {
               'Классические туфли',
               'Лоферы',
               'Ботинки',
-              'Слипоны',
+              'Сл��поны',
               'Мокасины',
               'Сандали',
             ],
@@ -504,6 +505,7 @@ extension AllQuestions on Question {
         ],
         // Page 5 of 5
         [
+          Question.header('Завершение'),
           Question.yesNo(
               'Готовы ли вы рассмотреть покупку вещей в магазинах, требующих предоплату по банковской карте (ассортимент будет шире)?'),
           Question.dropdownFemale(

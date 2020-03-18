@@ -36,14 +36,14 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
               question.gender == gender || question.gender == Gender.both,
         )
         .toList();
-    print('DEBUG in lib/screens/quiz.dart line 25: _QuizScreenState.build');
+    print('DEBUG in lib/screens/quiz.dart line 39: _QuizScreenState.build');
     final double scale = getScale(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
           child: ListView.builder(
             itemBuilder: (BuildContext context, int index) =>
-                QuestionWidget(questions[index], scale: scale),
+                QuestionWidget(index, questions[index], scale: scale),
             itemCount: questions.length,
           ),
           padding: EdgeInsets.symmetric(horizontal: 30 * scale),
@@ -54,17 +54,18 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
           leftText: pageIndex < 1 ? 'Для кого' : 'Назад',
           middleText: '${pageIndex + 1} из ${allQuestions.length}',
           onLeftPressed: () {
-            print('DEBUG in lib/screens/questions.dart line 43: back pressed');
+            print('DEBUG in lib/screens/questions.dart line 57: back pressed');
             if (pageIndex < 1)
               Navigator.pop(context);
             else
               setState(() => pageIndex--);
           },
           onRightPressed: () {
-            print('DEBUG in lib/screens/questions.dart line 50: next pressed');
-            setState(() => pageIndex++);
+            print('DEBUG in lib/screens/questions.dart line 64: next pressed');
+            if (pageIndex + 1 < allQuestions.length)
+              setState(() => pageIndex++);
           },
-          rightText: pageIndex + 1 < allQuestions.length ? 'Далее' : null,
+          rightText: pageIndex + 1 < allQuestions.length ? 'Далее' : 'Готово',
           scale: scale,
         ),
       ),

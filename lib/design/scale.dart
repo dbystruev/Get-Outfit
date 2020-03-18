@@ -8,7 +8,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 mixin Scale {
-  static const double defaultHeight = 375;
+  static const double defaultHeight = 812;
   static const double defaultWidth = 375;
 
   bool isHorizontal(BuildContext context) =>
@@ -22,9 +22,11 @@ mixin Scale {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
     final double horizontalScale = screenWidth / width;
-    final double verticalScale = screenHeight / height;
+    final double verticalScale =
+        screenHeight < screenWidth ? 1 : screenHeight / height;
     final double scale = min(horizontalScale, verticalScale);
-    print('DEBUG in lib/design/scale.dart line 27: scale = $scale');
+    print(
+        'DEBUG in lib/design/scale.dart line 29: screenHeight = $screenHeight, screenWidth = $screenWidth, scale = $scale');
     return scale;
   }
 }

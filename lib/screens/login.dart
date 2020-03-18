@@ -23,20 +23,16 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
   @override
   Widget build(BuildContext context) {
     print('DEBUG in lib/screens/login.dart line 25: _LoginScreenState.build');
-    final double scale = getScale(context, height: 680);
+    final double scale = getScale(context);
     return Scaffold(
       body: SafeArea(
         child: Center(
           child: ListView(
             children: <Widget>[
               FuturaText.bold('GET OUTFIT', fontSize: 28 * scale),
-              SizedBox(
-                  height:
-                      (isHorizontal(context) && scale < 1 ? 15 : 132) * scale),
+              SizedBox(height: (isHorizontal(context) ? 15 : 132) * scale),
               FuturaDemiText.w500('Добро пожаловать!', fontSize: 20 * scale),
-              SizedBox(
-                  height:
-                      (isHorizontal(context) && scale < 1 ? 15 : 45) * scale),
+              SizedBox(height: (isHorizontal(context) ? 15 : 45) * scale),
               FormWidget.login(
                 controller: emailController,
                 fontSize: 17 * scale,
@@ -56,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                 buttonColor: Color(0xFF54615F),
                 onPressed: () {
                   print(
-                      'DEBUG in lib/screens/login.dart line 59: e-mail selected');
+                      'DEBUG in lib/screens/login.dart line 55: e-mail selected');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -66,9 +62,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                 },
                 scale: scale,
               ),
-              SizedBox(
-                  height:
-                      (isHorizontal(context) && scale < 1 ? 15 : 45) * scale),
+              SizedBox(height: (isHorizontal(context) ? 15 : 45) * scale),
               ButtonWidget(
                 'Войти через Google',
                 borderColor: Color(0xFF54615F),
@@ -76,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                 imageName: 'assets/images/g.png',
                 onPressed: () {
                   print(
-                      'DEBUG in lib/screens/login.dart line 79: google selected');
+                      'DEBUG in lib/screens/login.dart line 73: google selected');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -91,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               FlatButton(
                 onPressed: () {
                   print(
-                      'DEBUG in lib/screens/login.dart line 94: forgot password');
+                      'DEBUG in lib/screens/login.dart line 88: forgot password');
                   Navigator.pop(context);
                 },
                 child: FuturaMediumText.w500('Забыли пароль?',
@@ -119,12 +113,12 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
     emailController.addListener(() {
       final String text = emailController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 122 emailController.text = $text');
+          'DEBUG in lib/screens/login.dart line 116 emailController.text = $text');
     });
     passwordController.addListener(() {
       final String text = passwordController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 127 passwordController.text = $text');
+          'DEBUG in lib/screens/login.dart line 121 passwordController.text = $text');
     });
   }
 }
