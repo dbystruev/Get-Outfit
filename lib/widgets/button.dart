@@ -16,6 +16,7 @@ class ButtonWidget extends StatelessWidget {
   final String imageName;
   final double imageWidth;
   final double height;
+  final MainAxisAlignment mainAxisAlignment;
   final void Function() onPressed;
   final double scale;
   final String text;
@@ -32,6 +33,7 @@ class ButtonWidget extends StatelessWidget {
     this.imageHeight = 18,
     this.imageName,
     this.imageWidth = 18,
+    this.mainAxisAlignment = MainAxisAlignment.center,
     this.onPressed,
     this.scale = 1,
     this.textColor = Colors.white,
@@ -82,7 +84,7 @@ class ButtonWidget extends StatelessWidget {
           width: width * scale,
         ),
       ],
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: mainAxisAlignment,
     );
   }
 }

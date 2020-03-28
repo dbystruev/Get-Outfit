@@ -9,6 +9,7 @@ import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/models/gender.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/question+all.dart';
+import 'package:get_outfit/screens/plans.dart';
 import 'package:get_outfit/widgets/footer.dart';
 import 'package:get_outfit/widgets/question.dart';
 
@@ -30,13 +31,13 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
 
   @override
   Widget build(BuildContext context) {
+    print('DEBUG in lib/screens/quiz.dart line 34: _QuizScreenState.build');
     final List<Question> questions = allQuestions[pageIndex]
         .where(
           (question) =>
               question.gender == gender || question.gender == Gender.both,
         )
         .toList();
-    print('DEBUG in lib/screens/quiz.dart line 39: _QuizScreenState.build');
     final double scale = getScale(context);
     return Scaffold(
       body: SafeArea(
@@ -64,6 +65,13 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
             print('DEBUG in lib/screens/questions.dart line 64: next pressed');
             if (pageIndex + 1 < allQuestions.length)
               setState(() => pageIndex++);
+            else
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => PlansScreen(),
+                ),
+              );
           },
           rightText: pageIndex + 1 < allQuestions.length ? 'Далее' : 'Готово',
           scale: scale,

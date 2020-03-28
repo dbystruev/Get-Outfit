@@ -33,36 +33,36 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               SizedBox(height: (isHorizontal(context) ? 15 : 132) * scale),
               FuturaDemiText.w500('Добро пожаловать!', fontSize: 20 * scale),
               SizedBox(height: (isHorizontal(context) ? 15 : 45) * scale),
-              FormWidget.login(
-                controller: emailController,
-                fontSize: 17 * scale,
-                labelText: 'Почта',
-                keyboardType: TextInputType.emailAddress,
-              ),
-              SizedBox(height: 15 * scale),
-              FormWidget.login(
-                controller: passwordController,
-                fontSize: 17 * scale,
-                labelText: 'Пароль',
-                obscureText: true,
-              ),
-              SizedBox(height: 15 * scale),
-              ButtonWidget(
-                'Войти',
-                buttonColor: Color(0xFF54615F),
-                onPressed: () {
-                  print(
-                      'DEBUG in lib/screens/login.dart line 55: e-mail selected');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GenderScreen(),
-                    ),
-                  );
-                },
-                scale: scale,
-              ),
-              SizedBox(height: (isHorizontal(context) ? 15 : 45) * scale),
+              // FormWidget.login(
+              //   controller: emailController,
+              //   fontSize: 17 * scale,
+              //   labelText: 'Почта',
+              //   keyboardType: TextInputType.emailAddress,
+              // ),
+              // SizedBox(height: 15 * scale),
+              // FormWidget.login(
+              //   controller: passwordController,
+              //   fontSize: 17 * scale,
+              //   labelText: 'Пароль',
+              //   obscureText: true,
+              // ),
+              // SizedBox(height: 15 * scale),
+              // ButtonWidget(
+              //   'Войти',
+              //   buttonColor: Color(0xFF54615F),
+              //   onPressed: () {
+              //     print(
+              //         'DEBUG in lib/screens/login.dart line 55: e-mail selected');
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => GenderScreen(),
+              //       ),
+              //     );
+              //   },
+              //   scale: scale,
+              // ),
+              // SizedBox(height: (isHorizontal(context) ? 15 : 45) * scale),
               ButtonWidget(
                 'Войти через Google',
                 borderColor: Color(0xFF54615F),
