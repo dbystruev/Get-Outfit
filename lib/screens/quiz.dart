@@ -55,14 +55,14 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
           leftText: pageIndex < 1 ? 'Для кого' : 'Назад',
           middleText: '${pageIndex + 1} из ${allQuestions.length}',
           onLeftPressed: () {
-            print('DEBUG in lib/screens/questions.dart line 57: back pressed');
+            print('DEBUG in lib/screens/questions.dart line 58: back pressed');
             if (pageIndex < 1)
               Navigator.pop(context);
             else
               setState(() => pageIndex--);
           },
           onRightPressed: () {
-            print('DEBUG in lib/screens/questions.dart line 64: next pressed');
+            print('DEBUG in lib/screens/questions.dart line 65: next pressed');
             if (pageIndex + 1 < allQuestions.length)
               setState(() => pageIndex++);
             else

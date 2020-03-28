@@ -19,6 +19,7 @@ class PlanWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
             children: <Widget>[
@@ -45,10 +46,10 @@ class PlanWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             onPressed: () {
               print(
-                  'DEBUG in lib/widgets/plan.dart line 46: ${plan.title} pressed');
+                  'DEBUG in lib/widgets/plan.dart line 49: ${plan.title} pressed');
             },
             scale: scale,
-            width: 120,
+            width: 140,
           ),
         ],
       ),
