@@ -81,17 +81,17 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                 scale: scale,
                 textColor: Color(0xFF54615F),
               ),
-              SizedBox(height: 15 * scale),
-              FlatButton(
-                onPressed: () {
-                  print(
-                      'DEBUG in lib/screens/login.dart line 88: forgot password');
-                  Navigator.pop(context);
-                },
-                child: FuturaMediumText.w500('Забыли пароль?',
-                    color: const Color.fromARGB(102, 0, 0, 0),
-                    fontSize: 16 * scale),
-              )
+              // SizedBox(height: 15 * scale),
+              // FlatButton(
+              //   onPressed: () {
+              //     print(
+              //         'DEBUG in lib/screens/login.dart line 88: forgot password');
+              //     Navigator.pop(context);
+              //   },
+              //   child: FuturaMediumText.w500('Забыли пароль?',
+              //       color: const Color.fromARGB(102, 0, 0, 0),
+              //       fontSize: 16 * scale),
+              // ),
             ],
             padding: EdgeInsets.all(19 * scale),
           ),

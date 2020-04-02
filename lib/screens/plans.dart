@@ -37,15 +37,20 @@ class PlansScreen extends StatelessWidget with Scale {
         PlanWidget(plan, scale: scale),
       ];
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          child: Center(
-            child: ListView(
-              children: children,
+      body: GestureDetector(
+        child: SafeArea(
+          child: Padding(
+            child: Center(
+              child: ListView(
+                children: children,
+              ),
             ),
+            padding: EdgeInsets.symmetric(horizontal: 30 * scale),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 30 * scale),
         ),
+        onHorizontalDragUpdate: (DragUpdateDetails details) {
+          if (0 < details.delta.dx) Navigator.pop(context);
+        },
       ),
     );
   }

@@ -40,43 +40,53 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
         .toList();
     final double scale = getScale(context);
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          child: ListView.builder(
-            itemBuilder: (BuildContext context, int index) =>
-                QuestionWidget(index, questions[index], scale: scale),
-            itemCount: questions.length,
+      body: GestureDetector(
+        child: SafeArea(
+          child: Padding(
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) =>
+                  QuestionWidget(index, questions[index], scale: scale),
+              itemCount: questions.length,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 30 * scale),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 30 * scale),
         ),
+        onHorizontalDragEnd: (DragEndDetails details) {
+          if (0 < details.velocity.pixelsPerSecond.dx)
+            onLeftPressed();
+          else
+            onRightPressed();
+        },
       ),
       bottomNavigationBar: BottomAppBar(
         child: FooterWidget(
           leftText: pageIndex < 1 ? 'Для кого' : 'Назад',
           middleText: '${pageIndex + 1} из ${allQuestions.length}',
-          onLeftPressed: () {
-            print('DEBUG in lib/screens/questions.dart line 58: back pressed');
-            if (pageIndex < 1)
-              Navigator.pop(context);
-            else
-              setState(() => pageIndex--);
-          },
-          onRightPressed: () {
-            print('DEBUG in lib/screens/questions.dart line 65: next pressed');
-            if (pageIndex + 1 < allQuestions.length)
-              setState(() => pageIndex++);
-            else
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => PlansScreen(),
-                ),
-              );
-          },
+          onLeftPressed: onLeftPressed,
+          onRightPressed: onRightPressed,
           rightText: pageIndex + 1 < allQuestions.length ? 'Далее' : 'Готово',
           scale: scale,
         ),
       ),
     );
+  }
+
+  void onLeftPressed() {
+    if (pageIndex < 1)
+      Navigator.pop(context);
+    else
+      setState(() => pageIndex--);
+  }
+
+  void onRightPressed() {
+    if (pageIndex + 1 < allQuestions.length)
+      setState(() => pageIndex++);
+    else
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => PlansScreen(),
+        ),
+      );
   }
 }
