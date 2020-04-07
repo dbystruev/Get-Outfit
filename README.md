@@ -27,3 +27,5 @@ The app following Get Outfit [website](https://getoutfit.ru).
 ![Quiz Screen 5](https://github.com/dbystruev/Get-Outfit/blob/master/screenshots/screenshot08.png?raw=true)
 
 ![Plans Screen](https://github.com/dbystruev/Get-Outfit/blob/master/screenshots/screenshot09.png?raw=true)
+
+![Payment Screen](https://github.com/dbystruev/Get-Outfit/blob/master/screenshots/screenshot10.png?raw=true)

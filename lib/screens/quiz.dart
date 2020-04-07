@@ -60,7 +60,7 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
       ),
       bottomNavigationBar: BottomAppBar(
         child: FooterWidget(
-          leftText: pageIndex < 1 ? 'Для кого' : 'Назад',
+          leftText: pageIndex < 1 ? null : 'Назад',
           middleText: '${pageIndex + 1} из ${allQuestions.length}',
           onLeftPressed: onLeftPressed,
           onRightPressed: onRightPressed,

@@ -17,47 +17,52 @@ class GenderScreen extends StatelessWidget with Scale {
     print('DEBUG in lib/screens/launch.dart line 17: GenderScreen.build');
     final double scale = getScale(context);
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            FuturaText.bold('GET OUTFIT', fontSize: 28 * scale),
-            SizedBox(height: (isHorizontal(context) ? 15 : 205) * scale),
-            FuturaDemiText.w500(
-              'Для кого подбираем образ?',
-              fontSize: 20 * scale,
-            ),
-            SizedBox(height: (isHorizontal(context) ? 15 : 41) * scale),
-            ButtonWidget(
-              'для мужчины',
-              buttonColor: Color(0xFF54615F),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => QuizScreen(Gender.male),
-                  ),
-                );
-              },
-              scale: scale,
-            ),
-            SizedBox(height: 15 * scale),
-            ButtonWidget(
-              'для женщины',
-              borderColor: Color(0xFF54615F),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => QuizScreen(Gender.female),
-                  ),
-                );
-              },
-              scale: scale,
-              textColor: Color(0xFF54615F),
-            ),
-          ],
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: GestureDetector(
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              FuturaText.bold('GET OUTFIT', fontSize: 28 * scale),
+              SizedBox(height: (isHorizontal(context) ? 15 : 205) * scale),
+              FuturaDemiText.w500(
+                'Для кого подбираем образ?',
+                fontSize: 20 * scale,
+              ),
+              SizedBox(height: (isHorizontal(context) ? 15 : 41) * scale),
+              ButtonWidget(
+                'для мужчины',
+                buttonColor: Color(0xFF54615F),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QuizScreen(Gender.male),
+                    ),
+                  );
+                },
+                scale: scale,
+              ),
+              SizedBox(height: 15 * scale),
+              ButtonWidget(
+                'для женщины',
+                borderColor: Color(0xFF54615F),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QuizScreen(Gender.female),
+                    ),
+                  );
+                },
+                scale: scale,
+                textColor: Color(0xFF54615F),
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
         ),
+        onHorizontalDragUpdate: (DragUpdateDetails details) {
+          if (0 < details.delta.dx) Navigator.pop(context);
+        },
       ),
     );
   }

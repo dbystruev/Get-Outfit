@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/models/plan.dart';
+import 'package:get_outfit/screens/payment.dart';
 import 'package:get_outfit/widgets/button.dart';
 import 'package:get_outfit/widgets/futura.dart';
 
@@ -45,8 +46,12 @@ class PlanWidget extends StatelessWidget {
             height: 30,
             mainAxisAlignment: MainAxisAlignment.start,
             onPressed: () {
-              print(
-                  'DEBUG in lib/widgets/plan.dart line 49: ${plan.title} pressed');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => PaymentScreen(plan),
+                ),
+              );
             },
             scale: scale,
             width: 140,

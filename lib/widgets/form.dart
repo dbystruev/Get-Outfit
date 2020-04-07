@@ -12,6 +12,7 @@ class FormWidget extends StatelessWidget {
   final String fontFamily;
   final double fontSize;
   final FontWeight fontWeight;
+  final String hintText;
   final TextInputType keyboardType;
   final String labelText;
   final bool obscureText;
@@ -22,6 +23,7 @@ class FormWidget extends StatelessWidget {
     this.fontFamily,
     this.fontSize,
     this.fontWeight,
+    this.hintText,
     this.keyboardType,
     this.labelText,
     this.obscureText = false,
@@ -30,14 +32,22 @@ class FormWidget extends StatelessWidget {
   factory FormWidget.quiz({
     TextEditingController controller,
     double fontSize,
+    String hintText,
     String labelText,
   }) =>
       FormWidget(
         controller: controller,
-        decoration: InputDecoration(isDense: true),
+        decoration: InputDecoration(
+          isDense: true,
+          hintStyle: TextStyle(
+            color: Color.fromARGB(179, 84, 97, 95),
+          ),
+          hintText: hintText,
+        ),
         fontFamily: 'FuturaBook',
         fontSize: fontSize,
         fontWeight: FontWeight.normal,
+        hintText: hintText,
         labelText: labelText,
       );
 

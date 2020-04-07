@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/screens/gender.dart';
 import 'package:get_outfit/widgets/button.dart';
-import 'package:get_outfit/widgets/form.dart';
+// import 'package:get_outfit/widgets/form.dart';
 import 'package:get_outfit/widgets/futura.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -27,10 +27,10 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: ListView(
+          child: Column(
             children: <Widget>[
               FuturaText.bold('GET OUTFIT', fontSize: 28 * scale),
-              SizedBox(height: (isHorizontal(context) ? 15 : 132) * scale),
+              SizedBox(height: (isHorizontal(context) ? 80 : 240) * scale),
               FuturaDemiText.w500('Добро пожаловать!', fontSize: 20 * scale),
               SizedBox(height: (isHorizontal(context) ? 15 : 45) * scale),
               // FormWidget.login(
@@ -93,7 +93,8 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               //       fontSize: 16 * scale),
               // ),
             ],
-            padding: EdgeInsets.all(19 * scale),
+            mainAxisAlignment: MainAxisAlignment.start,
+            // padding: EdgeInsets.all(19 * scale),
           ),
         ),
       ),
@@ -113,12 +114,12 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
     emailController.addListener(() {
       final String text = emailController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 116 emailController.text = $text');
+          'DEBUG in lib/screens/login.dart line 117 emailController.text = $text');
     });
     passwordController.addListener(() {
       final String text = passwordController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 121 passwordController.text = $text');
+          'DEBUG in lib/screens/login.dart line 122 passwordController.text = $text');
     });
   }
 }

@@ -14,7 +14,7 @@ class QuestionWidget extends StatelessWidget {
   final Question question;
   final double scale;
 
-  QuestionWidget(this.index, this.question, {this.scale});
+  QuestionWidget(this.index, this.question, {@required this.scale});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +24,11 @@ class QuestionWidget extends StatelessWidget {
         return Padding(
           child: FuturaDemiText.w600(question.title, fontSize: 20 * scale),
           padding: EdgeInsets.only(bottom: 30 * scale, top: top),
+        );
+      case QuestionType.inlineText:
+        return Padding(
+          child: FormWidget.quiz(hintText: question.title),
+          padding: EdgeInsets.symmetric(vertical: 11 * scale),
         );
       case QuestionType.multiChoice:
       case QuestionType.range:
@@ -51,7 +56,7 @@ class QuestionWidget extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 15 * scale, top: 10 * scale),
         );
     }
-    print('ERROR in lib/widgets/question.dart line 54: question = $question');
+    print('ERROR in lib/widgets/question.dart line 59: question = $question');
     return FuturaText.bold('Unknown question type: ${question.type}',
         color: Colors.red, fontSize: 20 * scale);
   }

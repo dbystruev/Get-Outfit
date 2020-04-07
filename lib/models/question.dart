@@ -6,7 +6,7 @@
 
 import 'package:get_outfit/models/gender.dart';
 
-enum QuestionType { header, multiChoice, range, singleChoice, text }
+enum QuestionType { header, inlineText, multiChoice, range, singleChoice, text }
 
 class Question {
   final List<String> answers;
