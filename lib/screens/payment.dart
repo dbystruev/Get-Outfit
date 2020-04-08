@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/models/plan.dart';
 import 'package:get_outfit/models/question.dart';
+import 'package:get_outfit/screens/thankyou.dart';
 import 'package:get_outfit/widgets/button.dart';
 import 'package:get_outfit/widgets/futura.dart';
 import 'package:get_outfit/widgets/question.dart';
@@ -19,7 +20,6 @@ class PaymentScreen extends StatelessWidget with Scale {
 
   @override
   Widget build(BuildContext context) {
-    print('DEBUG in lib/screens/payment.dart line 22: PaymentScreen.build');
     final String priceString = '${plan.price} ${plan.currency}';
     final List<Question> questions = [
       Question('Имя', type: QuestionType.inlineText),
@@ -106,7 +106,7 @@ class PaymentScreen extends StatelessWidget with Scale {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => PaymentScreen(plan),
+                  builder: (BuildContext context) => ThankYouScreen(),
                 ),
               );
             },

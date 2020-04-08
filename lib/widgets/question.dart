@@ -56,7 +56,6 @@ class QuestionWidget extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 15 * scale, top: 10 * scale),
         );
     }
-    print('ERROR in lib/widgets/question.dart line 59: question = $question');
     return FuturaText.bold('Unknown question type: ${question.type}',
         color: Colors.red, fontSize: 20 * scale);
   }

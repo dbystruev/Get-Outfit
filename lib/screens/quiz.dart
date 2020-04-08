@@ -31,7 +31,6 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
 
   @override
   Widget build(BuildContext context) {
-    print('DEBUG in lib/screens/quiz.dart line 34: _QuizScreenState.build');
     final List<Question> questions = allQuestions[pageIndex]
         .where(
           (question) =>

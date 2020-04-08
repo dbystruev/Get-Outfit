@@ -14,7 +14,6 @@ import 'package:get_outfit/widgets/futura.dart';
 class GenderScreen extends StatelessWidget with Scale {
   @override
   Widget build(BuildContext context) {
-    print('DEBUG in lib/screens/launch.dart line 17: GenderScreen.build');
     final double scale = getScale(context);
     return Scaffold(
       body: GestureDetector(

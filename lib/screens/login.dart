@@ -22,7 +22,6 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
 
   @override
   Widget build(BuildContext context) {
-    print('DEBUG in lib/screens/login.dart line 25: _LoginScreenState.build');
     final double scale = getScale(context);
     return Scaffold(
       body: SafeArea(
@@ -52,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               //   buttonColor: Color(0xFF54615F),
               //   onPressed: () {
               //     print(
-              //         'DEBUG in lib/screens/login.dart line 55: e-mail selected');
+              //         'DEBUG in lib/screens/login.dart line 54: e-mail selected');
               //     Navigator.push(
               //       context,
               //       MaterialPageRoute(
@@ -69,8 +68,6 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                 fontSize: 17,
                 imageName: 'assets/images/g.png',
                 onPressed: () {
-                  print(
-                      'DEBUG in lib/screens/login.dart line 73: google selected');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -85,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               // FlatButton(
               //   onPressed: () {
               //     print(
-              //         'DEBUG in lib/screens/login.dart line 88: forgot password');
+              //         'DEBUG in lib/screens/login.dart line 85: forgot password');
               //     Navigator.pop(context);
               //   },
               //   child: FuturaMediumText.w500('Забыли пароль?',
@@ -114,12 +111,12 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
     emailController.addListener(() {
       final String text = emailController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 117 emailController.text = $text');
+          'DEBUG in lib/screens/login.dart line 114 emailController.text = $text');
     });
     passwordController.addListener(() {
       final String text = passwordController.text;
       print(
-          'DEBUG in lib/screens/login.dart line 122 passwordController.text = $text');
+          'DEBUG in lib/screens/login.dart line 119 passwordController.text = $text');
     });
   }
 }

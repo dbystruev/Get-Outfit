@@ -17,7 +17,6 @@ class PlansScreen extends StatelessWidget with Scale {
 
   @override
   Widget build(BuildContext context) {
-    print('DEBUG in lib/screens/plans.dart line 20: PlansScreen.build');
     final double scale = getScale(context);
     List<Widget> children = [
       FuturaDemiText.w500(
