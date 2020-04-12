@@ -1,5 +1,5 @@
 //
-//  lib/widgets/radio.dart
+//  lib/widgets/radio_widget.dart
 //
 //  Created by Denis Bystruev on 12/04/2020.
 //
@@ -38,6 +38,7 @@ class RadioWidget extends StatelessWidget {
           children: <Widget>[
             Flexible(
               child: Radio<int>(
+                activeColor: Color(0xFF54615F),
                 groupValue: groupValue,
                 onChanged: (int newValue) => onChanged(newValue),
                 value: value,

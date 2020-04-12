@@ -1,5 +1,5 @@
 //
-//  lib/screens/payment.dart
+//  lib/screens/payment_screen.dart
 //
 //  Created by Denis Bystruev on 02/04/2020.
 //
@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/models/plan.dart';
 import 'package:get_outfit/models/question.dart';
-import 'package:get_outfit/screens/thankyou.dart';
-import 'package:get_outfit/widgets/button.dart';
-import 'package:get_outfit/widgets/futura.dart';
-import 'package:get_outfit/widgets/question.dart';
+import 'package:get_outfit/screens/thank_you_screen.dart';
+import 'package:get_outfit/widgets/button_widget.dart';
+import 'package:get_outfit/widgets/futura_widgets.dart';
+import 'package:get_outfit/widgets/question_widget.dart';
 
 class PaymentScreen extends StatelessWidget with Scale {
   final Plan plan;
@@ -30,7 +30,13 @@ class PaymentScreen extends StatelessWidget with Scale {
     int index = 0;
     final double scale = getScale(context);
     final List<Widget> questionWidgets = questions
-        .map((question) => QuestionWidget(index++, question, scale: scale))
+        .map((question) => QuestionWidget(
+              index++,
+              question,
+              onAnswer: (answer) => print(
+                  'DEBUG in lib/screens/payment_screen.dart line 37: answer = $answer'),
+              scale: scale,
+            ))
         .toList();
     final List<Widget> children = [
           FuturaDemiText.w600(

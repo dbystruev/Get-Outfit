@@ -1,5 +1,5 @@
 //
-//  lib/screens/quiz.dart
+//  lib/screens/quiz_screen.dart
 //
 //  Created by Denis Bystruev on 12/03/2020.
 //
@@ -9,9 +9,9 @@ import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/models/gender.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/question+all.dart';
-import 'package:get_outfit/screens/plans.dart';
-import 'package:get_outfit/widgets/footer.dart';
-import 'package:get_outfit/widgets/question.dart';
+import 'package:get_outfit/screens/plans_screen.dart';
+import 'package:get_outfit/widgets/footer_widget.dart';
+import 'package:get_outfit/widgets/question_widget.dart';
 
 class QuizScreen extends StatefulWidget {
   final Gender gender;
@@ -26,26 +26,28 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
   final List<List<Question>> allQuestions = AllQuestions.local;
   final Gender gender;
   int pageIndex = 0;
+  List<List<Question>> questions;
 
   _QuizScreenState(this.gender);
 
   @override
   Widget build(BuildContext context) {
-    final List<Question> questions = allQuestions[pageIndex]
-        .where(
-          (question) =>
-              question.gender == gender || question.gender == Gender.both,
-        )
-        .toList();
     final double scale = getScale(context);
     return Scaffold(
       body: GestureDetector(
         child: SafeArea(
           child: Padding(
             child: ListView.builder(
-              itemBuilder: (BuildContext context, int index) =>
-                  QuestionWidget(index, questions[index], setState: setState, scale: scale),
-              itemCount: questions.length,
+              itemBuilder: (BuildContext context, int index) => QuestionWidget(
+                index,
+                questions[pageIndex][index],
+                onAnswer: (answer) {
+                  setState(
+                      () => questions[pageIndex][index].givenAnswer = answer);
+                },
+                scale: scale,
+              ),
+              itemCount: questions[pageIndex].length,
             ),
             padding: EdgeInsets.symmetric(horizontal: 30 * scale),
           ),
@@ -60,14 +62,29 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
       bottomNavigationBar: BottomAppBar(
         child: FooterWidget(
           leftText: pageIndex < 1 ? null : 'Назад',
-          middleText: '${pageIndex + 1} из ${allQuestions.length}',
+          middleText: '${pageIndex + 1} из ${questions.length}',
           onLeftPressed: onLeftPressed,
           onRightPressed: onRightPressed,
-          rightText: pageIndex + 1 < allQuestions.length ? 'Далее' : 'Готово',
+          rightText: pageIndex + 1 < questions.length ? 'Далее' : 'Готово',
           scale: scale,
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    questions = allQuestions
+        .map(
+          (questionPage) => questionPage
+              .where(
+                (question) =>
+                    question.gender == gender || question.gender == Gender.both,
+              )
+              .toList(),
+        )
+        .toList();
+    super.initState();
   }
 
   void onLeftPressed() {
@@ -78,7 +95,7 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
   }
 
   void onRightPressed() {
-    if (pageIndex + 1 < allQuestions.length)
+    if (pageIndex + 1 < questions.length)
       setState(() => pageIndex++);
     else
       Navigator.push(

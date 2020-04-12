@@ -5,7 +5,7 @@
 //
 
 import 'package:flutter/material.dart';
-import 'package:get_outfit/screens/launch.dart';
+import 'package:get_outfit/screens/launch_screen.dart';
 
 void main() => runApp(
       Main(),

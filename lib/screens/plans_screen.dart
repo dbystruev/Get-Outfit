@@ -1,5 +1,5 @@
 //
-//  lib/screens/plans.dart
+//  lib/screens/plans_screen.dart
 //
 //  Created by Denis Bystruev on 18/03/2020.
 //
@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/models/plan+all.dart';
 import 'package:get_outfit/models/plan.dart';
-import 'package:get_outfit/widgets/futura.dart';
-import 'package:get_outfit/widgets/plan.dart';
+import 'package:get_outfit/widgets/futura_widgets.dart';
+import 'package:get_outfit/widgets/plan_widget.dart';
 
 class PlansScreen extends StatelessWidget with Scale {
   final List<Plan> plans =

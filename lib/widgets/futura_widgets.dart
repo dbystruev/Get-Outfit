@@ -1,5 +1,5 @@
 //
-//  lib/widgets/futura.dart
+//  lib/widgets/futura_widgets.dart
 //
 //  Created by Denis Bystruev on 13/03/2020.
 //

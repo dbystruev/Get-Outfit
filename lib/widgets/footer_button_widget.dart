@@ -1,11 +1,11 @@
 //
-//  lib/widgets/footer_button.dart
+//  lib/widgets/footer_button_widget.dart
 //
 //  Created by Denis Bystruev on 13/03/2020.
 //
 
 import 'package:flutter/material.dart';
-import 'package:get_outfit/widgets/button.dart';
+import 'package:get_outfit/widgets/button_widget.dart';
 
 class FooterButtonWidget extends StatelessWidget {
   final Color buttonColor;

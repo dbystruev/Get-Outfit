@@ -1,12 +1,12 @@
 //
-//  lib/screens/thankyou.dart
+//  lib/screens/thank_you_screen.dart
 //
 //  Created by Denis Bystruev on 07/04/2020.
 //
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
-import 'package:get_outfit/widgets/button.dart';
+import 'package:get_outfit/widgets/button_widget.dart';
 
 class ThankYouScreen extends StatelessWidget with Scale {
   @override

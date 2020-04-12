@@ -1,12 +1,12 @@
 //
-//  lib/widgets/footer.dart
+//  lib/widgets/footer_widget.dart
 //
 //  Created by Denis Bystruev on 13/03/2020.
 //
 
 import 'package:flutter/material.dart';
-import 'package:get_outfit/widgets/footer_button.dart';
-import 'package:get_outfit/widgets/futura.dart';
+import 'package:get_outfit/widgets/footer_button_widget.dart';
+import 'package:get_outfit/widgets/futura_widgets.dart';
 
 class FooterWidget extends StatelessWidget {
   final String leftText;

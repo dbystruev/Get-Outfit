@@ -1,25 +1,26 @@
 //
-//  lib/widgets/question.dart
+//  lib/widgets/question_widget.dart
 //
 //  Created by Denis Bystruev on 14/03/2020.
 //
 
 import 'package:flutter/material.dart';
+import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/question.dart';
-import 'package:get_outfit/widgets/form.dart';
-import 'package:get_outfit/widgets/futura.dart';
-import 'package:get_outfit/widgets/radio.dart';
+import 'package:get_outfit/widgets/form_widget.dart';
+import 'package:get_outfit/widgets/futura_widgets.dart';
+import 'package:get_outfit/widgets/radio_widget.dart';
 
 class QuestionWidget extends StatelessWidget {
+  final void Function(Answer) onAnswer;
   final int questionIndex;
   final Question question;
-  final void Function(void Function()) setState;
   final double scale;
 
   QuestionWidget(
     this.questionIndex,
     this.question, {
-    @required this.setState,
+    @required this.onAnswer,
     @required this.scale,
   });
 
@@ -34,7 +35,12 @@ class QuestionWidget extends StatelessWidget {
         );
       case QuestionType.inlineText:
         return Padding(
-          child: FormWidget.quiz(hintText: question.title),
+          child: FormWidget.quiz(
+            hintText: question.title,
+            onChanged: (String newString) => onAnswer(
+              Answer.text(newString),
+            ),
+          ),
           padding: EdgeInsets.symmetric(vertical: 11 * scale),
         );
       case QuestionType.multiChoice:
@@ -49,7 +55,7 @@ class QuestionWidget extends StatelessWidget {
   Widget buildAnswers() {
     switch (question.type) {
       case QuestionType.singleChoice:
-        int selectedIndex = question.defaultAnswer;
+        final int selectedIndex = question.givenAnswer.indexes.first ?? 0;
         final int textLength = question.answers
             .map((text) => text.length)
             .reduce((total, current) => total + current);
@@ -67,11 +73,9 @@ class QuestionWidget extends StatelessWidget {
                     textAlign: TextAlign.start,
                   ),
                   labelFlex: isVertical ? 10 : 2,
-                  onChanged: (int value) => setState(() {
-                    selectedIndex = value;
-                    print(
-                        'DEBUG in lib/widgets/question.dart line 67: index = $index, selectedIndex = $selectedIndex');
-                  }),
+                  onChanged: (int value) => onAnswer(
+                    Answer.single(value),
+                  ),
                   scale: scale,
                   value: index,
                 ),
@@ -88,7 +92,15 @@ class QuestionWidget extends StatelessWidget {
             direction: isVertical ? Axis.vertical : Axis.horizontal);
       case QuestionType.text:
       default:
-        return FormWidget.quiz(fontSize: 14 * scale);
+        final controller = TextEditingController();
+        controller.text = question.givenAnswer.text ?? '';
+        return FormWidget.quiz(
+          controller: controller,
+          fontSize: 14 * scale,
+          onChanged: (String newText) => onAnswer(
+            Answer.text(newText),
+          ),
+        );
     }
   }
 

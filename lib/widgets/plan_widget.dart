@@ -1,14 +1,14 @@
 //
-//  lib/widgets/plan.dart
+//  lib/widgets/plan_widget.dart
 //
 //  Created by Denis Bystruev on 18/03/2020.
 //
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/models/plan.dart';
-import 'package:get_outfit/screens/payment.dart';
-import 'package:get_outfit/widgets/button.dart';
-import 'package:get_outfit/widgets/futura.dart';
+import 'package:get_outfit/screens/payment_screen.dart';
+import 'package:get_outfit/widgets/button_widget.dart';
+import 'package:get_outfit/widgets/futura_widgets.dart';
 
 class PlanWidget extends StatelessWidget {
   final Plan plan;

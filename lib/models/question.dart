@@ -4,14 +4,24 @@
 //  Created by Denis Bystruev on 14/03/2020.
 //
 
+import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/gender.dart';
 
-enum QuestionType { dropdown, header, inlineText, multiChoice, range, singleChoice, text }
+enum QuestionType {
+  dropdown,
+  header,
+  inlineText,
+  multiChoice,
+  range,
+  singleChoice,
+  text
+}
 
 class Question {
   final List<String> answers;
-  final int defaultAnswer;
+  final Answer defaultAnswer;
   final Gender gender;
+  Answer givenAnswer;
   final String hint;
   final bool isVisual;
   final int maxValue;
@@ -24,47 +34,59 @@ class Question {
   Question(
     this.title, {
     this.answers,
-    this.defaultAnswer,
+    this.defaultAnswer = const Answer.defaultIndex(),
     this.gender = Gender.both,
+    Answer givenAnswer,
     this.hint,
     this.isVisual = false,
     this.maxValue,
     this.minValue,
+    List<int> selectedAnswers,
     this.subtitle,
     this.type = QuestionType.text,
     this.value,
-  });
+  }) : this.givenAnswer = givenAnswer ?? defaultAnswer;
 
-  factory Question.dropdown(String title,
-          {List<String> answers,
-          int defaultAnswer = 0,
-          Gender gender,
-          String subtitle}) =>
+  factory Question.dropdown(
+    String title, {
+    List<String> answers,
+    Answer defaultAnswer,
+    Gender gender,
+    String subtitle,
+  }) =>
       Question(
         title,
         answers: answers,
-        defaultAnswer: defaultAnswer,
+        defaultAnswer: defaultAnswer ?? const Answer.defaultIndex(),
         gender: gender ?? Gender.both,
         subtitle: subtitle,
         type: QuestionType.dropdown,
       );
 
-  factory Question.dropdownFemale(String title,
-          {List<String> answers, int defaultAnswer, String subtitle}) =>
+  factory Question.dropdownFemale(
+    String title, {
+    List<String> answers,
+    Answer defaultAnswer,
+    String subtitle,
+  }) =>
       Question.dropdown(
         title,
         answers: answers,
-        defaultAnswer: defaultAnswer,
+        defaultAnswer: defaultAnswer ?? const Answer.defaultIndex(),
         gender: Gender.female,
         subtitle: subtitle,
       );
 
-  factory Question.dropdownMale(String title,
-          {List<String> answers, int defaultAnswer, String subtitle}) =>
+  factory Question.dropdownMale(
+    String title, {
+    List<String> answers,
+    Answer defaultAnswer,
+    String subtitle,
+  }) =>
       Question.dropdown(
         title,
         answers: answers,
-        defaultAnswer: defaultAnswer,
+        defaultAnswer: defaultAnswer ?? const Answer.defaultIndex(),
         gender: Gender.male,
         subtitle: subtitle,
       );
@@ -72,7 +94,7 @@ class Question {
   factory Question.female(
     String title, {
     List<String> answers,
-    int defaultAnswer,
+    Answer defaultAnswer,
     String hint,
     bool isDropdown,
     bool isVisual,
@@ -85,7 +107,7 @@ class Question {
       Question(
         title,
         answers: answers,
-        defaultAnswer: defaultAnswer,
+        defaultAnswer: defaultAnswer ?? const Answer.defaultIndex(),
         gender: Gender.female,
         hint: hint,
         isVisual: isVisual ?? false,
@@ -99,7 +121,7 @@ class Question {
   factory Question.male(
     String title, {
     List<String> answers,
-    int defaultAnswer,
+    Answer defaultAnswer,
     String hint,
     bool isDropdown,
     bool isVisual,
@@ -112,7 +134,7 @@ class Question {
       Question(
         title,
         answers: answers,
-        defaultAnswer: defaultAnswer,
+        defaultAnswer: defaultAnswer ?? const Answer.defaultIndex(),
         gender: Gender.male,
         hint: hint,
         isVisual: isVisual ?? false,
@@ -131,23 +153,34 @@ class Question {
         type: QuestionType.header,
       );
 
-  factory Question.headerFemale(String title,
-          {Gender gender, String subtitle}) =>
+  factory Question.headerFemale(
+    String title, {
+    Gender gender,
+    String subtitle,
+  }) =>
       Question.header(
         title,
         gender: Gender.female,
         subtitle: subtitle,
       );
 
-  factory Question.headerMale(String title, {Gender gender, String subtitle}) =>
+  factory Question.headerMale(
+    String title, {
+    Gender gender,
+    String subtitle,
+  }) =>
       Question.header(
         title,
         gender: Gender.male,
         subtitle: subtitle,
       );
 
-  factory Question.multiChoice(String title,
-          {List<String> answers, Gender gender, String subtitle}) =>
+  factory Question.multiChoice(
+    String title, {
+    List<String> answers,
+    Gender gender,
+    String subtitle,
+  }) =>
       Question(
         title,
         answers: answers,
@@ -156,8 +189,11 @@ class Question {
         type: QuestionType.multiChoice,
       );
 
-  factory Question.multiChoiceFemale(String title,
-          {List<String> answers, String subtitle}) =>
+  factory Question.multiChoiceFemale(
+    String title, {
+    List<String> answers,
+    String subtitle,
+  }) =>
       Question.multiChoice(
         title,
         answers: answers,
@@ -165,8 +201,11 @@ class Question {
         subtitle: subtitle,
       );
 
-  factory Question.multiChoiceMale(String title,
-          {List<String> answers, String subtitle}) =>
+  factory Question.multiChoiceMale(
+    String title, {
+    List<String> answers,
+    String subtitle,
+  }) =>
       Question.multiChoice(
         title,
         answers: answers,
@@ -174,8 +213,12 @@ class Question {
         subtitle: subtitle,
       );
 
-  factory Question.pictures(String title,
-          {Gender gender, String subtitle, List<String> urls}) =>
+  factory Question.pictures(
+    String title, {
+    Gender gender,
+    String subtitle,
+    List<String> urls,
+  }) =>
       Question(
         title,
         answers: urls,
@@ -185,8 +228,11 @@ class Question {
         type: QuestionType.multiChoice,
       );
 
-  factory Question.picturesFemale(String title,
-          {String subtitle, List<String> urls}) =>
+  factory Question.picturesFemale(
+    String title, {
+    String subtitle,
+    List<String> urls,
+  }) =>
       Question.pictures(
         title,
         gender: Gender.female,
@@ -194,8 +240,11 @@ class Question {
         urls: urls,
       );
 
-  factory Question.picturesMale(String title,
-          {String subtitle, List<String> urls}) =>
+  factory Question.picturesMale(
+    String title, {
+    String subtitle,
+    List<String> urls,
+  }) =>
       Question.pictures(
         title,
         gender: Gender.male,
@@ -203,8 +252,14 @@ class Question {
         urls: urls,
       );
 
-  factory Question.range(String title, int minValue, int value, int maxValue,
-          {Gender gender, String subtitle}) =>
+  factory Question.range(
+    String title,
+    int minValue,
+    int value,
+    int maxValue, {
+    Gender gender,
+    String subtitle,
+  }) =>
       Question(
         title,
         gender: gender ?? Gender.both,
@@ -216,19 +271,43 @@ class Question {
       );
 
   factory Question.rangeFemale(
-          String title, int minValue, int value, int maxValue,
-          {String subtitle}) =>
-      Question.range(title, minValue, value, maxValue,
-          gender: Gender.female, subtitle: subtitle);
+    String title,
+    int minValue,
+    int value,
+    int maxValue, {
+    String subtitle,
+  }) =>
+      Question.range(
+        title,
+        minValue,
+        value,
+        maxValue,
+        gender: Gender.female,
+        subtitle: subtitle,
+      );
 
   factory Question.rangeMale(
-          String title, int minValue, int value, int maxValue,
-          {String subtitle}) =>
-      Question.range(title, minValue, value, maxValue,
-          gender: Gender.male, subtitle: subtitle);
+    String title,
+    int minValue,
+    int value,
+    int maxValue, {
+    String subtitle,
+  }) =>
+      Question.range(
+        title,
+        minValue,
+        value,
+        maxValue,
+        gender: Gender.male,
+        subtitle: subtitle,
+      );
 
-  factory Question.singleChoice(String title,
-          {List<String> answers, Gender gender, String subtitle}) =>
+  factory Question.singleChoice(
+    String title, {
+    List<String> answers,
+    Gender gender,
+    String subtitle,
+  }) =>
       Question(
         title,
         answers: answers,
@@ -237,7 +316,11 @@ class Question {
         type: QuestionType.singleChoice,
       );
 
-  factory Question.yesNo(String title, {Gender gender, String subtitle}) =>
+  factory Question.yesNo(
+    String title, {
+    Gender gender,
+    String subtitle,
+  }) =>
       Question.singleChoice(
         title,
         answers: ['Да', 'Нет'],

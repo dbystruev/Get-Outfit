@@ -1,5 +1,5 @@
 //
-//  lib/widgets/form.dart
+//  lib/widgets/form_widget.dart
 //
 //  Created by Denis Bystruev on 12/03/2020.
 //
@@ -16,6 +16,7 @@ class FormWidget extends StatelessWidget {
   final TextInputType keyboardType;
   final String labelText;
   final bool obscureText;
+  final Function(String) onChanged;
 
   FormWidget({
     this.controller,
@@ -27,13 +28,16 @@ class FormWidget extends StatelessWidget {
     this.keyboardType,
     this.labelText,
     this.obscureText = false,
+    this.onChanged,
   });
 
   factory FormWidget.quiz({
     TextEditingController controller,
     double fontSize,
     String hintText,
+    String initialValue,
     String labelText,
+    Function(String) onChanged,
   }) =>
       FormWidget(
         controller: controller,
@@ -49,12 +53,14 @@ class FormWidget extends StatelessWidget {
         fontWeight: FontWeight.normal,
         hintText: hintText,
         labelText: labelText,
+        onChanged: onChanged,
       );
 
   factory FormWidget.login({
     TextEditingController controller,
     double fontSize,
     TextInputType keyboardType,
+    String initialValue,
     String labelText,
     bool obscureText,
   }) =>
@@ -83,6 +89,7 @@ class FormWidget extends StatelessWidget {
         decoration: decoration,
         keyboardType: keyboardType,
         obscureText: obscureText,
+        onChanged: onChanged,
         style: TextStyle(
           fontFamily: fontFamily,
           fontSize: fontSize,

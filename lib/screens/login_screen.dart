@@ -1,15 +1,15 @@
 //
-//  lib/screens/login.dart
+//  lib/screens/login_screen.dart
 //
 //  Created by Denis Bystruev on 11/03/2020.
 //
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
-import 'package:get_outfit/screens/gender.dart';
-import 'package:get_outfit/widgets/button.dart';
-// import 'package:get_outfit/widgets/form.dart';
-import 'package:get_outfit/widgets/futura.dart';
+import 'package:get_outfit/screens/gender_screen.dart';
+import 'package:get_outfit/widgets/button_widget.dart';
+// import 'package:get_outfit/widgets/form_widget.dart';
+import 'package:get_outfit/widgets/futura_widgets.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

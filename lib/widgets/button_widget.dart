@@ -1,11 +1,11 @@
 //
-//  lib/widgets/button.dart
+//  lib/widgets/button_widget.dart
 //
 //  Created by Denis Bystruev on 12/03/2020.
 //
 
 import 'package:flutter/material.dart';
-import 'package:get_outfit/widgets/futura.dart';
+import 'package:get_outfit/widgets/futura_widgets.dart';
 
 class ButtonWidget extends StatelessWidget {
   final Color borderColor;

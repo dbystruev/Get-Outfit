@@ -4,6 +4,7 @@
 //  Created by Denis Bystruev on 15/03/2020.
 //
 
+import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/question.dart';
 
 extension AllQuestions on Question {
@@ -360,7 +361,7 @@ extension AllQuestions on Question {
               'XXL (54/56)',
               'XXXL (58)',
             ],
-            defaultAnswer: 2,
+            defaultAnswer: Answer.single(2),
           ),
           Question.dropdownMale(
             'Ваш размер (футболка, рубашка, свитер)?',

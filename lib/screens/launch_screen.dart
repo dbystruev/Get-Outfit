@@ -1,13 +1,13 @@
 //
-//  lib/screens/launch.dart
+//  lib/screens/launch_screen.dart
 //
 //  Created by Denis Bystruev on 09/03/2020.
 //
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
-import 'package:get_outfit/screens/login.dart';
-import 'package:get_outfit/widgets/futura.dart';
+import 'package:get_outfit/screens/login_screen.dart';
+import 'package:get_outfit/widgets/futura_widgets.dart';
 
 class LaunchScreen extends StatelessWidget with Scale {
   static bool built = false;
