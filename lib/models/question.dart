@@ -6,14 +6,13 @@
 
 import 'package:get_outfit/models/gender.dart';
 
-enum QuestionType { header, inlineText, multiChoice, range, singleChoice, text }
+enum QuestionType { dropdown, header, inlineText, multiChoice, range, singleChoice, text }
 
 class Question {
   final List<String> answers;
   final int defaultAnswer;
   final Gender gender;
   final String hint;
-  final bool isDropdown;
   final bool isVisual;
   final int maxValue;
   final int minValue;
@@ -28,7 +27,6 @@ class Question {
     this.defaultAnswer,
     this.gender = Gender.both,
     this.hint,
-    this.isDropdown = false,
     this.isVisual = false,
     this.maxValue,
     this.minValue,
@@ -47,9 +45,8 @@ class Question {
         answers: answers,
         defaultAnswer: defaultAnswer,
         gender: gender ?? Gender.both,
-        isDropdown: true,
         subtitle: subtitle,
-        type: QuestionType.singleChoice,
+        type: QuestionType.dropdown,
       );
 
   factory Question.dropdownFemale(String title,
@@ -91,7 +88,6 @@ class Question {
         defaultAnswer: defaultAnswer,
         gender: Gender.female,
         hint: hint,
-        isDropdown: isDropdown ?? false,
         isVisual: isVisual ?? false,
         maxValue: maxValue,
         minValue: minValue,
@@ -119,7 +115,6 @@ class Question {
         defaultAnswer: defaultAnswer,
         gender: Gender.male,
         hint: hint,
-        isDropdown: isDropdown ?? false,
         isVisual: isVisual ?? false,
         maxValue: maxValue,
         minValue: minValue,
@@ -257,7 +252,6 @@ class Question {
   'defaultAnswer': $defaultAnswer,
   'gender': $gender,
   'hint': $hint,
-  'isDropdown': $isDropdown,
   'isVisual': $isVisual,
   'maxValue': $maxValue,
   'minValue': $minValue,

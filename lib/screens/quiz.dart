@@ -44,7 +44,7 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
           child: Padding(
             child: ListView.builder(
               itemBuilder: (BuildContext context, int index) =>
-                  QuestionWidget(index, questions[index], scale: scale),
+                  QuestionWidget(index, questions[index], setState: setState, scale: scale),
               itemCount: questions.length,
             ),
             padding: EdgeInsets.symmetric(horizontal: 30 * scale),
