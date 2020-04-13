@@ -7,11 +7,13 @@
 import 'package:flutter/material.dart';
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/question.dart';
+import 'package:get_outfit/widgets/answer_image_widget.dart';
 import 'package:get_outfit/widgets/form_widget.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:get_outfit/widgets/radio_widget.dart';
 
 class QuestionWidget extends StatelessWidget {
+  final TextEditingController controller = TextEditingController();
   final void Function(Answer) onAnswer;
   final int questionIndex;
   final Question question;
@@ -92,7 +94,6 @@ class QuestionWidget extends StatelessWidget {
             direction: isVertical ? Axis.vertical : Axis.horizontal);
       case QuestionType.text:
       default:
-        final controller = TextEditingController();
         controller.text = question.givenAnswer.text ?? '';
         return FormWidget.quiz(
           controller: controller,
@@ -102,6 +103,42 @@ class QuestionWidget extends StatelessWidget {
           ),
         );
     }
+  }
+
+  Widget buildImages() {
+    final List<Widget> images = question.answers
+        .asMap()
+        .map(
+          (index, url) => MapEntry(
+            index,
+            Padding(
+              child: AnswerImageWidget(
+                url,
+                index: index,
+                onSelected: (index) => onAnswer(
+                  Answer.invertIndex(index,
+                      oldIndexes: question.givenAnswer?.indexes),
+                ),
+                scale: scale,
+                selected:
+                    question.givenAnswer?.indexes?.contains(index) == true,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 5 * scale,
+                vertical: 15 * scale,
+              ),
+            ),
+          ),
+        )
+        .values
+        .toList();
+    return SizedBox(
+      child: ListView(
+        children: images,
+        scrollDirection: Axis.horizontal,
+      ),
+      height: 180 * scale,
+    );
   }
 
   Widget buildQuestion() {
@@ -120,7 +157,7 @@ class QuestionWidget extends StatelessWidget {
                   fontSize: 10 * scale,
                   textAlign: TextAlign.start,
                 ),
-          buildAnswers(),
+          question.isVisual ? buildImages() : buildAnswers(),
         ].where((element) => element != null).toList(),
         crossAxisAlignment: CrossAxisAlignment.start,
       ),

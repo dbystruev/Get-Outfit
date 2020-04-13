@@ -222,6 +222,7 @@ class Question {
       Question(
         title,
         answers: urls,
+        defaultAnswer: Answer.multi([]),
         gender: gender ?? Gender.both,
         isVisual: true,
         subtitle: subtitle,

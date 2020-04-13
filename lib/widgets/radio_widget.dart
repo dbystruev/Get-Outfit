@@ -22,7 +22,7 @@ class RadioWidget extends StatelessWidget {
   final int groupValue;
   final Widget label;
   final int labelFlex;
-  final Function onChanged;
+  final Function(int) onChanged;
   final EdgeInsets padding;
   final double scale;
   final int value;

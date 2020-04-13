@@ -14,6 +14,18 @@ class Answer {
         this.text = null,
         this.value = null;
 
+  factory Answer.invertIndex(int index, {List<int> oldIndexes}) {
+    if (oldIndexes == null) return Answer.multi([index]);
+    Set<int> newSet = oldIndexes.toSet();
+    if (newSet.contains(index))
+      newSet.remove(index);
+    else
+      newSet.add(index);
+    return Answer.multi(
+      newSet.toList(),
+    );
+  }
+
   Answer.multi(List<int> indexes)
       : this.indexes = indexes,
         this.text = null,
