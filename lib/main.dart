@@ -23,6 +23,7 @@ class Main extends StatelessWidget {
               color: const Color.fromARGB(102, 0, 0, 0),
             ),
           ),
+          primaryColor: Color(0xFF54615F),
         ),
         title: 'Get Outfit',
       );

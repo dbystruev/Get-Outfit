@@ -86,6 +86,7 @@ class FormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => TextFormField(
         controller: controller,
+        cursorColor: Color(0xFF54615F),
         decoration: decoration,
         keyboardType: keyboardType,
         obscureText: obscureText,

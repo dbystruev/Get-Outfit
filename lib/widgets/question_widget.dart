@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/widgets/answer_image_widget.dart';
+import 'package:get_outfit/widgets/checkbox_widget.dart';
 import 'package:get_outfit/widgets/form_widget.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:get_outfit/widgets/radio_widget.dart';
@@ -58,6 +59,27 @@ class QuestionWidget extends StatelessWidget {
 
   Widget buildAnswers() {
     switch (question.type) {
+      case QuestionType.multiChoice:
+        final List<Widget> checkboxButtons = buildButtons(
+          (index, answer) => CheckboxWidget(
+            index: index,
+            label: FuturaBookText.normal(
+              answer,
+              fontSize: 14 * scale,
+              textAlign: TextAlign.start,
+            ),
+            onSelected: (index, value) => onAnswer(
+              Answer.setIndex(
+                index,
+                oldIndexes: question.givenAnswer?.indexes,
+                value: value,
+              ),
+            ),
+            scale: scale,
+            selected: question.givenAnswer?.indexes?.contains(index) == true,
+          ),
+        ).toList();
+        return Column(children: checkboxButtons);
       case QuestionType.singleChoice:
         final int selectedIndex = question.givenAnswer.indexes.first ?? 0;
         final Iterable<int> textLengts =
@@ -71,28 +93,22 @@ class QuestionWidget extends StatelessWidget {
             5 < numberOfAnswers ||
             25 < allTextLength ||
             isTwoColumns;
-        final List<Widget> radioButtons = question.answers
-            .asMap()
-            .map(
-              (index, answer) => MapEntry(
-                index,
-                RadioWidget(
-                  groupValue: selectedIndex,
-                  label: FuturaBookText.normal(
-                    answer,
-                    fontSize: 14 * scale,
-                    textAlign: TextAlign.start,
-                  ),
-                  labelFlex: isVertical ? 4 : 2,
-                  onChanged: (int value) => onAnswer(
-                    Answer.single(value),
-                  ),
-                  scale: scale,
-                  value: index,
-                ),
-              ),
-            )
-            .values
+        final List<Widget> radioButtons = buildButtons(
+          (index, answer) => RadioWidget(
+            groupValue: selectedIndex,
+            label: FuturaBookText.normal(
+              answer,
+              fontSize: 14 * scale,
+              textAlign: TextAlign.start,
+            ),
+            labelFlex: isVertical ? 4 : 2,
+            onChanged: (int value) => onAnswer(
+              Answer.single(value),
+            ),
+            scale: scale,
+            value: index,
+          ),
+        )
             .map(
               (widget) =>
                   isVertical ? widget : Flexible(child: widget, flex: 1),
@@ -138,6 +154,19 @@ class QuestionWidget extends StatelessWidget {
     }
   }
 
+  Iterable<Widget> buildButtons(
+    Widget Function(int index, String answer) buttonWidget,
+  ) =>
+      question.answers
+          .asMap()
+          .map(
+            (index, answer) => MapEntry(
+              index,
+              buttonWidget(index, answer),
+            ),
+          )
+          .values;
+
   Widget buildImages() {
     final List<Widget> images = question.answers
         .asMap()
@@ -149,8 +178,10 @@ class QuestionWidget extends StatelessWidget {
                 url,
                 index: index,
                 onSelected: (index) => onAnswer(
-                  Answer.invertIndex(index,
-                      oldIndexes: question.givenAnswer?.indexes),
+                  Answer.invertIndex(
+                    index,
+                    oldIndexes: question.givenAnswer?.indexes,
+                  ),
                 ),
                 scale: scale,
                 selected:
@@ -190,6 +221,7 @@ class QuestionWidget extends StatelessWidget {
                   fontSize: 10 * scale,
                   textAlign: TextAlign.start,
                 ),
+          if (!question.isVisual) SizedBox(height: 16 * scale),
           question.isVisual ? buildImages() : buildAnswers(),
         ].where((element) => element != null).toList(),
         crossAxisAlignment: CrossAxisAlignment.start,

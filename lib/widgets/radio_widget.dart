@@ -14,7 +14,6 @@ class RadioWidget extends StatelessWidget {
     this.label,
     this.labelFlex = 1,
     this.onChanged,
-    this.padding = const EdgeInsets.all(0),
     this.scale = 1,
     this.value,
   });
@@ -23,37 +22,33 @@ class RadioWidget extends StatelessWidget {
   final Widget label;
   final int labelFlex;
   final Function(int) onChanged;
-  final EdgeInsets padding;
   final double scale;
   final int value;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      child: Row(
+        children: <Widget>[
+          Flexible(
+            child: Radio<int>(
+              activeColor: Color(0xFF54615F),
+              groupValue: groupValue,
+              onChanged: (int newValue) => onChanged(newValue),
+              value: value,
+              visualDensity: VisualDensity(
+                horizontal: VisualDensity.minimumDensity,
+                vertical: VisualDensity.minimumDensity,
+              ),
+            ),
+            flex: 1,
+          ),
+          Flexible(child: label, flex: labelFlex),
+        ],
+      ),
       onTap: () {
         if (value != groupValue) onChanged(value);
       },
-      child: Padding(
-        child: Row(
-          children: <Widget>[
-            Flexible(
-              child: Radio<int>(
-                activeColor: Color(0xFF54615F),
-                groupValue: groupValue,
-                onChanged: (int newValue) => onChanged(newValue),
-                value: value,
-                visualDensity: VisualDensity(
-                  horizontal: VisualDensity.minimumDensity,
-                  vertical: VisualDensity.minimumDensity,
-                ),
-              ),
-              flex: 1,
-            ),
-            Flexible(child: label, flex: labelFlex),
-          ],
-        ),
-        padding: padding,
-      ),
     );
   }
 }

@@ -138,6 +138,7 @@ class Question {
       Question(
         title,
         answers: answers,
+        defaultAnswer: Answer.multi([]),
         gender: gender ?? Gender.both,
         subtitle: subtitle,
         type: QuestionType.multiChoice,
