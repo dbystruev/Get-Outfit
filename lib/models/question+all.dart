@@ -361,7 +361,7 @@ extension AllQuestions on Question {
               'XXL (54/56)',
               'XXXL (58)',
             ],
-            defaultAnswer: Answer.single(2),
+            defaultAnswer: Answer.singleIndex(2),
           ),
           Question.singleChoiceMale(
             'Ваш размер (футболка, рубашка, свитер)?',

@@ -26,6 +26,7 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
   final List<List<Question>> allQuestions = AllQuestions.local;
   final ScrollController controller = ScrollController();
   final Gender gender;
+  Map<int, String> sliderLabels = {};
   int pageIndex = 0;
   List<List<Question>> questions;
   bool precachedImages = false;
@@ -44,23 +45,20 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
               itemBuilder: (BuildContext context, int index) => QuestionWidget(
                 index,
                 questions[pageIndex][index],
-                onAnswer: (answer) {
-                  setState(
-                      () => questions[pageIndex][index].givenAnswer = answer);
+                onAnswer: (answer, {String label}) {
+                  setState(() {
+                    questions[pageIndex][index].givenAnswer = answer;
+                    sliderLabels[questions[pageIndex][index].id] = label;
+                  });
                 },
                 scale: scale,
+                sliderLabel: sliderLabels[questions[pageIndex][index].id],
               ),
               itemCount: questions[pageIndex].length,
             ),
-            padding: EdgeInsets.symmetric(horizontal: 30 * scale),
+            padding: EdgeInsets.symmetric(horizontal: 22 * scale),
           ),
         ),
-        onHorizontalDragEnd: (DragEndDetails details) {
-          if (0 < details.velocity.pixelsPerSecond.dx)
-            onLeftPressed();
-          else
-            onRightPressed();
-        },
       ),
       bottomNavigationBar: BottomAppBar(
         child: FooterWidget(

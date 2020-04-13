@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
+import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/plan.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/screens/thank_you_screen.dart';
@@ -33,7 +34,7 @@ class PaymentScreen extends StatelessWidget with Scale {
         .map((question) => QuestionWidget(
               index++,
               question,
-              onAnswer: (answer) => print(
+              onAnswer: (Answer answer, {String label}) => print(
                   'DEBUG in lib/screens/payment_screen.dart line 37: answer = $answer'),
               scale: scale,
             ))

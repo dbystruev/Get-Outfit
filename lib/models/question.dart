@@ -26,7 +26,6 @@ class Question {
   final String title;
   List<String> get imageUrls => isVisual ? answers : [];
   final QuestionType type;
-  final int value;
 
   Question(
     this.title, {
@@ -41,7 +40,6 @@ class Question {
     List<int> selectedAnswers,
     this.subtitle,
     this.type = QuestionType.text,
-    this.value,
   })  : this.givenAnswer = givenAnswer ?? defaultAnswer,
         this.id = _maxId++;
 
@@ -69,7 +67,6 @@ class Question {
         minValue: minValue,
         subtitle: subtitle,
         type: type ?? QuestionType.text,
-        value: value,
       );
 
   factory Question.male(
@@ -96,7 +93,6 @@ class Question {
         minValue: minValue,
         subtitle: subtitle,
         type: type ?? QuestionType.text,
-        value: value,
       );
 
   factory Question.header(String title, {Gender gender, String subtitle}) =>
@@ -138,7 +134,7 @@ class Question {
       Question(
         title,
         answers: answers,
-        defaultAnswer: Answer.multi([]),
+        defaultAnswer: Answer.multiIndexes([]),
         gender: gender ?? Gender.both,
         subtitle: subtitle,
         type: QuestionType.multiChoice,
@@ -177,7 +173,7 @@ class Question {
       Question(
         title,
         answers: urls,
-        defaultAnswer: Answer.multi([]),
+        defaultAnswer: Answer.multiIndexes([]),
         gender: gender ?? Gender.both,
         isVisual: true,
         subtitle: subtitle,
@@ -218,12 +214,12 @@ class Question {
   }) =>
       Question(
         title,
+        defaultAnswer: Answer.value(value),
         gender: gender ?? Gender.both,
         maxValue: maxValue,
         minValue: minValue,
         subtitle: subtitle,
         type: QuestionType.range,
-        value: value,
       );
 
   factory Question.rangeFemale(
@@ -327,6 +323,5 @@ class Question {
   'minValue': $minValue,
   'subtitle': $subtitle,
   'type': $type,
-  'value': $value,
 }''';
 }

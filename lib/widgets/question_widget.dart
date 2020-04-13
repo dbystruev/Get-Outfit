@@ -14,17 +14,20 @@ import 'package:get_outfit/widgets/checkbox_widget.dart';
 import 'package:get_outfit/widgets/form_widget.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:get_outfit/widgets/radio_widget.dart';
+import 'package:get_outfit/widgets/slider_widget.dart';
 
 class QuestionWidget extends StatelessWidget {
   static Map<int, TextEditingController> controllers = {};
-  final void Function(Answer) onAnswer;
+  final void Function(Answer answer, {String label}) onAnswer;
   final int questionIndex;
   final Question question;
+  final String sliderLabel;
   final double scale;
 
   QuestionWidget(
     this.questionIndex,
     this.question, {
+    this.sliderLabel,
     @required this.onAnswer,
     @required this.scale,
   });
@@ -61,25 +64,46 @@ class QuestionWidget extends StatelessWidget {
     switch (question.type) {
       case QuestionType.multiChoice:
         final List<Widget> checkboxButtons = buildButtons(
-          (index, answer) => CheckboxWidget(
-            index: index,
-            label: FuturaBookText.normal(
-              answer,
-              fontSize: 14 * scale,
-              textAlign: TextAlign.start,
-            ),
-            onSelected: (index, value) => onAnswer(
-              Answer.setIndex(
-                index,
-                oldIndexes: question.givenAnswer?.indexes,
-                value: value,
+          (index, answer) => Padding(
+            child: CheckboxWidget(
+              index: index,
+              label: FuturaBookText.normal(
+                answer,
+                fontSize: 14 * scale,
+                textAlign: TextAlign.start,
               ),
+              onSelected: (index, value) => onAnswer(
+                Answer.setIndex(
+                  index,
+                  oldIndexes: question.givenAnswer?.indexes,
+                  value: value,
+                ),
+              ),
+              scale: scale,
+              selected: question.givenAnswer?.indexes?.contains(index) == true,
             ),
-            scale: scale,
-            selected: question.givenAnswer?.indexes?.contains(index) == true,
+            padding: EdgeInsets.only(bottom: 4 * scale),
           ),
         ).toList();
-        return Column(children: checkboxButtons);
+        return Padding(
+          padding: EdgeInsets.fromLTRB(6 * scale, 12 * scale, 6 * scale, 0),
+          child: Column(children: checkboxButtons),
+        );
+      case QuestionType.range:
+        return Padding(
+          child: SliderWidget(
+            label: sliderLabel,
+            max: question.maxValue,
+            min: question.minValue,
+            onChanged: (int value, String label) => onAnswer(
+              Answer.value(value),
+              label: label,
+            ),
+            scale: scale,
+            value: question.givenAnswer.value,
+          ),
+          padding: EdgeInsets.only(bottom: 6 * scale, top: 10 * scale),
+        );
       case QuestionType.singleChoice:
         final int selectedIndex = question.givenAnswer.indexes.first ?? 0;
         final Iterable<int> textLengts =
@@ -94,19 +118,21 @@ class QuestionWidget extends StatelessWidget {
             25 < allTextLength ||
             isTwoColumns;
         final List<Widget> radioButtons = buildButtons(
-          (index, answer) => RadioWidget(
-            groupValue: selectedIndex,
-            label: FuturaBookText.normal(
-              answer,
-              fontSize: 14 * scale,
-              textAlign: TextAlign.start,
+          (index, answer) => Padding(
+            child: RadioWidget(
+              groupValue: selectedIndex,
+              label: FuturaBookText.normal(
+                answer,
+                fontSize: 14 * scale,
+                textAlign: TextAlign.start,
+              ),
+              onChanged: (int value) => onAnswer(
+                Answer.singleIndex(value),
+              ),
+              scale: scale,
+              value: index,
             ),
-            labelFlex: isVertical ? 4 : 2,
-            onChanged: (int value) => onAnswer(
-              Answer.single(value),
-            ),
-            scale: scale,
-            value: index,
+            padding: EdgeInsets.only(bottom: 4 * scale),
           ),
         )
             .map(
@@ -115,28 +141,31 @@ class QuestionWidget extends StatelessWidget {
             )
             .toList();
         final int halfLength = (radioButtons.length + 1) ~/ 2;
-        return isTwoColumns
-            ? Row(
-                children: [
-                  SizedBox(width: 4 * scale),
-                  Expanded(
-                    child: Column(
-                      children: radioButtons.take(halfLength).toList(),
+        return Padding(
+          child: isTwoColumns
+              ? Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: radioButtons.take(halfLength).toList(),
+                      ),
+                      flex: 2,
                     ),
-                    flex: 2,
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: radioButtons.skip(halfLength).toList(),
+                    Expanded(
+                      child: Column(
+                        children: radioButtons.skip(halfLength).toList(),
+                      ),
+                      flex: 3,
                     ),
-                    flex: 3,
-                  ),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-              )
-            : Flex(
-                children: radioButtons,
-                direction: isVertical ? Axis.vertical : Axis.horizontal);
+                  ],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                )
+              : Flex(
+                  children: radioButtons,
+                  direction: isVertical ? Axis.vertical : Axis.horizontal,
+                ),
+          padding: EdgeInsets.fromLTRB(4 * scale, 12 * scale, 4 * scale, 0),
+        );
       case QuestionType.text:
       default:
         final TextEditingController controller =
@@ -144,12 +173,15 @@ class QuestionWidget extends StatelessWidget {
         controllers[question.id] = controller;
         final String newText = question.givenAnswer.text ?? '';
         if (controller.text != newText) controller.text = newText;
-        return FormWidget.quiz(
-          controller: controller,
-          fontSize: 14 * scale,
-          onChanged: (String newText) => onAnswer(
-            Answer.text(newText),
+        return Padding(
+          child: FormWidget.quiz(
+            controller: controller,
+            fontSize: 14 * scale,
+            onChanged: (String newText) => onAnswer(
+              Answer.text(newText),
+            ),
           ),
+          padding: EdgeInsets.symmetric(horizontal: 8 * scale),
         );
     }
   }
@@ -209,24 +241,29 @@ class QuestionWidget extends StatelessWidget {
     return Padding(
       child: Column(
         children: <Widget>[
-          FuturaMediumText.w500(
-            question.title,
-            fontSize: 16 * scale,
-            textAlign: TextAlign.start,
+          Padding(
+            child: FuturaMediumText.w500(
+              question.title,
+              fontSize: 16 * scale,
+              textAlign: TextAlign.start,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 8 * scale),
           ),
           question.subtitle == null
               ? null
-              : FuturaBookText.normal(
-                  question.subtitle,
-                  fontSize: 10 * scale,
-                  textAlign: TextAlign.start,
+              : Padding(
+                  child: FuturaBookText.normal(
+                    question.subtitle,
+                    fontSize: 10 * scale,
+                    textAlign: TextAlign.start,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 8 * scale),
                 ),
-          if (!question.isVisual) SizedBox(height: 16 * scale),
           question.isVisual ? buildImages() : buildAnswers(),
         ].where((element) => element != null).toList(),
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
-      padding: EdgeInsets.only(bottom: 15 * scale, top: 10 * scale),
+      padding: EdgeInsets.only(bottom: 20 * scale),
     );
   }
 }

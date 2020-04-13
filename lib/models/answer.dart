@@ -23,7 +23,7 @@ class Answer {
         value: oldIndexes?.contains(index) != true,
       );
 
-  Answer.multi(List<int> indexes)
+  Answer.multiIndexes(List<int> indexes)
       : this.indexes = indexes,
         this.text = null,
         this.value = null;
@@ -33,18 +33,18 @@ class Answer {
     @required bool value,
     List<int> oldIndexes,
   }) {
-    if (oldIndexes == null) return Answer.multi([if (value) index]);
+    if (oldIndexes == null) return Answer.multiIndexes([if (value) index]);
     Set<int> newSet = oldIndexes.toSet();
     final bool isIndexInSet = newSet.contains(index);
     if (value && !isIndexInSet)
       newSet.add(index);
     else if (!value && isIndexInSet) newSet.remove(index);
-    return Answer.multi(
+    return Answer.multiIndexes(
       newSet.toList(),
     );
   }
 
-  Answer.single(int index)
+  Answer.singleIndex(int index)
       : this.indexes = [index],
         this.text = null,
         this.value = null;

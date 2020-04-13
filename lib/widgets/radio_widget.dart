@@ -12,7 +12,6 @@ class RadioWidget extends StatelessWidget {
   const RadioWidget({
     this.groupValue,
     this.label,
-    this.labelFlex = 1,
     this.onChanged,
     this.scale = 1,
     this.value,
@@ -20,7 +19,6 @@ class RadioWidget extends StatelessWidget {
 
   final int groupValue;
   final Widget label;
-  final int labelFlex;
   final Function(int) onChanged;
   final double scale;
   final int value;
@@ -30,20 +28,19 @@ class RadioWidget extends StatelessWidget {
     return InkWell(
       child: Row(
         children: <Widget>[
-          Flexible(
-            child: Radio<int>(
-              activeColor: Color(0xFF54615F),
-              groupValue: groupValue,
-              onChanged: (int newValue) => onChanged(newValue),
-              value: value,
-              visualDensity: VisualDensity(
-                horizontal: VisualDensity.minimumDensity,
-                vertical: VisualDensity.minimumDensity,
-              ),
+          Radio<int>(
+            activeColor: Color(0xFF54615F),
+            groupValue: groupValue,
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            onChanged: (int newValue) => onChanged(newValue),
+            value: value,
+            visualDensity: VisualDensity(
+              horizontal: VisualDensity.minimumDensity,
+              vertical: VisualDensity.minimumDensity,
             ),
-            flex: 1,
           ),
-          Flexible(child: label, flex: labelFlex),
+          SizedBox(width: 2 * scale),
+          Expanded(child: label),
         ],
       ),
       onTap: () {
