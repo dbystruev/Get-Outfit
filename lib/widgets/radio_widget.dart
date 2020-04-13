@@ -12,7 +12,7 @@ class RadioWidget extends StatelessWidget {
   const RadioWidget({
     this.groupValue,
     this.label,
-    this.labelFlex,
+    this.labelFlex = 1,
     this.onChanged,
     this.padding = const EdgeInsets.all(0),
     this.scale = 1,
@@ -49,7 +49,6 @@ class RadioWidget extends StatelessWidget {
               ),
               flex: 1,
             ),
-            SizedBox(width: 4 * scale),
             Flexible(child: label, flex: labelFlex),
           ],
         ),

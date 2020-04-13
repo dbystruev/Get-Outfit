@@ -36,14 +36,14 @@ extension AllQuestions on Question {
             'Для чего нужен образ?',
             subtitle: 'Например, работа в офисе, отпуск, занятия спортом...',
           ),
-          Question.dropdownMale(
+          Question.singleChoice(
             'Как обычно добираетесь до работы?',
             answers: [
               'Пешком',
               'Общественным транспортом',
               'На велосипеде',
               'На машине',
-              'Пешком/Общественным транспортом/Каршеринг/Такси',
+              'Пешком / общественным транспортом / каршеринг / такси',
             ],
           ),
           Question('Ваша любимая музыкальная группа/исполнитель?'),
@@ -348,7 +348,7 @@ extension AllQuestions on Question {
           Question.header('Укажите размеры'),
           Question('Ваш рост?', hint: 'см'),
           Question('Ваш вес?', hint: 'кг'),
-          Question.dropdownFemale(
+          Question.singleChoiceFemale(
             'Ваш размер (футболка, свитер)?',
             answers: [
               'XXS/XS (40)',
@@ -363,7 +363,7 @@ extension AllQuestions on Question {
             ],
             defaultAnswer: Answer.single(2),
           ),
-          Question.dropdownMale(
+          Question.singleChoiceMale(
             'Ваш размер (футболка, рубашка, свитер)?',
             answers: [
               'XS (44)', // default
@@ -375,7 +375,7 @@ extension AllQuestions on Question {
               'XXXL (58)',
             ],
           ),
-          Question.dropdownMale(
+          Question.singleChoiceMale(
             'Ваш размер сорочки?',
             answers: [
               '36', // default
@@ -394,7 +394,7 @@ extension AllQuestions on Question {
               'Затрудняюсь ответить',
             ],
           ),
-          Question.dropdownMale(
+          Question.singleChoiceMale(
             'Ваш размер джинсов?',
             answers: [
               'W28/L32', // default
@@ -418,7 +418,7 @@ extension AllQuestions on Question {
               'Затрудняюсь ответить',
             ],
           ),
-          Question.dropdownFemale(
+          Question.singleChoiceFemale(
             'Ваш размер брюк?',
             answers: [
               '38 (32)', // default
@@ -434,7 +434,7 @@ extension AllQuestions on Question {
               '58 (52)',
             ],
           ),
-          Question.dropdownMale(
+          Question.singleChoiceMale(
             'Ваш размер брюк?',
             answers: [
               '40/42', // default
@@ -446,7 +446,7 @@ extension AllQuestions on Question {
               '54/56',
             ],
           ),
-          Question.dropdownFemale(
+          Question.singleChoiceFemale(
             'Длина брюк/джинс?',
             answers: [
               'L28 (150–157)', // default
@@ -457,7 +457,7 @@ extension AllQuestions on Question {
               'Затрудняюсь ответить',
             ],
           ),
-          Question.dropdownFemale(
+          Question.singleChoiceFemale(
             'Ваш размер обуви?',
             answers: [
               '34', // default
@@ -473,7 +473,7 @@ extension AllQuestions on Question {
               '44',
             ],
           ),
-          Question.dropdownMale(
+          Question.singleChoiceMale(
             'Ваш размер обуви?',
             answers: [
               '38', // default
@@ -509,7 +509,7 @@ extension AllQuestions on Question {
           Question.header('Завершение'),
           Question.yesNo(
               'Готовы ли вы рассмотреть покупку вещей в магазинах, требующих предоплату по банковской карте (ассортимент будет шире)?'),
-          Question.dropdownFemale(
+          Question.singleChoiceFemale(
             'Ваш объем талии?',
             answers: [
               'W24', // default
@@ -563,7 +563,7 @@ extension AllQuestions on Question {
               'Google',
               'Яндекс',
               'Вконтакте',
-              'Друзья/родственники',
+              'Друзья / родственники',
               'Другое',
             ],
           ),

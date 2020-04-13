@@ -24,6 +24,7 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> with Scale {
   final List<List<Question>> allQuestions = AllQuestions.local;
+  final ScrollController controller = ScrollController();
   final Gender gender;
   int pageIndex = 0;
   List<List<Question>> questions;
@@ -39,6 +40,7 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
         child: SafeArea(
           child: Padding(
             child: ListView.builder(
+              controller: controller,
               itemBuilder: (BuildContext context, int index) => QuestionWidget(
                 index,
                 questions[pageIndex][index],
@@ -73,10 +75,23 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
     );
   }
 
+  void decrementPage() => incrementPageBy(-1);
+
   @override
   void didChangeDependencies() {
     precacheImages();
     super.didChangeDependencies();
+  }
+
+  void incrementPage() => incrementPageBy(1);
+
+  void incrementPageBy(int increment) {
+    pageIndex += increment;
+    controller.animateTo(
+      0,
+      curve: Curves.decelerate,
+      duration: Duration(milliseconds: 500),
+    );
   }
 
   @override
@@ -97,14 +112,15 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
   void onLeftPressed() {
     if (pageIndex < 1)
       Navigator.pop(context);
-    else
-      setState(() => pageIndex--);
+    else {
+      setState(decrementPage);
+    }
   }
 
   void onRightPressed() {
-    if (pageIndex + 1 < questions.length)
-      setState(() => pageIndex++);
-    else
+    if (pageIndex + 1 < questions.length) {
+      setState(incrementPage);
+    } else
       Navigator.push(
         context,
         MaterialPageRoute(

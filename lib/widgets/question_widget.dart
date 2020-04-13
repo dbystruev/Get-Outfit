@@ -4,6 +4,8 @@
 //  Created by Denis Bystruev on 14/03/2020.
 //
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/question.dart';
@@ -58,10 +60,17 @@ class QuestionWidget extends StatelessWidget {
     switch (question.type) {
       case QuestionType.singleChoice:
         final int selectedIndex = question.givenAnswer.indexes.first ?? 0;
-        final int textLength = question.answers
-            .map((text) => text.length)
-            .reduce((total, current) => total + current);
-        final bool isVertical = 5 < question.answers.length || 25 < textLength;
+        final Iterable<int> textLengts =
+            question.answers.map((text) => text.length);
+        final int allTextLength =
+            textLengts.reduce((total, current) => total + current);
+        final int maxTextLength = textLengts.reduce(max);
+        final int numberOfAnswers = question.answers.length;
+        final bool isTwoColumns = 6 < numberOfAnswers && maxTextLength < 21;
+        final bool isVertical = numberOfAnswers < 3 ||
+            5 < numberOfAnswers ||
+            25 < allTextLength ||
+            isTwoColumns;
         final List<Widget> radioButtons = question.answers
             .asMap()
             .map(
@@ -74,7 +83,7 @@ class QuestionWidget extends StatelessWidget {
                     fontSize: 14 * scale,
                     textAlign: TextAlign.start,
                   ),
-                  labelFlex: isVertical ? 10 : 2,
+                  labelFlex: isVertical ? 4 : 2,
                   onChanged: (int value) => onAnswer(
                     Answer.single(value),
                   ),
@@ -89,9 +98,29 @@ class QuestionWidget extends StatelessWidget {
                   isVertical ? widget : Flexible(child: widget, flex: 1),
             )
             .toList();
-        return Flex(
-            children: radioButtons,
-            direction: isVertical ? Axis.vertical : Axis.horizontal);
+        final int halfLength = (radioButtons.length + 1) ~/ 2;
+        return isTwoColumns
+            ? Row(
+                children: [
+                  SizedBox(width: 4 * scale),
+                  Expanded(
+                    child: Column(
+                      children: radioButtons.take(halfLength).toList(),
+                    ),
+                    flex: 2,
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: radioButtons.skip(halfLength).toList(),
+                    ),
+                    flex: 3,
+                  ),
+                ],
+                crossAxisAlignment: CrossAxisAlignment.start,
+              )
+            : Flex(
+                children: radioButtons,
+                direction: isVertical ? Axis.vertical : Axis.horizontal);
       case QuestionType.text:
       default:
         final TextEditingController controller =

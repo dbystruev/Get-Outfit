@@ -7,15 +7,7 @@
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/gender.dart';
 
-enum QuestionType {
-  dropdown,
-  header,
-  inlineText,
-  multiChoice,
-  range,
-  singleChoice,
-  text
-}
+enum QuestionType { header, inlineText, multiChoice, range, singleChoice, text }
 
 class Question {
   static int _maxId = 1;
@@ -52,50 +44,6 @@ class Question {
     this.value,
   })  : this.givenAnswer = givenAnswer ?? defaultAnswer,
         this.id = _maxId++;
-
-  factory Question.dropdown(
-    String title, {
-    List<String> answers,
-    Answer defaultAnswer,
-    Gender gender,
-    String subtitle,
-  }) =>
-      Question(
-        title,
-        answers: answers,
-        defaultAnswer: defaultAnswer ?? const Answer.defaultIndex(),
-        gender: gender ?? Gender.both,
-        subtitle: subtitle,
-        type: QuestionType.dropdown,
-      );
-
-  factory Question.dropdownFemale(
-    String title, {
-    List<String> answers,
-    Answer defaultAnswer,
-    String subtitle,
-  }) =>
-      Question.dropdown(
-        title,
-        answers: answers,
-        defaultAnswer: defaultAnswer ?? const Answer.defaultIndex(),
-        gender: Gender.female,
-        subtitle: subtitle,
-      );
-
-  factory Question.dropdownMale(
-    String title, {
-    List<String> answers,
-    Answer defaultAnswer,
-    String subtitle,
-  }) =>
-      Question.dropdown(
-        title,
-        answers: answers,
-        defaultAnswer: defaultAnswer ?? const Answer.defaultIndex(),
-        gender: Gender.male,
-        subtitle: subtitle,
-      );
 
   factory Question.female(
     String title, {
@@ -312,15 +260,45 @@ class Question {
   factory Question.singleChoice(
     String title, {
     List<String> answers,
+    Answer defaultAnswer,
     Gender gender,
     String subtitle,
   }) =>
       Question(
         title,
         answers: answers,
+        defaultAnswer: defaultAnswer ?? const Answer.defaultIndex(),
         gender: gender ?? Gender.both,
         subtitle: subtitle,
         type: QuestionType.singleChoice,
+      );
+
+  factory Question.singleChoiceFemale(
+    String title, {
+    List<String> answers,
+    Answer defaultAnswer,
+    String subtitle,
+  }) =>
+      Question.singleChoice(
+        title,
+        answers: answers,
+        defaultAnswer: defaultAnswer ?? const Answer.defaultIndex(),
+        gender: Gender.female,
+        subtitle: subtitle,
+      );
+
+  factory Question.singleChoiceMale(
+    String title, {
+    List<String> answers,
+    Answer defaultAnswer,
+    String subtitle,
+  }) =>
+      Question.singleChoice(
+        title,
+        answers: answers,
+        defaultAnswer: defaultAnswer ?? const Answer.defaultIndex(),
+        gender: Gender.male,
+        subtitle: subtitle,
       );
 
   factory Question.yesNo(
