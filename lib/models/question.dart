@@ -18,11 +18,15 @@ enum QuestionType {
 }
 
 class Question {
+  static int _maxId = 1;
+  static int get maxId => _maxId;
+
   final List<String> answers;
   final Answer defaultAnswer;
   final Gender gender;
   Answer givenAnswer;
   final String hint;
+  final int id;
   final bool isVisual;
   final int maxValue;
   final int minValue;
@@ -45,7 +49,8 @@ class Question {
     this.subtitle,
     this.type = QuestionType.text,
     this.value,
-  }) : this.givenAnswer = givenAnswer ?? defaultAnswer;
+  })  : this.givenAnswer = givenAnswer ?? defaultAnswer,
+        this.id = _maxId++;
 
   factory Question.dropdown(
     String title, {
@@ -336,6 +341,7 @@ class Question {
   'defaultAnswer': $defaultAnswer,
   'gender': $gender,
   'hint': $hint,
+  'id': $id,
   'isVisual': $isVisual,
   'maxValue': $maxValue,
   'minValue': $minValue,

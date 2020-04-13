@@ -13,7 +13,7 @@ import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:get_outfit/widgets/radio_widget.dart';
 
 class QuestionWidget extends StatelessWidget {
-  final TextEditingController controller = TextEditingController();
+  static Map<int, TextEditingController> controllers = {};
   final void Function(Answer) onAnswer;
   final int questionIndex;
   final Question question;
@@ -94,7 +94,11 @@ class QuestionWidget extends StatelessWidget {
             direction: isVertical ? Axis.vertical : Axis.horizontal);
       case QuestionType.text:
       default:
-        controller.text = question.givenAnswer.text ?? '';
+        final TextEditingController controller =
+            controllers[question.id] ?? TextEditingController();
+        controllers[question.id] = controller;
+        final String newText = question.givenAnswer.text ?? '';
+        if (controller.text != newText) controller.text = newText;
         return FormWidget.quiz(
           controller: controller,
           fontSize: 14 * scale,
