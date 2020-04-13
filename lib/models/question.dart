@@ -32,6 +32,7 @@ class Question {
   final int minValue;
   final String subtitle;
   final String title;
+  List<String> get imageUrls => isVisual ? answers : [];
   final QuestionType type;
   final int value;
 

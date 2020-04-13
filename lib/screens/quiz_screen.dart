@@ -27,6 +27,7 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
   final Gender gender;
   int pageIndex = 0;
   List<List<Question>> questions;
+  bool precachedImages = false;
 
   _QuizScreenState(this.gender);
 
@@ -73,6 +74,12 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
   }
 
   @override
+  void didChangeDependencies() {
+    precacheImages();
+    super.didChangeDependencies();
+  }
+
+  @override
   void initState() {
     questions = allQuestions
         .map(
@@ -104,5 +111,16 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
           builder: (BuildContext context) => PlansScreen(),
         ),
       );
+  }
+
+  void precacheImages() {
+    if (precachedImages) return;
+    precachedImages = true;
+    questions.expand((questionPage) => questionPage).forEach((question) {
+      if (question.isVisual)
+        question.imageUrls.forEach(
+          (url) => precacheImage(NetworkImage(url), context),
+        );
+    });
   }
 }
