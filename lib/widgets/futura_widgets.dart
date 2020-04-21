@@ -5,6 +5,7 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:get_outfit/globals.dart' as globals;
 
 class FuturaBookText extends StatelessWidget {
   final Color color;
@@ -15,7 +16,7 @@ class FuturaBookText extends StatelessWidget {
 
   FuturaBookText(
     this.text, {
-    this.color = const Color(0xFF54615F),
+    this.color = globals.accentColor,
     this.fontSize,
     this.fontWeight,
     this.textAlign = TextAlign.center,
@@ -25,7 +26,7 @@ class FuturaBookText extends StatelessWidget {
           {Color color, double fontSize, TextAlign textAlign}) =>
       FuturaBookText(
         text,
-        color: color ?? const Color(0xFF54615F),
+        color: color ?? globals.accentColor,
         fontSize: fontSize,
         fontWeight: FontWeight.bold,
         textAlign: textAlign ?? TextAlign.center,
@@ -35,7 +36,7 @@ class FuturaBookText extends StatelessWidget {
           {Color color, double fontSize, TextAlign textAlign}) =>
       FuturaBookText(
         text,
-        color: color ?? const Color(0xFF54615F),
+        color: color ?? globals.accentColor,
         fontSize: fontSize,
         fontWeight: FontWeight.normal,
         textAlign: textAlign ?? TextAlign.center,
@@ -61,7 +62,7 @@ class FuturaDemiText extends StatelessWidget {
 
   FuturaDemiText(
     this.text, {
-    this.color = const Color(0xFF54615F),
+    this.color = globals.accentColor,
     this.fontSize,
     this.fontWeight,
     this.textAlign = TextAlign.center,
@@ -75,7 +76,7 @@ class FuturaDemiText extends StatelessWidget {
   }) =>
       FuturaDemiText(
         text,
-        color: color ?? const Color(0xFF54615F),
+        color: color ?? globals.accentColor,
         fontSize: fontSize,
         fontWeight: FontWeight.w500,
         textAlign: textAlign ?? TextAlign.center,
@@ -89,7 +90,7 @@ class FuturaDemiText extends StatelessWidget {
   }) =>
       FuturaDemiText(
         text,
-        color: color ?? const Color(0xFF54615F),
+        color: color ?? globals.accentColor,
         fontSize: fontSize,
         fontWeight: FontWeight.w600,
         textAlign: textAlign ?? TextAlign.center,
@@ -115,7 +116,7 @@ class FuturaMediumText extends StatelessWidget {
 
   FuturaMediumText(
     this.text, {
-    this.color = const Color(0xFF54615F),
+    this.color = globals.accentColor,
     this.fontSize,
     this.fontWeight,
     this.textAlign = TextAlign.center,
@@ -129,7 +130,7 @@ class FuturaMediumText extends StatelessWidget {
   }) =>
       FuturaMediumText(
         text,
-        color: color ?? const Color(0xFF54615F),
+        color: color ?? globals.accentColor,
         fontSize: fontSize,
         fontWeight: FontWeight.w500,
         textAlign: textAlign ?? TextAlign.center,

@@ -5,6 +5,7 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/screens/launch_screen.dart';
 
 void main() => runApp(
@@ -17,13 +18,14 @@ class Main extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: LaunchScreen(),
         theme: ThemeData(
+          accentColor: globals.accentColor,
           canvasColor: Colors.white,
           inputDecorationTheme: const InputDecorationTheme(
             labelStyle: TextStyle(
-              color: const Color.fromARGB(102, 0, 0, 0),
+              color: globals.textColor,
             ),
           ),
-          primaryColor: Color(0xFF54615F),
+          primaryColor: globals.primaryColor,
         ),
         title: 'Get Outfit',
       );

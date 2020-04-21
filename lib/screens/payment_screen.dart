@@ -106,7 +106,7 @@ class PaymentScreen extends StatelessWidget with Scale {
           SizedBox(height: 15 * scale),
           ButtonWidget(
             'Оплатить услугу',
-            buttonColor: Color(0xFF54615F),
+            buttonColor: Theme.of(context).primaryColor,
             fontSize: 12,
             height: 30,
             onPressed: () {

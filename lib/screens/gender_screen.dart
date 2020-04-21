@@ -29,7 +29,7 @@ class GenderScreen extends StatelessWidget with Scale {
               SizedBox(height: (isHorizontal(context) ? 15 : 41) * scale),
               ButtonWidget(
                 'для мужчины',
-                buttonColor: Color(0xFF54615F),
+                buttonColor: Theme.of(context).primaryColor,
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -43,7 +43,7 @@ class GenderScreen extends StatelessWidget with Scale {
               SizedBox(height: 15 * scale),
               ButtonWidget(
                 'для женщины',
-                borderColor: Color(0xFF54615F),
+                borderColor: Theme.of(context).primaryColor,
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -53,7 +53,7 @@ class GenderScreen extends StatelessWidget with Scale {
                   );
                 },
                 scale: scale,
-                textColor: Color(0xFF54615F),
+                textColor: Theme.of(context).accentColor,
               ),
             ],
             mainAxisAlignment: MainAxisAlignment.center,

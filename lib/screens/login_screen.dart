@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               // SizedBox(height: 15 * scale),
               // ButtonWidget(
               //   'Войти',
-              //   buttonColor: Color(0xFF54615F),
+              //   buttonColor: Theme.of(context).primaryColor,
               //   onPressed: () {
               //     print(
               //         'DEBUG in lib/screens/login.dart line 54: e-mail selected');
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               // SizedBox(height: (isHorizontal(context) ? 15 : 45) * scale),
               ButtonWidget(
                 'Войти через Google',
-                borderColor: Color(0xFF54615F),
+                borderColor: Theme.of(context).primaryColor,
                 fontSize: 17,
                 imageName: 'assets/images/g.png',
                 onPressed: () {
@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
                   );
                 },
                 scale: scale,
-                textColor: Color(0xFF54615F),
+                textColor: Theme.of(context).accentColor,
               ),
               // SizedBox(height: 15 * scale),
               // FlatButton(
@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               //     Navigator.pop(context);
               //   },
               //   child: FuturaMediumText.w500('Забыли пароль?',
-              //       color: const Color.fromARGB(102, 0, 0, 0),
+              //       color: globals.textColor,
               //       fontSize: 16 * scale),
               // ),
             ],

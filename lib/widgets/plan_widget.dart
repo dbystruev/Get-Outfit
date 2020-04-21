@@ -5,6 +5,7 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/plan.dart';
 import 'package:get_outfit/screens/payment_screen.dart';
 import 'package:get_outfit/widgets/button_widget.dart';
@@ -41,7 +42,7 @@ class PlanWidget extends StatelessWidget {
           SizedBox(height: 10 * scale),
           ButtonWidget(
             'Оформить услугу',
-            buttonColor: Color(0xFF54615F),
+            buttonColor: Theme.of(context).primaryColor,
             fontSize: 12,
             height: 30,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -60,7 +61,7 @@ class PlanWidget extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         border: Border.all(
-          color: Color.fromARGB(102, 0, 0, 0),
+          color: globals.textColor,
         ),
         shape: BoxShape.rectangle,
       ),

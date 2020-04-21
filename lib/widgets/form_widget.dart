@@ -5,6 +5,7 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:get_outfit/globals.dart' as globals;
 
 class FormWidget extends StatelessWidget {
   final TextEditingController controller;
@@ -86,7 +87,7 @@ class FormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => TextFormField(
         controller: controller,
-        cursorColor: Color(0xFF54615F),
+        cursorColor: Theme.of(context).primaryColor,
         decoration: decoration,
         keyboardType: keyboardType,
         obscureText: obscureText,

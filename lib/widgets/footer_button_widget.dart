@@ -25,7 +25,7 @@ class FooterButtonWidget extends StatelessWidget {
       ? SizedBox(height: 40 * scale, width: 90 * scale)
       : ButtonWidget(
           text,
-          buttonColor: buttonColor ?? Color(0xFF54615F),
+          buttonColor: buttonColor ?? Theme.of(context).primaryColor,
           fontSize: 14,
           height: 40,
           onPressed: onPressed,

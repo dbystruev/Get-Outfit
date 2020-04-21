@@ -29,7 +29,7 @@ class RadioWidget extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Radio<int>(
-            activeColor: Color(0xFF54615F),
+            activeColor: Theme.of(context).primaryColor,
             groupValue: groupValue,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             onChanged: (int newValue) => onChanged(newValue),

@@ -28,7 +28,7 @@ class CheckboxWidget extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Checkbox(
-              activeColor: Color(0xFF54615F),
+              activeColor: Theme.of(context).primaryColor,
               checkColor: Colors.white,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               onChanged: (value) => onSelected(index, value),
