@@ -16,8 +16,15 @@ const String appName = 'getoutfit';
 const String appPassword = 'toh0ung2ohY8Uyev';
 const String appVersion = '2020.04.21.13:45:00';
 
+// True if running in release mode
+const bool isProduction = bool.fromEnvironment('dart.vm.product');
+
 // The background color for major parts of the app (toolbars, tab bars, etc)
 const Color primaryColor = Color(0xFF54615F);
+
+// Success and error codes for external requests
+const statusError = 'ERROR';
+const statusSuccess = 'SUCCESS';
 
 // Default text color
 const Color textColor = const Color.fromARGB(102, 0, 0, 0);

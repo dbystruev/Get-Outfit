@@ -34,8 +34,8 @@ class PaymentScreen extends StatelessWidget with Scale {
         .map((question) => QuestionWidget(
               index++,
               question,
-              onAnswer: (Answer answer, {String label}) => print(
-                  'DEBUG in lib/screens/payment_screen.dart line 37: answer = $answer'),
+              onAnswer: (Answer answer, {String label}) => debugPrint(
+                  'DEBUG in lib/screens/payment_screen.dart line 38: answer = $answer'),
               scale: scale,
             ))
         .toList();

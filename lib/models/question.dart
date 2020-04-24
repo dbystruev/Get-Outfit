@@ -4,13 +4,18 @@
 //  Created by Denis Bystruev on 14/03/2020.
 //
 
+// https://flutter.dev/docs/development/data-and-backend/json
+import 'package:json_annotation/json_annotation.dart';
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/gender.dart';
 
+part 'question.g.dart';
+
 enum QuestionType { header, inlineText, multiChoice, range, singleChoice, text }
 
+@JsonSerializable(explicitToJson: true)
 class Question {
-  static int _maxId = 1;
+  static int _maxId = 0;
   static int get maxId => _maxId;
 
   final List<String> answers;
@@ -19,6 +24,7 @@ class Question {
   Answer givenAnswer;
   final String hint;
   final int id;
+  bool get isValid => id != null && 0 < id && id <= _maxId;
   final bool isVisual;
   final int maxValue;
   final int minValue;
@@ -41,7 +47,7 @@ class Question {
     this.subtitle,
     this.type = QuestionType.text,
   })  : this.givenAnswer = givenAnswer ?? defaultAnswer,
-        this.id = _maxId++;
+        this.id = ++_maxId;
 
   factory Question.female(
     String title, {
@@ -68,6 +74,9 @@ class Question {
         subtitle: subtitle,
         type: type ?? QuestionType.text,
       );
+
+  factory Question.fromJson(Map<String, dynamic> json) =>
+      _$QuestionFromJson(json);
 
   factory Question.male(
     String title, {
@@ -309,6 +318,10 @@ class Question {
         gender: gender ?? Gender.both,
         subtitle: subtitle,
       );
+
+  void dispose() => _maxId -= id == _maxId ? 1 : 0;
+
+  Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
   @override
   String toString() => '''{

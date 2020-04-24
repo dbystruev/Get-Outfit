@@ -5,12 +5,19 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/screens/launch_screen.dart';
 
-void main() => runApp(
-      Main(),
-    );
+void main() {
+  // Disable debugPring in release mode
+  if (globals.isProduction) debugPrint = (String message, {int wrapWidth}) {};
+  runApp(
+    Main(),
+  );
+  // Disable status bar
+  SystemChrome.setEnabledSystemUIOverlays([]);
+}
 
 class Main extends StatelessWidget {
   @override

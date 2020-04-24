@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               //   'Войти',
               //   buttonColor: Theme.of(context).primaryColor,
               //   onPressed: () {
-              //     print(
+              //     debugPrint(
               //         'DEBUG in lib/screens/login.dart line 54: e-mail selected');
               //     Navigator.push(
               //       context,
@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               // SizedBox(height: 15 * scale),
               // FlatButton(
               //   onPressed: () {
-              //     print(
+              //     debugPrint(
               //         'DEBUG in lib/screens/login.dart line 85: forgot password');
               //     Navigator.pop(context);
               //   },
@@ -111,13 +111,13 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
     super.initState();
     emailController.addListener(() {
       final String text = emailController.text;
-      print(
-          'DEBUG in lib/screens/login.dart line 114 emailController.text = $text');
+      debugPrint(
+          'DEBUG in lib/screens/login.dart line 115 emailController.text = $text');
     });
     passwordController.addListener(() {
       final String text = passwordController.text;
-      print(
-          'DEBUG in lib/screens/login.dart line 119 passwordController.text = $text');
+      debugPrint(
+          'DEBUG in lib/screens/login.dart line 120 passwordController.text = $text');
     });
   }
 }

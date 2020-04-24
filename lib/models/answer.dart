@@ -4,17 +4,26 @@
 //  Created by Denis Bystruev on 12/04/2020.
 //
 
+// https://flutter.dev/docs/development/data-and-backend/json
+import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/material.dart';
 
+part 'answer.g.dart';
+
+@JsonSerializable()
 class Answer {
   final List<int> indexes;
   final String text;
   final int value;
 
+  Answer({this.indexes, this.text, this.value});
+
   const Answer.defaultIndex()
       : this.indexes = const [0],
         this.text = null,
         this.value = null;
+
+  factory Answer.fromJson(Map<String, dynamic> json) => _$AnswerFromJson(json);
 
   factory Answer.invertIndex(int index, {List<int> oldIndexes}) =>
       Answer.setIndex(
@@ -58,6 +67,8 @@ class Answer {
       : this.indexes = null,
         this.text = null,
         this.value = value;
+
+  Map<String, dynamic> toJson() => _$AnswerToJson(this);
 
   @override
   String toString() => '${indexes ?? ''}${text ?? ''}${value ?? ''}';
