@@ -19,9 +19,7 @@ class NetworkController {
 
   // Default constructor
   NetworkController({
-    this.url = 'https://script.google.com/macros/s/' +
-        'AKfycbyVJAPvLhbZtKwJ6-p00NERFQbEK22B4xTdkTL4ReHYYdKMRIV8' +
-        '/exec',
+    this.url = 'https://script.google.com/macros/s/AKfycbyVJAPvLhbZtKwJ6-p00NERFQbEK22B4xTdkTL4ReHYYdKMRIV8/exec',
   });
 
   // Async function which returns feedback and plans urls

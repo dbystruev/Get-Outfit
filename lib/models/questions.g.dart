@@ -15,6 +15,7 @@ Questions _$QuestionsFromJson(Map<String, dynamic> json) {
             ?.toList())
         ?.toList(),
     message: json['message'] as String,
+    time: json['time'] as int,
     status: json['status'] as String,
     versionDynamic: json['version'],
   );
@@ -26,5 +27,6 @@ Map<String, dynamic> _$QuestionsToJson(Questions instance) => <String, dynamic>{
           ?.map((e) => e?.map((e) => e?.toJson())?.toList())
           ?.toList(),
       'status': instance.status,
+      'time': instance.time,
       'version': instance.versionDynamic,
     };

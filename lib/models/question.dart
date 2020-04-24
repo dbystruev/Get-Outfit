@@ -5,6 +5,8 @@
 //
 
 // https://flutter.dev/docs/development/data-and-backend/json
+import 'dart:math';
+
 import 'package:get_outfit/models/question_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:get_outfit/models/answer.dart';
@@ -39,14 +41,16 @@ class Question {
     this.gender = Gender.both,
     Answer givenAnswer,
     this.hint,
+    int id,
     this.isVisual = false,
     this.maxValue,
     this.minValue,
-    List<int> selectedAnswers,
     this.subtitle,
     this.type = QuestionType.text,
   })  : this.givenAnswer = givenAnswer ?? defaultAnswer,
-        this.id = ++_maxId;
+        this.id = id ?? ++_maxId {
+    _maxId = max(this.id, _maxId);
+  }
 
   factory Question.female(
     String title, {
@@ -323,17 +327,17 @@ class Question {
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
   @override
-  String toString() => '''{
-  'title': $title,
-  'answers': $answers,
-  'defaultAnswer': $defaultAnswer,
-  'gender': $gender,
-  'hint': $hint,
-  'id': $id,
-  'isVisual': $isVisual,
-  'maxValue': $maxValue,
-  'minValue': $minValue,
-  'subtitle': $subtitle,
-  'type': $type,
-}''';
+  String toString() => '''Question(
+  '$title',
+  answers: [${answers.isEmpty ? '' : '\'' + answers.join('\', \'') + '\''}],
+  defaultAnswer: $defaultAnswer,
+  gender: $gender,
+  hint: '$hint',
+  id: $id,
+  isVisual: $isVisual,
+  maxValue: $maxValue,
+  minValue: $minValue,
+  subtitle: '$subtitle',
+  type: $type,
+)''';
 }

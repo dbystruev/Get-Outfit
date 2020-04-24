@@ -72,7 +72,8 @@ class Answer {
 
   @override
   String toString() =>
+      'Answer(' +
       '${indexes == null ? '' : 'indexes: $indexes, '}' +
-      '${text == null ? '' : 'text: $text, '}' +
-      '${value == null ? '' : 'value: $value, '}';
+      '${text == null ? '' : 'text: \'$text\', '}' +
+      '${value == null ? '' : 'value: $value, '})';
 }

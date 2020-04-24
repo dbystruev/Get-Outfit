@@ -5,6 +5,8 @@
 //
 
 // https://flutter.dev/docs/development/data-and-backend/json
+import 'dart:math';
+
 import 'package:json_annotation/json_annotation.dart';
 
 /// This allows the `Plan` class to access private members in
@@ -37,16 +39,27 @@ class Plan {
   static int _maxId = 0;
   static int get maxId => _maxId;
 
-  Plan(this.title, {this.currency, this.description, this.price})
-      : id = ++_maxId;
+  Plan(
+    this.title, {
+    this.currency,
+    this.description,
+    int id,
+    this.price,
+  }) : this.id = id ?? ++_maxId {
+    _maxId = max(this.id, _maxId);
+  }
 
-  Plan.by(this.title, {this.description, this.price})
+  Plan.by(this.title, {this.description, int id, this.price})
       : currency = 'BYN',
-        id = ++_maxId;
+        this.id = id ?? ++_maxId {
+    _maxId = max(this.id, _maxId);
+  }
 
-  Plan.ru(this.title, {this.description, this.price})
+  Plan.ru(this.title, {this.description, int id, this.price})
       : currency = '₽',
-        id = ++_maxId;
+        this.id = id ?? ++_maxId {
+    _maxId = max(this.id, _maxId);
+  }
 
   /// A necessary factory constructor for creating a new Plan instance
   /// from a map. Pass the map to the generated `_$PlanFromJson()` constructor.
@@ -59,4 +72,13 @@ class Plan {
   Map<String, dynamic> toJson() => _$PlanToJson(this);
 
   void dispose() => _maxId -= id == _maxId ? 1 : 0;
+
+  @override
+  String toString() =>
+      '\nPlan(' +
+      '\'$title\', ' +
+      'currency: \'$currency\', ' +
+      'description: \'$description\', ' +
+      'id: \'$id\', ' +
+      'price: \'$price\')';
 }

@@ -18,6 +18,7 @@ Question _$QuestionFromJson(Map<String, dynamic> json) {
         ? null
         : Answer.fromJson(json['givenAnswer'] as Map<String, dynamic>),
     hint: json['hint'] as String,
+    id: json['id'] as int,
     isVisual: json['isVisual'] as bool,
     maxValue: json['maxValue'] as int,
     minValue: json['minValue'] as int,
@@ -32,6 +33,7 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'gender': _$GenderEnumMap[instance.gender],
       'givenAnswer': instance.givenAnswer?.toJson(),
       'hint': instance.hint,
+      'id': instance.id,
       'isVisual': instance.isVisual,
       'maxValue': instance.maxValue,
       'minValue': instance.minValue,

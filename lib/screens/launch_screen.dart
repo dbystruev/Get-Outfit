@@ -68,17 +68,11 @@ class LaunchScreen extends StatelessWidget with Scale {
           Questions([], message: appData.message, status: appData.status);
     }
     debugPrint(
-      'DEBUG in lib/screens/launch_screen.dart line 72: ' +
-          '${plans.status}' +
-          '\nmessage = ${plans.message}' +
-          '\nplans = ${plans.plans}',
+      'DEBUG in lib/screens/launch_screen.dart line 71: plans = $plans',
     );
     if (!plans.isValid) plans.plans = AllPlans.local;
     debugPrint(
-      'DEBUG in lib/screens/launch_screen.dart line 79: ' +
-          '${questions.status}' +
-          '\nmessage = ${questions.message}' +
-          '\nquestions = ${questions.questions}',
+      'DEBUG in lib/screens/launch_screen.dart line 75: questions = $questions',
     );
     if (!questions.isValid) questions.questions = AllQuestions.local;
   }

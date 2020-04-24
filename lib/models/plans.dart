@@ -15,14 +15,29 @@ class Plans {
   final String message;
   List<Plan> plans;
   final String status;
+  final int time;
   String get version => versionDynamic.toString();
 
   @JsonKey(name: 'version')
   final dynamic versionDynamic;
 
-  Plans(this.plans, {this.message, this.status, this.versionDynamic});
+  Plans(
+    this.plans, {
+    this.message,
+    this.status,
+    this.time,
+    this.versionDynamic,
+  });
 
   factory Plans.fromJson(Map<String, dynamic> json) => _$PlansFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlansToJson(this);
+
+  @override
+  String toString() =>
+      '\nPlans($plans, ' +
+      'message: \'$message\', ' +
+      'status: \'$status\', ' +
+      'time: \'$time\', ' +
+      'versionDynamic: \'$version\')';
 }

@@ -109,16 +109,25 @@ function doGet(request) {
             'message': message,
             'questions': questions,
             'status': 'SUCCESS',
+            'time': Math.floor(new Date().getTime() / 1000),
             'version': version,
         };
     } catch (error) {
-        result = { 'status': 'ERROR', 'message': 'Quiz: ' + error };
+        result = {
+            'message': 'Quiz: ' + error,
+            'status': 'ERROR',
+            'time': Math.floor(new Date().getTime() / 1000)
+        };
     }
 
     // Return result
     return ContentService
         .createTextOutput(JSON.stringify(result))
         .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(request) {
+
 }
 
 // Derived from https://webapps.stackexchange.com/a/117630

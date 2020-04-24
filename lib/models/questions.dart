@@ -21,15 +21,30 @@ class Questions {
   final String message;
   List<List<Question>> questions;
   final String status;
+  final int time;
   String get version => versionDynamic.toString();
 
   @JsonKey(name: 'version')
   final dynamic versionDynamic;
 
-  Questions(this.questions, {this.message, this.status, this.versionDynamic});
+  Questions(
+    this.questions, {
+    this.message,
+    this.time,
+    this.status,
+    this.versionDynamic,
+  });
 
   factory Questions.fromJson(Map<String, dynamic> json) =>
       _$QuestionsFromJson(json);
 
   Map<String, dynamic> toJson() => _$QuestionsToJson(this);
+
+  @override
+  String toString() =>
+      '\nQuestions($questions, ' +
+      'message: \'$message\', ' +
+      'status: \'$status\', ' +
+      'time: \'$time\', ' +
+      'versionDynamic: \'$version\')';
 }
