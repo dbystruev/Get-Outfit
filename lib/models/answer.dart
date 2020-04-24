@@ -71,5 +71,8 @@ class Answer {
   Map<String, dynamic> toJson() => _$AnswerToJson(this);
 
   @override
-  String toString() => '${indexes ?? ''}${text ?? ''}${value ?? ''}';
+  String toString() =>
+      '${indexes == null ? '' : 'indexes: $indexes, '}' +
+      '${text == null ? '' : 'text: $text, '}' +
+      '${value == null ? '' : 'value: $value, '}';
 }

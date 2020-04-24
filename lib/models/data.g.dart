@@ -10,6 +10,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
     feedbackUrl: json['feedbackUrl'] as String,
     plansUrl: json['plansUrl'] as String,
+    quizSheetId: json['quizSheetId'] as String,
     quizUrl: json['quizUrl'] as String,
   );
 }
@@ -17,5 +18,6 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'feedbackUrl': instance.feedbackUrl,
       'plansUrl': instance.plansUrl,
+      'quizSheetId': instance.quizSheetId,
       'quizUrl': instance.quizUrl,
     };

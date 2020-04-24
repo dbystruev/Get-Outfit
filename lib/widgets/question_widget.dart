@@ -9,6 +9,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/question.dart';
+import 'package:get_outfit/models/question_type.dart';
 import 'package:get_outfit/widgets/answer_image_widget.dart';
 import 'package:get_outfit/widgets/checkbox_widget.dart';
 import 'package:get_outfit/widgets/form_widget.dart';

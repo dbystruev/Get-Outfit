@@ -54,48 +54,34 @@ class LaunchScreen extends StatelessWidget with Scale {
     Plans plans;
     Questions questions;
     if (appData.status == globals.statusSuccess) {
-      plans = await getPlans(token: appData.token, url: appData.plansUrl);
-      questions =
-          await getQuestions(token: appData.token, url: appData.plansUrl);
+      plans = await networkController.getPlans(
+        token: appData.token,
+        url: appData.plansUrl,
+      );
+      questions = await networkController.getQuestions(
+        appData.plansUrl,
+        token: appData.token,
+        quizSheetId: appData.quizSheetId,
+      );
     } else {
       plans = Plans([], message: appData.message, status: appData.status);
       questions =
           Questions([], message: appData.message, status: appData.status);
     }
-    if (!plans.isValid) {
-      plans.plans = AllPlans.local;
-      debugPrint(
-        'ERROR in lib/screens/launch_screen.dart line 68: ' +
-            '${plans.status}' +
-            '\nmessage = ${plans.message}',
-      );
-    }
-    if (!questions.isValid) {
-      questions.questions = AllQuestions.local;
-      debugPrint(
-        'ERROR in lib/screens/launch_screen.dart line 76: ' +
-            '${questions.status}' +
-            '\nmessage = ${questions.message}',
-      );
-    }
-  }
-
-  Future<Plans> getPlans({String token, String url}) async {
-    Plans plans = await networkController.getPlans(
-      token: token,
-      url: url,
+    debugPrint(
+      'DEBUG in lib/screens/launch_screen.dart line 72: ' +
+          '${plans.status}' +
+          '\nmessage = ${plans.message}' +
+          '\nplans = ${plans.plans}',
     );
-    if (plans.status == globals.statusSuccess) return plans;
-    return Plans([], status: plans.status, message: plans.message);
-  }
-
-  Future<Questions> getQuestions({String token, String url}) async {
-    Questions questions = await networkController.getQuestions(
-      token: token,
-      url: url,
+    if (!plans.isValid) plans.plans = AllPlans.local;
+    debugPrint(
+      'DEBUG in lib/screens/launch_screen.dart line 79: ' +
+          '${questions.status}' +
+          '\nmessage = ${questions.message}' +
+          '\nquestions = ${questions.questions}',
     );
-    if (questions.status == globals.statusSuccess) return questions;
-    return Questions([], status: questions.status, message: questions.message);
+    if (!questions.isValid) questions.questions = AllQuestions.local;
   }
 
   void navigateWithDelay(BuildContext context, int seconds) async {

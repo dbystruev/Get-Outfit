@@ -9,6 +9,7 @@ import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/plan.dart';
 import 'package:get_outfit/models/question.dart';
+import 'package:get_outfit/models/question_type.dart';
 import 'package:get_outfit/screens/thank_you_screen.dart';
 import 'package:get_outfit/widgets/button_widget.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
@@ -35,7 +36,8 @@ class PaymentScreen extends StatelessWidget with Scale {
               index++,
               question,
               onAnswer: (Answer answer, {String label}) => debugPrint(
-                  'DEBUG in lib/screens/payment_screen.dart line 38: answer = $answer'),
+                'DEBUG in lib/screens/payment_screen.dart line 39: answer = $answer',
+              ),
               scale: scale,
             ))
         .toList();

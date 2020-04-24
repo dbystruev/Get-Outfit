@@ -32,7 +32,6 @@ class NetworkController {
   }) async {
     try {
       final String request = '$url?appName=$appName&password=$appPassword';
-      debugPrint('network_controller.dart line 35: request = $request');
       http.Response response = await http.get(request);
       final Map<String, dynamic> appDataMap = convert.jsonDecode(response.body);
       return AppData.fromJson(appDataMap);
@@ -57,12 +56,13 @@ class NetworkController {
   }
 
   // Async function which returns the questions
-  Future<Questions> getQuestions({
+  Future<Questions> getQuestions(
+    String url, {
+    String quizSheetId,
     String token,
-    String url,
   }) async {
     try {
-      final String request = '$url?token=$token';
+      final String request = '$url?token=$token&quizSheetId=$quizSheetId';
       http.Response response = await http.get(request);
       final Map<String, dynamic> questionsMap =
           convert.jsonDecode(response.body);

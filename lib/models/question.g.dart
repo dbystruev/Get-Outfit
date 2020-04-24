@@ -79,10 +79,10 @@ const _$GenderEnumMap = {
 };
 
 const _$QuestionTypeEnumMap = {
-  QuestionType.header: 'header',
-  QuestionType.inlineText: 'inlineText',
-  QuestionType.multiChoice: 'multiChoice',
-  QuestionType.range: 'range',
-  QuestionType.singleChoice: 'singleChoice',
-  QuestionType.text: 'text',
+  QuestionType.header: 'Header',
+  QuestionType.inlineText: 'Inline Text',
+  QuestionType.multiChoice: 'Multi Choice',
+  QuestionType.range: 'Range',
+  QuestionType.singleChoice: 'Single Choice',
+  QuestionType.text: 'Text',
 };

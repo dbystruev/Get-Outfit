@@ -5,13 +5,12 @@
 //
 
 // https://flutter.dev/docs/development/data-and-backend/json
+import 'package:get_outfit/models/question_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/gender.dart';
 
 part 'question.g.dart';
-
-enum QuestionType { header, inlineText, multiChoice, range, singleChoice, text }
 
 @JsonSerializable(explicitToJson: true)
 class Question {
