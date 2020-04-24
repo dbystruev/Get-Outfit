@@ -7,7 +7,6 @@
 //
 
 import 'dart:convert' as convert;
-import 'package:flutter/material.dart';
 import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/plans.dart';

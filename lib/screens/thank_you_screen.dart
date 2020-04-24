@@ -32,6 +32,5 @@ class ThankYouScreen extends StatelessWidget with Scale {
         },
       ),
     );
-    ;
   }
 }

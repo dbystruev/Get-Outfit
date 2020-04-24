@@ -5,7 +5,6 @@
 //
 
 import 'package:flutter/material.dart';
-import 'package:get_outfit/globals.dart' as globals;
 
 class FormWidget extends StatelessWidget {
   final TextEditingController controller;
