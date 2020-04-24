@@ -39,22 +39,16 @@ function doGet(request) {
 
     try {
         // Get the query parameters
-        const quizSheetId = request.parameter.quizSheetId;
-
-        // Check the parameters
-        if (!quizSheetId) throw 'quizSheetId should not be empty';
-
-        // Get the query parameters
         const token = request.parameter.token;
 
         // Check the parameters
         if (!token) throw 'token should not be empty';
 
-        // Open Google Sheet using ID
-        const mainSheet = SpreadsheetApp.openById(quizSheetId);
+        // Open Google Sheet bound with this script
+        const mainSheet = SpreadsheetApp.getActiveSpreadsheet();
 
         // Check maybe not needed, but just for case
-        if (!mainSheet) throw `Can't open the quiz sheet with id ${quizSheetId}`;
+        if (!mainSheet) throw 'Can\'t open the quiz sheet';
 
         // Get the Answers sheet
         answersSheet = mainSheet.getSheetByName('Answers');

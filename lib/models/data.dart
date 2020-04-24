@@ -12,10 +12,9 @@ part 'data.g.dart';
 class Data {
   String feedbackUrl;
   String plansUrl;
-  String quizSheetId;
   String quizUrl;
 
-  Data({this.feedbackUrl, this.plansUrl, this.quizSheetId, this.quizUrl});
+  Data({this.feedbackUrl, this.plansUrl, this.quizUrl});
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 

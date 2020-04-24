@@ -17,7 +17,6 @@ class AppData {
   String get feedbackUrl => Data.fromJson(_decodedData).feedbackUrl;
   final String message;
   String get plansUrl => Data.fromJson(_decodedData).plansUrl;
-  String get quizSheetId => Data.fromJson(_decodedData).quizSheetId;
   String get quizUrl => Data.fromJson(_decodedData).quizUrl;
   final String status;
   final String token;

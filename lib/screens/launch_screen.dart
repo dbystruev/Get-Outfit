@@ -61,7 +61,6 @@ class LaunchScreen extends StatelessWidget with Scale {
       questions = await networkController.getQuestions(
         appData.plansUrl,
         token: appData.token,
-        quizSheetId: appData.quizSheetId,
       );
     } else {
       plans = Plans([], message: appData.message, status: appData.status);

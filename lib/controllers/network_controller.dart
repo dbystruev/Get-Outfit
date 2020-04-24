@@ -57,11 +57,10 @@ class NetworkController {
   // Async function which returns the questions
   Future<Questions> getQuestions(
     String url, {
-    String quizSheetId,
     String token,
   }) async {
     try {
-      final String request = '$url?token=$token&quizSheetId=$quizSheetId';
+      final String request = '$url?token=$token';
       http.Response response = await http.get(request);
       final Map<String, dynamic> questionsMap =
           convert.jsonDecode(response.body);
