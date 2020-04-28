@@ -7,6 +7,7 @@
 //
 
 import 'dart:convert' as convert;
+import 'package:flutter/material.dart';
 import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/plans.dart';
@@ -15,11 +16,15 @@ import 'package:http/http.dart' as http;
 
 class NetworkController {
   // Google Apps Script web url
-  final String url;
+  final String authority;
+  final String path;
+  String get url => 'https://$authority/$path';
 
   // Default constructor
   NetworkController({
-    this.url = 'https://script.google.com/macros/s/AKfycbyVJAPvLhbZtKwJ6-p00NERFQbEK22B4xTdkTL4ReHYYdKMRIV8/exec',
+    this.authority = 'script.google.com',
+    this.path =
+        'macros/s/AKfycbyVJAPvLhbZtKwJ6-p00NERFQbEK22B4xTdkTL4ReHYYdKMRIV8/exec',
   });
 
   // Async function which returns feedback and plans urls
@@ -70,17 +75,28 @@ class NetworkController {
   }
 
   // Async function which posts the questions
-  Future<String> postQuestions({
+  Future<http.Response> postQuestions(
+    Questions questions, {
     String token,
     String url,
-    Questions questions,
   }) async {
     try {
-      final String request = '$url?token=$token';
-      http.Response response = await http.post(request);
-      return response.body;
+      final String body = convert.json.encode(questions);
+      final Map<String, String> headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+      };
+      debugPrint(
+        'DEBUG in lib/controllers/network_controller.dart line 89: POST request' +
+            '\n  url = $url' +
+            '\n  body = $body' +
+            '\n  headers = $headers',
+      );
+      final http.Response response =
+          await http.post('$url?token=$token', body: body, headers: headers);
+      return response;
     } catch (error) {
-      return error.toString();
+      http.Response response = http.Response(error.toString(), 400);
+      return response;
     }
   }
 }

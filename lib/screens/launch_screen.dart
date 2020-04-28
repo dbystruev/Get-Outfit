@@ -12,9 +12,11 @@ import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/plan+all.dart';
 import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/question+all.dart';
+import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/questions.dart';
 import 'package:get_outfit/screens/login_screen.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
+import 'package:http/http.dart' as http;
 
 class LaunchScreen extends StatelessWidget with Scale {
   static bool built = false;
@@ -67,14 +69,42 @@ class LaunchScreen extends StatelessWidget with Scale {
       questions =
           Questions([], message: appData.message, status: appData.status);
     }
-    debugPrint(
-      'DEBUG in lib/screens/launch_screen.dart line 71: plans = $plans',
-    );
+    // matchQuestions(questions.questions, AllQuestions.local);
     if (!plans.isValid) plans.plans = AllPlans.local;
+    if (!questions.isValid) {
+      questions.questions = AllQuestions.local;
+      // postQuestions(appData: appData, questions: questions);
+    }
+  }
+
+  void matchQuestions(
+      List<List<Question>> questions, List<List<Question>> localQuestions) {
     debugPrint(
-      'DEBUG in lib/screens/launch_screen.dart line 75: questions = $questions',
+      'DEBUG in questions.length = ${questions.length}' +
+          '\n  localQuestions.length = ${localQuestions.length}',
     );
-    if (!questions.isValid) questions.questions = AllQuestions.local;
+    if (questions.length == localQuestions.length) {
+      for (int index = 0; index < questions.length; index++) {
+        debugPrint(
+          '    questions[$index].length = ${questions[index].length}' +
+              '\n    AllQuestions[$index].length = ${localQuestions[index].length}',
+        );
+        if (questions[index].length ==
+            localQuestions[index].length) {
+          for (int secondIndex = 0;
+              secondIndex < localQuestions[index].length;
+              secondIndex++) {
+            final Question question = questions[index][secondIndex];
+            final Question localQuestion =
+                localQuestions[index][secondIndex];
+            // if (question != localQuestion)
+            //   debugPrint(
+            //     '\n      [$index][$secondIndex] ${question.title} do not match',
+            //   );
+          }
+        }
+      }
+    }
   }
 
   void navigateWithDelay(BuildContext context, int seconds) async {
@@ -86,6 +116,29 @@ class LaunchScreen extends StatelessWidget with Scale {
       MaterialPageRoute(
         builder: (context) => LoginScreen(),
       ),
+    );
+  }
+
+  void postQuestions({AppData appData, Questions questions}) async {
+    http.Response result = await networkController.postQuestions(
+      questions,
+      token: appData.token,
+      url: appData.quizUrl,
+    );
+    int statusCode = result.statusCode;
+    String url = result.headers['location'];
+    int count = 0;
+    while (300 <= statusCode && statusCode < 400 && ++count < 10) {
+      result = await http.get(url);
+      statusCode = result.statusCode;
+      url = result.headers['location'];
+    }
+    debugPrint(
+      'DEBUG in lib/screens/launch_screen.dart line 109: POST result' +
+          '\n  statusCode = $statusCode' +
+          '\n  headers = ${result.headers}' +
+          // '\n  body = ${result.body}' +
+          '\n  count = $count',
     );
   }
 }

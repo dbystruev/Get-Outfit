@@ -63,10 +63,11 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
               // ),
               // SizedBox(height: (isHorizontal(context) ? 15 : 45) * scale),
               ButtonWidget(
-                'Войти через Google',
+                'Начать',
+                // 'Войти через Google',
                 borderColor: Theme.of(context).primaryColor,
                 fontSize: 17,
-                imageName: 'assets/images/g.png',
+                // imageName: 'assets/images/g.png',
                 onPressed: () {
                   Navigator.push(
                     context,
