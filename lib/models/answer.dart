@@ -71,9 +71,20 @@ class Answer {
   Map<String, dynamic> toJson() => _$AnswerToJson(this);
 
   @override
+  bool operator ==(dynamic other) {
+    if (other == null ||
+        !(other is Answer) ||
+        indexes?.length != other.indexes?.length) return false;
+    if (indexes != null)
+      for (int index = 0; index < indexes.length; index++)
+        if (indexes[index] != other.indexes[index]) return false;
+    return text == other.text && value == other.value;
+  }
+
+  @override
   String toString() =>
       'Answer(' +
-      '${indexes == null ? '' : 'indexes: $indexes, '}' +
-      '${text == null ? '' : 'text: \'$text\', '}' +
-      '${value == null ? '' : 'value: $value, '})';
+      'indexes: $indexes, ' +
+      'text: ${text == null ? null : '\'$text\''}, ' +
+      'value: $value)';
 }

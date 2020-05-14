@@ -13,6 +13,7 @@ class SliderWidget extends StatelessWidget {
   final int min;
   final void Function(int value, String label) onChanged;
   final double scale;
+  final int step;
   final int value;
 
   SliderWidget({
@@ -20,9 +21,10 @@ class SliderWidget extends StatelessWidget {
     this.max = 100,
     this.min = 0,
     @required this.onChanged,
+    int step,
     @required this.scale,
     this.value = 50,
-  });
+  }) : this.step = step ?? 1000 < max - min ? 100 : 1;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,10 @@ class SliderWidget extends StatelessWidget {
             max: max.toDouble(),
             min: min.toDouble(),
             label: '$value',
-            onChanged: (value) => onChanged(value.round(), ''),
+            onChanged: (double value) {
+              value = step * (value / step).round().toDouble();
+              onChanged(value.round(), '');
+            },
             onChangeEnd: (value) =>
                 onChanged(value.round(), '${value.round()}'),
             onChangeStart: (value) => onChanged(value.round(), ''),

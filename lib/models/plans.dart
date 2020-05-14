@@ -11,7 +11,7 @@ part 'plans.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Plans {
-  bool get isValid => plans != null && plans.any((plan) => plan.isValid);
+  bool get areValid => plans != null && plans.any((plan) => plan.isValid);
   final String message;
   List<Plan> plans;
   final String status;

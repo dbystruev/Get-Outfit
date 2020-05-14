@@ -6,7 +6,6 @@
 
 // https://flutter.dev/docs/development/data-and-backend/json
 import 'dart:math';
-
 import 'package:get_outfit/models/question_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:get_outfit/models/answer.dart';
@@ -25,6 +24,7 @@ class Question {
   Answer givenAnswer;
   final String hint;
   final int id;
+  final bool isEnabled;
   bool get isValid => id != null && 0 < id && id <= _maxId;
   final bool isVisual;
   final int maxValue;
@@ -42,13 +42,15 @@ class Question {
     Answer givenAnswer,
     this.hint,
     int id,
+    bool isEnabled,
     this.isVisual = false,
     this.maxValue,
     this.minValue,
     this.subtitle,
     this.type = QuestionType.text,
   })  : this.givenAnswer = givenAnswer ?? defaultAnswer,
-        this.id = id ?? ++_maxId {
+        this.id = id ?? ++_maxId,
+        this.isEnabled = isEnabled ?? true {
     _maxId = max(this.id, _maxId);
   }
 
@@ -327,17 +329,43 @@ class Question {
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
   @override
-  String toString() => '''Question(
+  bool operator ==(dynamic other) {
+    if (other == null ||
+        !(other is Question) ||
+        answers?.length != other.answers?.length) return false;
+    if (answers != null)
+      for (int index = 0; index < answers.length; index++)
+        if (answers[index] != other.answers[index]) return false;
+    return defaultAnswer == other.defaultAnswer &&
+        gender == other.gender &&
+        givenAnswer == other.givenAnswer &&
+        hint == other.hint &&
+        id == other.id &&
+        isEnabled == other.isEnabled &&
+        isVisual == other.isVisual &&
+        maxValue == other.maxValue &&
+        minValue == other.minValue &&
+        subtitle == other.subtitle &&
+        title == other.title &&
+        type == other.type;
+  }
+
+  @override
+  String toString() {
+    return '''Question(
   '$title',
-  answers: [${answers.isEmpty ? '' : '\'' + answers.join('\', \'') + '\''}],
+  answers: ${answers == null ? null : answers.map((answer) => '\'${answer}\'')},
   defaultAnswer: $defaultAnswer,
   gender: $gender,
+  givenAnswer: $givenAnswer,
   hint: '$hint',
   id: $id,
+  isEnabled: $isEnabled,
   isVisual: $isVisual,
   maxValue: $maxValue,
   minValue: $minValue,
   subtitle: '$subtitle',
   type: $type,
 )''';
+  }
 }

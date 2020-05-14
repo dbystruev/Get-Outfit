@@ -113,13 +113,13 @@ class _LoginScreenState extends State<LoginScreen> with Scale {
     emailController.addListener(() {
       final String text = emailController.text;
       debugPrint(
-        'DEBUG in lib/screens/login.dart line 115 emailController.text = $text',
+        'DEBUG in lib/screens/login.dart line 116 emailController.text = $text',
       );
     });
     passwordController.addListener(() {
       final String text = passwordController.text;
       debugPrint(
-        'DEBUG in lib/screens/login.dart line 121 passwordController.text = $text',
+        'DEBUG in lib/screens/login.dart line 122 passwordController.text = $text',
       );
     });
   }

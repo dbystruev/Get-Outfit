@@ -8,6 +8,7 @@
 import 'dart:convert' as convert;
 import 'package:get_outfit/models/data.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'app_data.g.dart';
 
 @JsonSerializable()
@@ -37,4 +38,15 @@ class AppData {
       _$AppDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$AppDataToJson(this);
+
+  String printString(aString) => aString == null ? null : '\'$aString\'';
+
+  @override
+  String toString() => '''AppData(
+  status: ${printString(status)},
+  data: ${printString(data)},
+  message: ${printString(message)},
+  token: ${printString(token)},
+  versionDynamic: ${printString(versionDynamic)},
+)''';
 }

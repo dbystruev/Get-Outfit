@@ -5,10 +5,10 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:get_outfit/controllers/network_controller.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/models/gender.dart';
 import 'package:get_outfit/models/question.dart';
-import 'package:get_outfit/models/question+all.dart';
 import 'package:get_outfit/screens/plans_screen.dart';
 import 'package:get_outfit/widgets/footer_widget.dart';
 import 'package:get_outfit/widgets/question_widget.dart';
@@ -23,7 +23,7 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> with Scale {
-  final List<List<Question>> allQuestions = AllQuestions.local;
+  final List<List<Question>> allQuestions = NetworkController.shared.questions;
   final ScrollController controller = ScrollController();
   final Gender gender;
   Map<int, String> sliderLabels = {};
@@ -99,7 +99,9 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
           (questionPage) => questionPage
               .where(
                 (question) =>
-                    question.gender == gender || question.gender == Gender.both,
+                    question.isEnabled &&
+                    (question.gender == gender ||
+                        question.gender == Gender.both),
               )
               .toList(),
         )

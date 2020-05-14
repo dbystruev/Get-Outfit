@@ -22,6 +22,10 @@ const bool isProduction = bool.fromEnvironment('dart.vm.product');
 // The background color for major parts of the app (toolbars, tab bars, etc)
 const Color primaryColor = Color(0xFF54615F);
 
+// Similar to toString() for iterables, but values are quoted
+Iterable<String> quotedValues<T>(Iterable<T> values) =>
+    values.map((value) => '\'$value\'');
+
 // Success and error codes for external requests
 const statusError = 'ERROR';
 const statusSuccess = 'SUCCESS';

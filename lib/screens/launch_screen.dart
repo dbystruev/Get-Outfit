@@ -11,7 +11,6 @@ import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/plan+all.dart';
 import 'package:get_outfit/models/plans.dart';
-import 'package:get_outfit/models/question+all.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/questions.dart';
 import 'package:get_outfit/screens/login_screen.dart';
@@ -20,13 +19,14 @@ import 'package:http/http.dart' as http;
 
 class LaunchScreen extends StatelessWidget with Scale {
   static bool built = false;
-  final NetworkController networkController = NetworkController();
+  final NetworkController networkController = NetworkController.shared;
+  final DateTime startTime = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     if (!built) {
       built = true;
-      navigateWithDelay(context, 3);
+      navigateWithDelay(context, 2);
     }
     final double scale = getScale(context);
     return Scaffold(
@@ -65,45 +65,181 @@ class LaunchScreen extends StatelessWidget with Scale {
         token: appData.token,
       );
     } else {
+      debugPrint(
+        'DEBUG in lib/screens/launch_screen.dart:70' +
+            ' status is not ${globals.statusSuccess}, appData = $appData',
+      );
       plans = Plans([], message: appData.message, status: appData.status);
       questions =
           Questions([], message: appData.message, status: appData.status);
     }
-    // matchQuestions(questions.questions, AllQuestions.local);
-    if (!plans.isValid) plans.plans = AllPlans.local;
-    if (!questions.isValid) {
-      questions.questions = AllQuestions.local;
+    if (!plans.areValid) {
+      // debugPrint(
+      //   'DEBUG in lib/screens/launch_screen.dart:78 plans are not valid, appData = $appData',
+      // );
+      plans.plans = AllPlans.local;
+    }
+    // matchQuestionPages(
+    //   loadedQuestions: questions.questions,
+    //   localQuestions: allQuestions,
+    // );
+    if (questions.areValid) {
+      networkController.questions = questions.questions;
+      debugPrint(
+        'DEBUG in lib/screens/launch_screen.dart:90' +
+            ' ${questions.questions.expand((questionList) => questionList).length} questions' +
+            ' are loaded in ${DateTime.now().difference(startTime)}',
+      );
+    } else {
+      debugPrint(
+        'DEBUG in lib/screens/launch_screen.dart:95 questions are not valid' +
+            ', appData = $appData, questions = $questions',
+      );
+      // questions.questions = allQuestions;
       // postQuestions(appData: appData, questions: questions);
     }
   }
 
+  // Match local questions with loaded questions
+  void matchQuestionPages({
+    List<List<Question>> loadedQuestions,
+    List<List<Question>> localQuestions,
+  }) {
+    if (loadedQuestions?.length == localQuestions.length) {
+      debugPrint('DEBUG in lib/screens/launch_screen.dart:109' +
+          ' matchQuestionPages() ${loadedQuestions.length} pages');
+      for (int pageIndex = 0; pageIndex < loadedQuestions.length; pageIndex++) {
+        if (loadedQuestions[pageIndex].length ==
+            localQuestions[pageIndex].length) {
+          debugPrint(
+            '\tPage $pageIndex: ${loadedQuestions[pageIndex].length} questions',
+          );
+          for (int questionIndex = 0;
+              questionIndex < localQuestions[pageIndex].length;
+              questionIndex++) {
+            matchQuestions(
+              questionIndex,
+              loadedQuestion: loadedQuestions[pageIndex][questionIndex],
+              localQuestion: localQuestions[pageIndex][questionIndex],
+            );
+          }
+        } else {
+          debugPrint(
+            '\tThe number of questions on page $pageIndex does not match:' +
+                '\n\t\tloadedQuestions[$pageIndex].length = ${loadedQuestions[pageIndex].length}' +
+                '\n\t\tlocalQuestions[$pageIndex].length = ${localQuestions[pageIndex].length}',
+          );
+        }
+      }
+    } else {
+      debugPrint(
+        'DEBUG in lib/screens/launch_screen.dart:129 The number of pages does not match:' +
+            '\n\tloadedQuestions.length = ${loadedQuestions?.length}' +
+            '\n\tlocalQuestions.length = ${localQuestions.length}',
+      );
+    }
+  }
+
   void matchQuestions(
-      List<List<Question>> questions, List<List<Question>> localQuestions) {
-    debugPrint(
-      'DEBUG in questions.length = ${questions.length}' +
-          '\n  localQuestions.length = ${localQuestions.length}',
-    );
-    if (questions.length == localQuestions.length) {
-      for (int index = 0; index < questions.length; index++) {
+    int questionIndex, {
+    Question loadedQuestion,
+    Question localQuestion,
+  }) {
+    // debugPrint(
+    //   'matchQuestions($questionIndex, $loadedQuestion, $localQuestion)',
+    // );
+    if (loadedQuestion == localQuestion) return;
+    debugPrint('\t\tQuestion $questionIndex does not match');
+    if (loadedQuestion.answers != localQuestion.answers) {
+      debugPrint('\t\t\tanswers do not match');
+      if (loadedQuestion.answers.length != localQuestion.answers.length) {
         debugPrint(
-          '    questions[$index].length = ${questions[index].length}' +
-              '\n    AllQuestions[$index].length = ${localQuestions[index].length}',
-        );
-        if (questions[index].length ==
-            localQuestions[index].length) {
-          for (int secondIndex = 0;
-              secondIndex < localQuestions[index].length;
-              secondIndex++) {
-            final Question question = questions[index][secondIndex];
-            final Question localQuestion =
-                localQuestions[index][secondIndex];
-            // if (question != localQuestion)
-            //   debugPrint(
-            //     '\n      [$index][$secondIndex] ${question.title} do not match',
-            //   );
+            '\t\t\t\tloadedQuestion.answers.length = ${loadedQuestion.answers.length}');
+        debugPrint(
+            '\t\t\t\localQuestion.answers.length = ${localQuestion.answers.length}');
+      } else {
+        for (int answerIndex = 0;
+            answerIndex < localQuestion.answers.length;
+            answerIndex++) {
+          if (loadedQuestion.answers[answerIndex] !=
+              localQuestion.answers[answerIndex]) {
+            debugPrint(
+                '\t\t\t\tloadedQuestion.answers[answerIndex] = ${loadedQuestion.answers[answerIndex]}');
+            debugPrint(
+                '\t\t\t\tlocalQuestion.answers[answerIndex] = ${localQuestion.answers[answerIndex]}');
           }
         }
       }
+    }
+    if (loadedQuestion.defaultAnswer != localQuestion.defaultAnswer) {
+      debugPrint('\t\t\tdefaultAnswer do not match');
+      debugPrint(
+          '\t\t\t\tloadedQuestion.defaultAnswer = ${loadedQuestion.defaultAnswer}');
+      debugPrint(
+          '\t\t\t\tlocalQuestion.defaultAnswer = ${localQuestion.defaultAnswer}');
+    }
+    if (loadedQuestion.gender != localQuestion.gender) {
+      debugPrint('\t\t\tgender do not match');
+      debugPrint('\t\t\t\tloadedQuestion.gender = ${loadedQuestion.gender}');
+      debugPrint('\t\t\t\tlocalQuestion.gender = ${localQuestion.gender}');
+    }
+    if (loadedQuestion.givenAnswer != localQuestion.givenAnswer) {
+      debugPrint('\t\t\tgivenAnswer do not match');
+      debugPrint(
+          '\t\t\t\tloadedQuestion.givenAnswer = ${loadedQuestion.givenAnswer}');
+      debugPrint(
+          '\t\t\t\tlocalQuestion.givenAnswer = ${localQuestion.givenAnswer}');
+    }
+    if (loadedQuestion.hint != localQuestion.hint) {
+      debugPrint('\t\t\thint do not match');
+      debugPrint('\t\t\t\tloadedQuestion.hint = ${loadedQuestion.hint}');
+      debugPrint('\t\t\t\tlocalQuestion.hint = ${localQuestion.hint}');
+    }
+    if (loadedQuestion.id != localQuestion.id) {
+      debugPrint('\t\t\tid do not match');
+      debugPrint('\t\t\t\tloadedQuestion.id = ${loadedQuestion.id}');
+      debugPrint('\t\t\t\tlocalQuestion.id = ${localQuestion.id}');
+    }
+    if (loadedQuestion.isEnabled != localQuestion.isEnabled) {
+      debugPrint('\t\t\tisEnabled do not match');
+      debugPrint(
+          '\t\t\t\tloadedQuestion.isEnabled = ${loadedQuestion.isEnabled}');
+      debugPrint(
+          '\t\t\t\tlocalQuestion.isEnabled = ${localQuestion.isEnabled}');
+    }
+    if (loadedQuestion.isVisual != localQuestion.isVisual) {
+      debugPrint('\t\t\tisVisual do not match');
+      debugPrint(
+          '\t\t\t\tloadedQuestion.isVisual = ${loadedQuestion.isVisual}');
+      debugPrint('\t\t\t\tlocalQuestion.isVisual = ${localQuestion.isVisual}');
+    }
+    if (loadedQuestion.maxValue != localQuestion.maxValue) {
+      debugPrint('\t\t\tmaxValue do not match');
+      debugPrint(
+          '\t\t\t\tloadedQuestion.maxValue = ${loadedQuestion.maxValue}');
+      debugPrint('\t\t\t\tlocalQuestion.maxValue = ${localQuestion.maxValue}');
+    }
+    if (loadedQuestion.minValue != localQuestion.minValue) {
+      debugPrint('\t\t\tminValue do not match');
+      debugPrint(
+          '\t\t\t\tloadedQuestion.minValue = ${loadedQuestion.minValue}');
+      debugPrint('\t\t\t\tlocalQuestion.minValue = ${localQuestion.minValue}');
+    }
+    if (loadedQuestion.subtitle != localQuestion.subtitle) {
+      debugPrint('\t\t\tsubtitle do not match');
+      debugPrint(
+          '\t\t\t\tloadedQuestion.subtitle = ${loadedQuestion.subtitle}');
+      debugPrint('\t\t\t\tlocalQuestion.subtitle = ${localQuestion.subtitle}');
+    }
+    if (loadedQuestion.title != localQuestion.title) {
+      debugPrint('\t\t\ttitle do not match');
+      debugPrint('\t\t\t\tloadedQuestion.title = ${loadedQuestion.title}');
+      debugPrint('\t\t\t\tlocalQuestion.title = ${localQuestion.title}');
+    }
+    if (loadedQuestion.type != localQuestion.type) {
+      debugPrint('\t\t\ttype do not match');
+      debugPrint('\t\t\t\tloadedQuestion.type = ${loadedQuestion.type}');
+      debugPrint('\t\t\t\tlocalQuestion.type = ${localQuestion.type}');
     }
   }
 
@@ -134,11 +270,11 @@ class LaunchScreen extends StatelessWidget with Scale {
       url = result.headers['location'];
     }
     debugPrint(
-      'DEBUG in lib/screens/launch_screen.dart line 109: POST result' +
-          '\n  statusCode = $statusCode' +
-          '\n  headers = ${result.headers}' +
-          // '\n  body = ${result.body}' +
-          '\n  count = $count',
+      'DEBUG in lib/screens/launch_screen.dart:163 postQuestions()' +
+          '\n\tstatusCode = $statusCode' +
+          '\n\theaders = ${result.headers}' +
+          // '\n\tbody = ${result.body}' +
+          '\n\tcount = $count',
     );
   }
 }

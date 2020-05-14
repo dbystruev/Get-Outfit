@@ -11,17 +11,24 @@ import 'package:flutter/material.dart';
 import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/plans.dart';
+import 'package:get_outfit/models/question+all.dart';
+import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/questions.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkController {
+  static final NetworkController shared = NetworkController._();
+
   // Google Apps Script web url
   final String authority;
   final String path;
   String get url => 'https://$authority/$path';
 
+  // To be replaced with questions loaded from the server
+  List<List<Question>> questions = AllQuestions.local;
+
   // Default constructor
-  NetworkController({
+  NetworkController._({
     this.authority = 'script.google.com',
     this.path =
         'macros/s/AKfycbyVJAPvLhbZtKwJ6-p00NERFQbEK22B4xTdkTL4ReHYYdKMRIV8/exec',

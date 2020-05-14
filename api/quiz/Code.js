@@ -6,29 +6,8 @@
 
 // Derived from https://medium.com/mindorks/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d
 function doGet(request) {
-    let answersSheet;
-    let questionsSheet;
-
-    // Function finds answer with given id
-    function getAnswers(id) {
-        // Define the range where we'll get the answers from
-        const firstRow = answersSheet.getFrozenRows() + 1;
-        const lastRow = answersSheet.getLastRow();
-        const lastColumn = answersSheet.getLastColumn();
-        const range = answersSheet.getRange(firstRow, 1, lastRow - firstRow + 1, lastColumn);
-
-        // Get the values for all answers
-        const rangeValues = range.getValues();
-
-        // Get the answers for the row with given question id
-        const answerRow = rangeValues.find(row => row[0] == id);
-
-        // If id is not found return an empty array
-        if (!answerRow) return [];
-
-        // Return non-empty cells
-        return answerRow.slice(1).filter(cell => nonEmpty(cell)).map(cell => cell.toString());
-    }
+    let answerSheet;
+    let questionSheet;
 
     // Failing by default
     let message = 'default message';
@@ -48,14 +27,14 @@ function doGet(request) {
         if (!mainSheet) throw 'Can\'t open the quiz sheet';
 
         // Get the Answers & Questions sheets
-        answersSheet = mainSheet.getSheetByName('Answers');
-        questionsSheet = mainSheet.getSheetByName('Questions');
+        answerSheet = mainSheet.getSheetByName('Answers');
+        questionSheet = mainSheet.getSheetByName('Questions');
 
-        if (!answersSheet || !questionsSheet)
+        if (!answerSheet || !questionSheet)
             throw 'The spreadsheet should have both Answers and Questions sheets';
 
         // Find the token hash from spreadsheet
-        const savedTokenHash = getTokenRange(questionsSheet).getValue();
+        const savedTokenHash = getTokenRange(questionSheet).getValue();
 
         // Find the hash of the incoming token (byte to hex https://stackoverflow.com/a/51863912)
         const tokenHash = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_512, token)
@@ -66,35 +45,33 @@ function doGet(request) {
         if (savedTokenHash != tokenHash) throw `Token is not correct`;
 
         // Get the version number
-        const version = getVersionRange(questionsSheet).getValue();
+        const version = getVersionRange(questionSheet).getValue();
 
-        // Define the range where we'll get the questions from
-        const firstRow = questionsSheet.getFrozenRows() + 1;
-        const lastRow = questionsSheet.getLastRow();
-        const range = questionsSheet.getRange('A' + firstRow + ':K' + lastRow);
-
-        // Get the values for all questions
-        const rangeValues = range.getValues();
+        // Get the values for all questions and all answers
+        const answerValues = getAllValues(answerSheet);
+        const questionValues = getAllValues(questionSheet);
 
         // Map each row of rangeValues to an obect
         let questions = [[]];
-        rangeValues.forEach(row => {
-            const page = row[1];
-            if (page < 1) return;
+        questionValues.forEach(row => {
             const id = row[0];
             if (id < 1) return;
-            let question = {};
-            question['type'] = nonEmpty(row[2]);
-            question['id'] = id;
-            question['gender'] = nonEmpty(row[3]);
-            question['isVisual'] = nonEmpty(row[4]);
-            question['title'] = nonEmpty(row[5]);
-            question['subtitle'] = nonEmpty(row[6]);
-            question['answers'] = getAnswers(id);
-            question['defaultAnswer'] = getDefaultAnswer(row[7]);
-            question['hint'] = nonEmpty(row[8]);
-            question['minValue'] = nonEmpty(row[9]);
-            question['maxValue'] = nonEmpty(row[10]);
+            const page = row[1];
+            if (page < 1) return;
+            const question = {
+                'id': id,
+                'isEnabled': nonEmpty(row[2]),
+                'type': nonEmpty(row[3]),
+                'gender': nonEmpty(row[4]),
+                'isVisual': nonEmpty(row[5]),
+                'title': nonEmpty(row[6]),
+                'subtitle': nonEmpty(row[7]),
+                'answers': getAnswersForQuestionId(answerValues, id),
+                'defaultAnswer': getDefaultAnswer(row[8]),
+                'hint': nonEmpty(row[9]),
+                'minValue': nonEmpty(row[10]),
+                'maxValue': nonEmpty(row[11])
+            };
             while (questions.length < page) questions.push([]);
             questions[page - 1].push(question);
         });
@@ -104,14 +81,14 @@ function doGet(request) {
             'message': message,
             'questions': questions,
             'status': 'SUCCESS',
-            'time': Math.floor(new Date().getTime() / 1000),
+            'time': getSecondsFromEpoch(),
             'version': version,
         };
     } catch (error) {
         result = {
             'message': 'Quiz: ' + error,
             'status': 'ERROR',
-            'time': Math.floor(new Date().getTime() / 1000)
+            'time': getSecondsFromEpoch()
         };
     }
 
@@ -176,6 +153,7 @@ function doPost(request) {
                 const questionRow = [
                     question.id,
                     page + 1,
+                    question.isEnabled,
                     question.type,
                     question.gender,
                     question.isVisual,
@@ -204,14 +182,14 @@ function doPost(request) {
         // Set the success response
         result = {
             'status': 'SUCCESS',
-            'time': Math.floor(new Date().getTime() / 1000)
+            'time': getSecondsFromEpoch()
         }
 
     } catch (error) {
         result = {
             'message': 'Quiz Post: ' + error,
             'status': 'ERROR',
-            'time': Math.floor(new Date().getTime() / 1000)
+            'time': getSecondsFromEpoch()
         };
     }
 
@@ -219,6 +197,24 @@ function doPost(request) {
     return ContentService
         .createTextOutput(JSON.stringify(result))
         .setMimeType(ContentService.MimeType.JSON);
+}
+
+// Get all answer values from a range in given sheet
+function getAllValues(sheet) {
+    // Define the range where we'll get the answers from
+    const firstColumn = sheet.getFrozenColumns() + 1;
+    const firstRow = sheet.getFrozenRows() + 1;
+    const lastColumn = sheet.getLastColumn();
+    const lastRow = sheet.getLastRow();
+    const range = sheet.getRange(
+        firstRow,
+        firstColumn,
+        lastRow < firstRow ? 1 : lastRow - firstRow + 1,
+        lastColumn < firstColumn ? 1 : lastColumn - firstColumn + 1
+    );
+
+    // Return the values for all answers
+    return range.getValues();
 }
 
 function getAnswer(answer) {
@@ -234,22 +230,54 @@ function getAnswer(answer) {
     return undefined;
 }
 
+// Finds answers with a given id withing given range of values
+function getAnswersForQuestionId(rangeValues, id) {
+    // Get the answers for the row with given question id
+    const answerRow = rangeValues.find(row => row[0] == id);
+
+    // If id is not found return an empty array
+    if (!answerRow) return undefined;
+
+    // Get non-empty cells as array of strings
+    const answers = answerRow.slice(1).filter(cell => nonEmpty(cell)).map(cell => cell.toString());
+
+    return answers;
+}
+
 // Get defaultAnswer field
 function getDefaultAnswer(answer) {
-    if (answer === []) return { 'indexes': [] };
-    const defaultAnswer = nonEmpty(answer);
-    if (!defaultAnswer) return undefined;
-    return Number.isInteger(defaultAnswer)
-        ? { 'value': defaultAnswer }
-        : { 'text': defaultAnswer }
+    if (Number.isInteger(answer)) return { 'value': answer };
+    if (Array.isArray(answer)) return { 'indexes': answer };
+
+    const trimmedAnswer = nonEmpty(answer.trim());
+    if (trimmedAnswer == '[]') return { 'indexes': [] };
+
+    const length = trimmedAnswer.length;
+    if (length < 3 ||
+        trimmedAnswer[0] != '[' ||
+        trimmedAnswer[length - 1] != ']'
+    )
+        return { 'text': answer };
+
+    const internalString = trimmedAnswer.slice(1, length - 1).trim();
+    const internalNumber = Number(internalString);
+    if (Number.isInteger(internalNumber))
+        return { 'indexes': [internalNumber] };
+        
+    return { 'text': answer };
+}
+
+// Get current time in seconds from Jan 1, 1970
+function getSecondsFromEpoch() {
+    return Math.floor(new Date().getTime() / 1000);
 }
 
 function getTokenRange(sheet) {
-    return sheet.getRange('C1');
+    return sheet.getRange('G1');
 }
 
 function getVersionRange(sheet) {
-    return sheet.getRange('C2');
+    return sheet.getRange('G2');
 }
 
 function nonEmpty(value) {

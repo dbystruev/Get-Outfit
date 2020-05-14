@@ -11,7 +11,7 @@ part 'questions.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Questions {
-  bool get isValid =>
+  bool get areValid =>
       questions != null &&
       questions.any(
         (questionPage) => questionPage.any(
