@@ -66,7 +66,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       );
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:70' +
+        'DEBUG in lib/screens/launch_screen.dart:69' +
             ' status is not ${globals.statusSuccess}, appData = $appData',
       );
       plans = Plans([], message: appData.message, status: appData.status);
@@ -86,10 +86,13 @@ class LaunchScreen extends StatelessWidget with Scale {
     if (questions.areValid) {
       networkController.questions = questions.questions;
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:90' +
+        'DEBUG in lib/screens/launch_screen.dart:89' +
             ' ${questions.questions.expand((questionList) => questionList).length} questions' +
             ' are loaded in ${DateTime.now().difference(startTime)}',
       );
+      final String responseToken =
+          networkController.getResponseToken(appData.token);
+      debugPrint('responseToken = $responseToken');
     } else {
       debugPrint(
         'DEBUG in lib/screens/launch_screen.dart:95 questions are not valid' +
@@ -133,7 +136,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       }
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:129 The number of pages does not match:' +
+        'DEBUG in lib/screens/launch_screen.dart:136 The number of pages does not match:' +
             '\n\tloadedQuestions.length = ${loadedQuestions?.length}' +
             '\n\tlocalQuestions.length = ${localQuestions.length}',
       );

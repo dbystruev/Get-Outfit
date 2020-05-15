@@ -7,6 +7,7 @@
 //
 
 import 'dart:convert' as convert;
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/app_data.dart';
@@ -49,6 +50,14 @@ class NetworkController {
     }
   }
 
+  // Calculate SHA-512 digest
+  String getHash(String token) {
+    final List<int> bytes = convert.utf8.encode(token);
+    final Digest digest = sha512.convert(bytes);
+    final String hash = digest.toString();
+    return hash;
+  }
+
   // Async function which returns the plans
   Future<Plans> getPlans({
     String token,
@@ -81,6 +90,30 @@ class NetworkController {
     }
   }
 
+  // Calculate the response token based on the incoming token
+  String getResponseToken(String token) {
+    // Calculate the token hash
+    final String tokenHash = getHash(token);
+
+    // Split the token hash to array for easier replacement
+    final List<String> hash = tokenHash.split('');
+
+    // Calculate the hash length
+    final int len = hash.length;
+
+    // Calculate the response token
+    hash[0x11111111 % len] = hash[0x22222222 % len];
+    hash[0x33333333 % len] = hash[0x44444444 % len];
+    hash[0x55555555 % len] = hash[0x66666666 % len];
+    hash[0x77777777 % len] = hash[0x88888888 % len];
+
+    // Assemble the hash array back to String
+    final String hashString = hash.join();
+
+    // Return the hash of calculated response
+    return getHash(hashString);
+  }
+
   // Async function which posts the questions
   Future<http.Response> postQuestions(
     Questions questions, {
@@ -93,7 +126,7 @@ class NetworkController {
         'Content-Type': 'application/json; charset=UTF-8',
       };
       debugPrint(
-        'DEBUG in lib/controllers/network_controller.dart line 89: POST request' +
+        'DEBUG in lib/controllers/network_controller.dart line 96: POST request' +
             '\n  url = $url' +
             '\n  body = $body' +
             '\n  headers = $headers',

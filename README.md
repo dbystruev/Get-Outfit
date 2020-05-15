@@ -2,6 +2,33 @@
 
 The app following Get Outfit [website](https://getoutfit.ru).
 
+## Installation
+
+Don't forget to run [api/randomize.sh](https://github.com/dbystruev/Get-Outfit/blob/master/api/randomize.sh) first before building in order randomize getReponseToken() algorithm both locally and at the server.
+
+### Server installation
+
+You need to create Google spreadsheets for Orders (Answers, Orders, Users sheets) and Quiz (Questions, Answers sheets), create initial apps scripts for both via Tools > Script Editor and Publish > Deploy as web app..., and give them all neccessary permissions.
+
+```bash
+clasp login
+
+cd api/orders
+clash push
+clasp deployments
+clasp deploy -i "<deployment id>" -d "<deployment message>"
+
+cd ../api/quiz
+clash push
+clasp deployments
+clasp deploy -i "<deployment id>" -d "<deployment message>"
+```
+
+### Client installation
+```bash
+flutter run
+```
+
 ## Launch Screen
 
 ![Launch Screen](https://github.com/dbystruev/Get-Outfit/blob/master/screenshots/screenshot01.png?raw=true)
