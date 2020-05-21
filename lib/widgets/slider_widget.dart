@@ -26,6 +26,9 @@ class SliderWidget extends StatelessWidget {
     this.value = 50,
   }) : this.step = step ?? 1000 < max - min ? 100 : 1;
 
+  double getAdjustedValue(double value) =>
+      step * (value / step).round().toDouble();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,12 +55,17 @@ class SliderWidget extends StatelessWidget {
             min: min.toDouble(),
             label: '$value',
             onChanged: (double value) {
-              value = step * (value / step).round().toDouble();
+              value = getAdjustedValue(value);
               onChanged(value.round(), '');
             },
-            onChangeEnd: (value) =>
-                onChanged(value.round(), '${value.round()}'),
-            onChangeStart: (value) => onChanged(value.round(), ''),
+            onChangeEnd: (value) {
+              value = getAdjustedValue(value);
+              onChanged(value.round(), '${value.round()}');
+            },
+            onChangeStart: (value) {
+              value = getAdjustedValue(value);
+              onChanged(value.round(), '');
+            },
             value: value.toDouble(),
           ),
         ),

@@ -10,6 +10,7 @@
 //  https://medium.com/mindorks/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d
 //
 
+// GET 
 function doGet(request) {
     // Make user sheet available outside of try/catch block
     let userSheet;
@@ -44,8 +45,8 @@ function doGet(request) {
         // https://www.quora.com/What-is-maximum-and-minimum-length-of-any-mobile-number-across-the-world
         const phoneDigits = getDigits(phone);
         const phoneDigitsLength = phoneDigits.length;
-        if (phoneDigitsLength < 9 || 15 < phoneDigitsLength)
-            throw 'The phone should have between 9 and 15 digits';
+        if ((phoneDigitsLength < 9 || 15 < phoneDigitsLength) && phone != 'newuser')
+            throw 'The phone should have between 9 and 15 digits or be a newuser';
 
         // Define the range where we'll get the users from
         const userRange = getDataRange(userSheet);
@@ -61,7 +62,7 @@ function doGet(request) {
         let user = {};
 
         // Check if any matching users found
-        if (isNotEmpty(matchingUser) && 5 < matchingUser.length) {
+        if (isNotEmpty(matchingUser) && 5 < matchingUser.length && phone != 'newuser') {
             // Get matching user's id
             const userId = matchingUser[0];
 
@@ -123,11 +124,11 @@ function doGet(request) {
                 // For all other phones call the SMSGlobal API to send SMS
                 const url = 'https://api.smsglobal.com/http-api.php' +
                     '?action=sendsms' +
-                    '&user=0bublnb0' +
-                    '&password=StiA5ary' +
-                    '&from=Taaqeem' +
+                    '&user=...' +
+                    '&password=...' +
+                    '&from=...' +
                     '&to=' + phoneDigits +
-                    '&text=Your%20Taaqeem%20app%20code:%20' + generatedCode;
+                    '&text=Your%20code:%20' + generatedCode;
                 const response = UrlFetchApp.fetch(url, { 'muteHttpExceptions': true });
 
                 // Save API response to the sheet

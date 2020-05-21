@@ -59,9 +59,9 @@ class NetworkController {
   }
 
   // Async function which returns the plans
-  Future<Plans> getPlans({
+  Future<Plans> getPlans(
+    String url, {
     String token,
-    String url,
   }) async {
     try {
       final String request = '$url?token=$token';

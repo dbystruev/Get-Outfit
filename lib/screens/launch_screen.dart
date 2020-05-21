@@ -52,13 +52,13 @@ class LaunchScreen extends StatelessWidget with Scale {
   }
 
   void getAppData() async {
-    AppData appData = await networkController.getAppData();
+    final AppData appData = await networkController.getAppData();
     Plans plans;
     Questions questions;
     if (appData.status == globals.statusSuccess) {
       plans = await networkController.getPlans(
+        appData.plansUrl,
         token: appData.token,
-        url: appData.plansUrl,
       );
       questions = await networkController.getQuestions(
         appData.plansUrl,
