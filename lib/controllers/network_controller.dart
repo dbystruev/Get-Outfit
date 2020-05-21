@@ -15,6 +15,8 @@ import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/question+all.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/questions.dart';
+import 'package:get_outfit/models/server_data.dart';
+import 'package:get_outfit/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkController {
@@ -35,6 +37,33 @@ class NetworkController {
         'macros/s/AKfycbyVJAPvLhbZtKwJ6-p00NERFQbEK22B4xTdkTL4ReHYYdKMRIV8/exec',
   });
 
+  // Create new user and save user id in User.shared.id
+  Future<void> createNewUser(AppData appData) async {
+    // check if no user already created
+    if (User.shared.id != null) return;
+
+    try {
+      final String url = appData.feedbackUrl;
+      final String generatedCode = '0000';
+      final String phone = 'newuser';
+      final String token = appData.token;
+      final String responseToken = getResponseToken(token);
+      final String request = '$url' +
+          '?generatedCode=$generatedCode' +
+          '&phone=$phone' +
+          '&responseToken=$responseToken' +
+          '&token=$token';
+      final http.Response response = await http.get(request);
+      final Map<String, dynamic> appDataMap = convert.jsonDecode(response.body);
+      final AppData responseAppData = AppData.fromJson(appDataMap);
+      User.shared.merge(responseAppData?.serverData?.user);
+    } catch (error) {
+      debugPrint(
+        'ERROR in lib/controllers/network_controllers.dart:63 error = $error',
+      );
+    }
+  }
+
   // Async function which returns feedback and plans urls
   Future<AppData> getAppData({
     String appName = globals.appName,
@@ -42,7 +71,7 @@ class NetworkController {
   }) async {
     try {
       final String request = '$url?appName=$appName&password=$appPassword';
-      http.Response response = await http.get(request);
+      final http.Response response = await http.get(request);
       final Map<String, dynamic> appDataMap = convert.jsonDecode(response.body);
       return AppData.fromJson(appDataMap);
     } catch (error) {
@@ -65,7 +94,7 @@ class NetworkController {
   }) async {
     try {
       final String request = '$url?token=$token';
-      http.Response response = await http.get(request);
+      final http.Response response = await http.get(request);
       final Map<String, dynamic> plansMap = convert.jsonDecode(response.body);
       return Plans.fromJson(plansMap);
     } catch (error) {
@@ -80,7 +109,7 @@ class NetworkController {
   }) async {
     try {
       final String request = '$url?token=$token';
-      http.Response response = await http.get(request);
+      final http.Response response = await http.get(request);
       final Map<String, dynamic> questionsMap =
           convert.jsonDecode(response.body);
       return Questions.fromJson(questionsMap);

@@ -180,7 +180,6 @@ function doGet(request) {
             'status': 'ERROR',
             'time': getSecondsFromEpoch()
         });
-
     }
     // Return result
     return ContentService

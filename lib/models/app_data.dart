@@ -7,6 +7,7 @@
 // https://flutter.dev/docs/development/data-and-backend/json
 import 'dart:convert' as convert;
 import 'package:get_outfit/models/data.dart';
+import 'package:get_outfit/models/server_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'app_data.g.dart';
@@ -19,7 +20,9 @@ class AppData {
   final String message;
   String get plansUrl => Data.fromJson(_decodedData).plansUrl;
   String get quizUrl => Data.fromJson(_decodedData).quizUrl;
+  final ServerData serverData;
   final String status;
+  final int time;
   final String token;
   String get version => versionDynamic.toString();
 
@@ -30,6 +33,8 @@ class AppData {
     this.status, {
     this.data,
     this.message,
+    this.serverData,
+    this.time,
     this.token,
     this.versionDynamic,
   });
@@ -46,6 +51,8 @@ class AppData {
   status: ${printString(status)},
   data: ${printString(data)},
   message: ${printString(message)},
+  serverData: $serverData,
+  time: $time,
   token: ${printString(token)},
   versionDynamic: ${printString(versionDynamic)},
 )''';

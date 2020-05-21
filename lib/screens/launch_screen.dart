@@ -13,6 +13,7 @@ import 'package:get_outfit/models/plan+all.dart';
 import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/questions.dart';
+import 'package:get_outfit/models/user.dart';
 import 'package:get_outfit/screens/login_screen.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:http/http.dart' as http;
@@ -90,9 +91,9 @@ class LaunchScreen extends StatelessWidget with Scale {
             ' ${questions.questions.expand((questionList) => questionList).length} questions' +
             ' are loaded in ${DateTime.now().difference(startTime)}',
       );
-      final String responseToken =
-          networkController.getResponseToken(appData.token);
-      debugPrint('responseToken = $responseToken');
+      NetworkController.shared.createNewUser(appData).then(
+            (_) => debugPrint('User.shared = ${User.shared}'),
+          );
     } else {
       debugPrint(
         'DEBUG in lib/screens/launch_screen.dart:95 questions are not valid' +

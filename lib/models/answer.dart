@@ -12,6 +12,8 @@ part 'answer.g.dart';
 
 @JsonSerializable()
 class Answer {
+  static List<String> shared = [];
+
   final List<int> indexes;
   final String text;
   final int value;
