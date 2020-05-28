@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
 
 class SliderWidget extends StatelessWidget {
+  static const Duration sliderMoveMinDuration = Duration(milliseconds: 200);
+  static DateTime sliderMoveTime = DateTime.now();
+
   final String label;
   final int max;
   final int min;
@@ -25,9 +28,6 @@ class SliderWidget extends StatelessWidget {
     @required this.scale,
     this.value = 50,
   }) : this.step = step ?? 1000 < max - min ? 100 : 1;
-
-  double getAdjustedValue(double value) =>
-      step * (value / step).round().toDouble();
 
   @override
   Widget build(BuildContext context) {
@@ -54,18 +54,9 @@ class SliderWidget extends StatelessWidget {
             max: max.toDouble(),
             min: min.toDouble(),
             label: '$value',
-            onChanged: (double value) {
-              value = getAdjustedValue(value);
-              onChanged(value.round(), '');
-            },
-            onChangeEnd: (value) {
-              value = getAdjustedValue(value);
-              onChanged(value.round(), '${value.round()}');
-            },
-            onChangeStart: (value) {
-              value = getAdjustedValue(value);
-              onChanged(value.round(), '');
-            },
+            onChanged: onValueChange,
+            onChangeEnd: (value) => onValueChange(value, returnLabel: true),
+            onChangeStart: onValueChange,
             value: value.toDouble(),
           ),
         ),
@@ -82,5 +73,16 @@ class SliderWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  double getAdjustedValue(double value) =>
+      step * (value / step).round().toDouble();
+
+  void onValueChange(double value, {bool returnLabel = false}) {
+    final Duration duration = DateTime.now().difference(sliderMoveTime);
+    if (duration < sliderMoveMinDuration) return;
+    value = getAdjustedValue(value);
+    final String label = returnLabel ? '${value.round()}' : '';
+    onChanged(value.round(), label);
   }
 }
