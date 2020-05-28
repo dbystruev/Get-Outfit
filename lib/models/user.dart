@@ -5,7 +5,6 @@
 //
 //  https://flutter.dev/docs/development/data-and-backend/json
 
-import 'package:get_outfit/models/server_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'user.g.dart';
 

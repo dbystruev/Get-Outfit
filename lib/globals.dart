@@ -19,15 +19,15 @@ const String appVersion = '2020.04.21.13:45:00';
 // True if running in release mode
 const bool isProduction = bool.fromEnvironment('dart.vm.product');
 
-// Preferences key for saving/loading screen data locally
-const String prefsKey = 'app.getoutfit.quiz';
-
 // The background color for major parts of the app (toolbars, tab bars, etc)
 const Color primaryColor = Color(0xFF54615F);
 
 // Similar to toString() for iterables, but values are quoted
 Iterable<String> quotedValues<T>(Iterable<T> values) =>
     values.map((value) => '\'$value\'');
+
+// Preferences key for saving/loading server data locally
+const String serverDataPrefsKey = 'app.getoutfit.quiz.serverData';
 
 // Success and error codes for external requests
 const statusError = 'ERROR';

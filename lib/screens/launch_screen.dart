@@ -13,6 +13,7 @@ import 'package:get_outfit/models/plan+all.dart';
 import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/questions.dart';
+import 'package:get_outfit/models/server_data.dart';
 import 'package:get_outfit/models/user.dart';
 import 'package:get_outfit/screens/login_screen.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
@@ -27,7 +28,7 @@ class LaunchScreen extends StatelessWidget with Scale {
   Widget build(BuildContext context) {
     if (!built) {
       built = true;
-      navigateWithDelay(context, 2);
+      navigate(context, delayInSeconds: 2);
     }
     final double scale = getScale(context);
     return Scaffold(
@@ -46,7 +47,7 @@ class LaunchScreen extends StatelessWidget with Scale {
           ),
         ),
         onTap: () {
-          navigateWithDelay(context, 0);
+          navigate(context);
         },
       ),
     );
@@ -67,7 +68,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       );
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:69' +
+        'DEBUG in lib/screens/launch_screen.dart:71' +
             ' status is not ${globals.statusSuccess}, appData = $appData',
       );
       plans = Plans([], message: appData.message, status: appData.status);
@@ -76,7 +77,7 @@ class LaunchScreen extends StatelessWidget with Scale {
     }
     if (!plans.areValid) {
       // debugPrint(
-      //   'DEBUG in lib/screens/launch_screen.dart:78 plans are not valid, appData = $appData',
+      //   'DEBUG in lib/screens/launch_screen.dart:80 plans are not valid, appData = $appData',
       // );
       plans.plans = AllPlans.local;
     }
@@ -87,7 +88,7 @@ class LaunchScreen extends StatelessWidget with Scale {
     if (questions.areValid) {
       networkController.questions = questions.questions;
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:89' +
+        'DEBUG in lib/screens/launch_screen.dart:91' +
             ' ${questions.questions.expand((questionList) => questionList).length} questions' +
             ' are loaded in ${DateTime.now().difference(startTime)}',
       );
@@ -96,7 +97,7 @@ class LaunchScreen extends StatelessWidget with Scale {
           );
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:95 questions are not valid' +
+        'DEBUG in lib/screens/launch_screen.dart:100 questions are not valid' +
             ', appData = $appData, questions = $questions',
       );
       // questions.questions = allQuestions;
@@ -247,10 +248,16 @@ class LaunchScreen extends StatelessWidget with Scale {
     }
   }
 
-  void navigateWithDelay(BuildContext context, int seconds) async {
-    final duration = Duration(seconds: seconds);
+  void navigate(BuildContext context, {int delayInSeconds = 0}) async {
+    final DateTime startTime = DateTime.now();
+    final Duration waitDuration = Duration(seconds: delayInSeconds);
+    final ServerData serverData =
+        await NetworkController.shared.getServerDataFromPrefs();
+    User.shared.merge(serverData?.user);
     getAppData();
-    await Future.delayed(duration);
+    final Duration elapsedTime = DateTime.now().difference(startTime);
+    if (elapsedTime < waitDuration)
+      await Future.delayed(waitDuration - elapsedTime);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -274,7 +281,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       url = result.headers['location'];
     }
     debugPrint(
-      'DEBUG in lib/screens/launch_screen.dart:163 postQuestions()' +
+      'DEBUG in lib/screens/launch_screen.dart:284 postQuestions()' +
           '\n\tstatusCode = $statusCode' +
           '\n\theaders = ${result.headers}' +
           // '\n\tbody = ${result.body}' +

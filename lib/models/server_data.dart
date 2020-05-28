@@ -24,4 +24,8 @@ class ServerData {
       _$ServerDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$ServerDataToJson(this);
+
+  @override
+  String toString() =>
+      'ServerData(answers: $answers, order: $order, user: $user)';
 }
