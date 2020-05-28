@@ -25,14 +25,15 @@ class Question {
   final String hint;
   final int id;
   final bool isEnabled;
-  bool get isValid => id != null && 0 < id && id <= _maxId;
   final bool isVisual;
   final int maxValue;
   final int minValue;
   final String subtitle;
   final String title;
-  List<String> get imageUrls => isVisual ? answers : [];
   final QuestionType type;
+  
+  bool get isValid => id != null && 0 < id && id <= _maxId;
+  List<String> get imageUrls => isVisual ? answers : [];
 
   Question(
     this.title, {

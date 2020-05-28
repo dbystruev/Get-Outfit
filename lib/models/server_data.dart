@@ -14,9 +14,9 @@ part 'server_data.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ServerData {
-  final List<Answer> answers;
-  final Order order;
-  final User user;
+  List<Answer> answers;
+  Order order;
+  User user;
 
   ServerData({this.answers, this.order, this.user});
 
@@ -24,6 +24,18 @@ class ServerData {
       _$ServerDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$ServerDataToJson(this);
+
+  void merge(ServerData serverData) {
+    answers = serverData?.answers ?? answers;
+    if (order == null)
+      order = serverData?.order;
+    else
+      order.merge(serverData?.order);
+    if (user == null)
+      user = serverData?.user;
+    else
+      user.merge(serverData?.user);
+  }
 
   @override
   String toString() =>

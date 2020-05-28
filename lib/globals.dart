@@ -26,8 +26,8 @@ const Color primaryColor = Color(0xFF54615F);
 Iterable<String> quotedValues<T>(Iterable<T> values) =>
     values.map((value) => '\'$value\'');
 
-// Preferences key for saving/loading server data locally
-const String serverDataPrefsKey = 'app.getoutfit.quiz.serverData';
+// Preferences keys for loading/saving app data, questions, and server data locally
+const String prefsKeyForPrefsData = 'app.getoutfit.quiz.prefsData';
 
 // Success and error codes for external requests
 const statusError = 'ERROR';

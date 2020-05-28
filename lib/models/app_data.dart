@@ -14,26 +14,27 @@ part 'app_data.g.dart';
 
 @JsonSerializable()
 class AppData {
-  final String data;
-  Map<String, dynamic> get _decodedData => convert.jsonDecode(data);
-  String get feedbackUrl => Data.fromJson(_decodedData).feedbackUrl;
-  final String message;
-  String get plansUrl => Data.fromJson(_decodedData).plansUrl;
-  String get quizUrl => Data.fromJson(_decodedData).quizUrl;
-  final ServerData serverData;
-  final String status;
-  final int time;
-  final String token;
-  String get version => versionDynamic.toString();
+  String data;
+  String message;
+  String status;
+  int time;
+  String token;
+  ServerData serverData;
 
   @JsonKey(name: 'version')
-  final dynamic versionDynamic;
+  dynamic versionDynamic;
 
-  AppData(
-    this.status, {
+  Map<String, dynamic> get _decodedData => convert.jsonDecode(data);
+  String get feedbackUrl => Data.fromJson(_decodedData).feedbackUrl;
+  String get plansUrl => Data.fromJson(_decodedData).plansUrl;
+  String get quizUrl => Data.fromJson(_decodedData).quizUrl;
+  String get version => versionDynamic.toString();
+
+  AppData({
     this.data,
     this.message,
     this.serverData,
+    this.status,
     this.time,
     this.token,
     this.versionDynamic,
@@ -42,16 +43,29 @@ class AppData {
   factory AppData.fromJson(Map<String, dynamic> json) =>
       _$AppDataFromJson(json);
 
+  void merge(AppData appData) {
+    data = appData?.data ?? data;
+    message = appData?.message ?? message;
+    if (serverData == null)
+      serverData = appData?.serverData;
+    else
+      serverData.merge(appData?.serverData);
+    status = appData?.status ?? status;
+    time = appData?.time ?? time;
+    token = appData?.token ?? token;
+    versionDynamic = appData?.versionDynamic ?? versionDynamic;
+  }
+
   Map<String, dynamic> toJson() => _$AppDataToJson(this);
 
   String printString(aString) => aString == null ? null : '\'$aString\'';
 
   @override
   String toString() => '''AppData(
-  status: ${printString(status)},
   data: ${printString(data)},
   message: ${printString(message)},
   serverData: $serverData,
+  status: ${printString(status)},
   time: $time,
   token: ${printString(token)},
   versionDynamic: ${printString(versionDynamic)},

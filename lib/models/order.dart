@@ -11,8 +11,9 @@ part 'order.g.dart';
 class Order {
   DateTime creationDate;
   int id;
-  bool get isPending => planId != null;
   int planId;
+
+  bool get isPending => planId != null;
 
   Order({DateTime creationDate, this.id, this.planId})
       : this.creationDate = creationDate ?? DateTime.now();
@@ -79,11 +80,9 @@ class Order {
   isSimilar(Order order) =>
       creationDate == order.creationDate && planId == order.planId;
 
-  merge(
-    Order order,
-  ) {
-    creationDate = order.creationDate ?? creationDate;
-    id = order.id ?? id;
-    planId = order.planId ?? planId;
+  merge(Order order) {
+    creationDate = order?.creationDate ?? creationDate;
+    id = order?.id ?? id;
+    planId = order?.planId ?? planId;
   }
 }

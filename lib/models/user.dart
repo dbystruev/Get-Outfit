@@ -10,17 +10,16 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User {
-  static final User shared = User();
-
   String avatar;
   String email;
   int id;
-  bool get isFilled => email != null && name != null && phone != null;
-  bool get isLoggedIn => token != null && token.length == 128;
   String name;
   String phone;
   DateTime registrationDate;
   String token;
+  
+  bool get isFilled => email != null && name != null && phone != null;
+  bool get isLoggedIn => token != null && token.length == 128;
 
   User({
     this.avatar,

@@ -9,12 +9,10 @@ import 'package:get_outfit/controllers/network_controller.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/app_data.dart';
-import 'package:get_outfit/models/plan+all.dart';
 import 'package:get_outfit/models/plans.dart';
+import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/questions.dart';
-import 'package:get_outfit/models/server_data.dart';
-import 'package:get_outfit/models/user.dart';
 import 'package:get_outfit/screens/login_screen.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:http/http.dart' as http;
@@ -28,7 +26,7 @@ class LaunchScreen extends StatelessWidget with Scale {
   Widget build(BuildContext context) {
     if (!built) {
       built = true;
-      navigate(context, delayInSeconds: 2);
+      navigateToLoginScreen(context, delayInSeconds: 2);
     }
     final double scale = getScale(context);
     return Scaffold(
@@ -47,7 +45,7 @@ class LaunchScreen extends StatelessWidget with Scale {
           ),
         ),
         onTap: () {
-          navigate(context);
+          navigateToLoginScreen(context);
         },
       ),
     );
@@ -76,24 +74,26 @@ class LaunchScreen extends StatelessWidget with Scale {
           Questions([], message: appData.message, status: appData.status);
     }
     if (!plans.areValid) {
-      // debugPrint(
-      //   'DEBUG in lib/screens/launch_screen.dart:80 plans are not valid, appData = $appData',
-      // );
-      plans.plans = AllPlans.local;
+      debugPrint(
+        'DEBUG in lib/screens/launch_screen.dart:80 plans are not valid, appData = $appData',
+      );
     }
     // matchQuestionPages(
     //   loadedQuestions: questions.questions,
     //   localQuestions: allQuestions,
     // );
     if (questions.areValid) {
-      networkController.questions = questions.questions;
+      networkController.savePrefsData(
+        PrefsData(questions: questions),
+      );
       debugPrint(
         'DEBUG in lib/screens/launch_screen.dart:91' +
-            ' ${questions.questions.expand((questionList) => questionList).length} questions' +
+            ' ${questions.length} questions' +
             ' are loaded in ${DateTime.now().difference(startTime)}',
       );
-      NetworkController.shared.createNewUser(appData).then(
-            (_) => debugPrint('User.shared = ${User.shared}'),
+      networkController.createNewUser(appData).then(
+            (_) =>
+                debugPrint('PrefsData.shared.user = ${PrefsData.shared.user}'),
           );
     } else {
       debugPrint(
@@ -248,12 +248,13 @@ class LaunchScreen extends StatelessWidget with Scale {
     }
   }
 
-  void navigate(BuildContext context, {int delayInSeconds = 0}) async {
+  void navigateToLoginScreen(
+    BuildContext context, {
+    int delayInSeconds = 0,
+  }) async {
     final DateTime startTime = DateTime.now();
     final Duration waitDuration = Duration(seconds: delayInSeconds);
-    final ServerData serverData =
-        await NetworkController.shared.getServerDataFromPrefs();
-    User.shared.merge(serverData?.user);
+    await networkController.getPrefsData();
     getAppData();
     final Duration elapsedTime = DateTime.now().difference(startTime);
     if (elapsedTime < waitDuration)

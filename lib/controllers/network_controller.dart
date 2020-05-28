@@ -12,11 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/plans.dart';
-import 'package:get_outfit/models/question+all.dart';
-import 'package:get_outfit/models/question.dart';
+import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/questions.dart';
 import 'package:get_outfit/models/server_data.dart';
-import 'package:get_outfit/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,9 +26,6 @@ class NetworkController {
   final String path;
   String get url => 'https://$authority/$path';
 
-  // To be replaced with questions loaded from the server
-  List<List<Question>> questions = AllQuestions.local;
-
   // Default constructor
   NetworkController._({
     this.authority = 'script.google.com',
@@ -41,7 +36,7 @@ class NetworkController {
   // Create new user and save user id in User.shared.id
   Future<void> createNewUser(AppData appData) async {
     // check if no user already created
-    if (User.shared.id != null) return;
+    if (PrefsData.shared.user?.id != null) return;
 
     try {
       final String url = appData.feedbackUrl;
@@ -58,11 +53,14 @@ class NetworkController {
       final Map<String, dynamic> appDataMap = convert.jsonDecode(response.body);
       final AppData responseAppData = AppData.fromJson(appDataMap);
       final ServerData serverData = responseAppData?.serverData;
-      User.shared.merge(serverData?.user);
-      saveServerDataToPrefs(serverData);
+      savePrefsData(
+        PrefsData(
+          appData: AppData(serverData: serverData),
+        ),
+      );
     } catch (error) {
       debugPrint(
-        'ERROR in lib/controllers/network_controllers.dart:65 error = $error',
+        'ERROR in lib/controllers/network_controllers.dart:63 error = $error',
       );
     }
   }
@@ -78,7 +76,10 @@ class NetworkController {
       final Map<String, dynamic> appDataMap = convert.jsonDecode(response.body);
       return AppData.fromJson(appDataMap);
     } catch (error) {
-      return AppData(globals.statusError, message: error.toString());
+      return AppData(
+        message: error.toString(),
+        status: globals.statusError,
+      );
     }
   }
 
@@ -103,6 +104,32 @@ class NetworkController {
     } catch (error) {
       return Plans([], message: error.toString(), status: globals.statusError);
     }
+  }
+
+  // Get prefs data from shared preferences
+  Future<void> getPrefsData() async {
+    // obtain shared preferences
+    final prefs = await SharedPreferences.getInstance();
+
+    // get saved prefs data if any
+    final String prefsDataString =
+        prefs.getString(globals.prefsKeyForPrefsData);
+
+    // return null if no prefs data loaded
+    if (prefsDataString == null) return;
+
+    // decode saved prefs data
+    final Map<String, dynamic> prefsDataMap =
+        convert.jsonDecode(prefsDataString);
+
+    // return null if decode failed
+    if (prefsDataMap == null) return;
+
+    // get new prefs data from decoded string
+    final PrefsData newPrefsData = PrefsData.fromJson(prefsDataMap);
+
+    // merge loaded and existing prefs data
+    PrefsData.shared.merge(newPrefsData);
   }
 
   // Async function which returns the questions
@@ -146,35 +173,6 @@ class NetworkController {
     return getHash(hashString);
   }
 
-  // Get server data from shared preferences
-  Future<ServerData> getServerDataFromPrefs() async {
-    // obtain shared preferences
-    final prefs = await SharedPreferences.getInstance();
-
-    // get saved server data if any
-    final String serverDataString = prefs.getString(globals.serverDataPrefsKey);
-
-    // return null if no server data loaded
-    if (serverDataString == null) return null;
-
-    // decode saved server data
-    final Map<String, dynamic> serverDataMap =
-        convert.jsonDecode(serverDataString);
-
-    // return null if decode failed
-    if (serverDataMap == null) return null;
-
-    // get new server data from decoded string
-    final ServerData newServerData = ServerData.fromJson(serverDataMap);
-
-    debugPrint(
-      'DEBUG in lib/controllers/network_controllers.dart:171 getServerDataFromPrefs: $newServerData',
-    );
-
-    // return decoded server data
-    return newServerData;
-  }
-
   // Async function which posts the questions
   Future<http.Response> postQuestions(
     Questions questions, {
@@ -187,7 +185,7 @@ class NetworkController {
         'Content-Type': 'application/json; charset=UTF-8',
       };
       debugPrint(
-        'DEBUG in lib/controllers/network_controller.dart line 190: POST request' +
+        'DEBUG in lib/controllers/network_controller.dart line 193: POST request' +
             '\n  url = $url' +
             '\n  body = $body' +
             '\n  headers = $headers',
@@ -201,34 +199,33 @@ class NetworkController {
     }
   }
 
-  // Remove server data shared preferences
-  void removeServerDataPrefs() async {
+  // Remove app data shared preferences
+  void removePrefsData() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove(globals.serverDataPrefsKey);
-    debugPrint(
-      'DEBUG in lib/controllers/network_controllers.dart:209 removeServerDataPrefs()',
-    );
+    prefs.remove(globals.prefsKeyForPrefsData);
   }
 
-  // Save server data to shared preferences
-  void saveServerDataToPrefs(ServerData serverData) async {
+  // Save prefs data to shared preferences
+  void savePrefsData([PrefsData newPrefsData]) async {
+    // merge existing and new prefs data
+    PrefsData.shared.merge(newPrefsData);
+
+    // get merged prefs data
+    final PrefsData prefsData = PrefsData.shared;
+
     // don't save null data
-    if (serverData == null) return;
+    if (prefsData == null || !prefsData.hasData) return;
 
     // obtain shared preferences
     final prefs = await SharedPreferences.getInstance();
 
-    // convert server data to json map
-    final Map<String, dynamic> serverDataMap = serverData.toJson();
+    // convert prefs data to json map
+    final Map<String, dynamic> prefsDataMap = prefsData.toJson();
 
     // convert json map to string
-    final String serverDataString = convert.jsonEncode(serverDataMap);
+    final String prefsDataString = convert.jsonEncode(prefsDataMap);
 
-    // save server data to preferenses
-    prefs.setString(globals.serverDataPrefsKey, serverDataString);
-
-    debugPrint(
-      'DEBUG in lib/controllers/network_controllers.dart:231 saveServerDataToPrefs($serverData)',
-    );
+    // save prefs data to shared preferenses
+    prefs.setString(globals.prefsKeyForPrefsData, prefsDataString);
   }
 }

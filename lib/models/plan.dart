@@ -18,9 +18,15 @@ part 'plan.g.dart';
 /// JSON serialization logic to be generated.
 @JsonSerializable()
 class Plan {
+  static int _maxId = 0;
+  static int get maxId => _maxId;
+
   final String currency;
   final String description;
   final int id;
+  final int price;
+  final String title;
+
   bool get isValid =>
       currency != null &&
       currency.isNotEmpty &&
@@ -33,11 +39,6 @@ class Plan {
       0 < price &&
       title != null &&
       title.isNotEmpty;
-  final int price;
-  final String title;
-
-  static int _maxId = 0;
-  static int get maxId => _maxId;
 
   Plan(
     this.title, {
