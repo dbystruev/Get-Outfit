@@ -21,8 +21,8 @@ Plans _$PlansFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PlansToJson(Plans instance) => <String, dynamic>{
       'message': instance.message,
-      'plans': instance.plans?.map((e) => e?.toJson())?.toList(),
       'status': instance.status,
       'time': instance.time,
+      'plans': instance.plans?.map((e) => e?.toJson())?.toList(),
       'version': instance.versionDynamic,
     };

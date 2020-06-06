@@ -5,11 +5,9 @@
 //
 //  https://flutter.dev/docs/development/data-and-backend/json
 
-import 'package:flutter/material.dart';
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/order.dart';
-import 'package:get_outfit/models/plan.dart';
 import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/questions.dart';
 import 'package:get_outfit/models/server_data.dart';

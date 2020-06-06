@@ -5,7 +5,6 @@
 //
 
 // https://flutter.dev/docs/development/data-and-backend/json
-import 'package:flutter/material.dart';
 import 'package:get_outfit/models/plan+all.dart';
 import 'package:get_outfit/models/plan.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -46,8 +45,6 @@ class Plans {
     this.versionDynamic,
   }) {
     this.plans = plans;
-    debugPrint(
-        'Plans() plans.length = ${plans.length}, Plan.maxId = ${Plan.maxId}');
   }
 
   factory Plans.fromJson(Map<String, dynamic> json) => _$PlansFromJson(json);

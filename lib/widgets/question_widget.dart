@@ -45,7 +45,9 @@ class QuestionWidget extends StatelessWidget {
       case QuestionType.inlineText:
         return Padding(
           child: FormWidget.quiz(
+            controller: question.controller,
             hintText: question.title,
+            keyboardType: question.keyboardType,
             onChanged: (String newString) => onAnswer(
               Answer.text(newString),
             ),

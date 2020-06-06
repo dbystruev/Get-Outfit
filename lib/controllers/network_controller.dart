@@ -11,7 +11,6 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/app_data.dart';
-import 'package:get_outfit/models/plan.dart';
 import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/questions.dart';
@@ -65,7 +64,7 @@ class NetworkController {
       );
     } catch (error) {
       debugPrint(
-        'ERROR in lib/controllers/network_controllers.dart:68' +
+        'ERROR in lib/controllers/network_controllers.dart:67' +
             ' createNewUser($appData) error = $error',
       );
     }
@@ -134,15 +133,8 @@ class NetworkController {
     // get new prefs data from decoded string
     final PrefsData newPrefsData = PrefsData.fromJson(prefsDataMap);
 
-    debugPrint('getPrefsData() Plan.maxId = ${Plan.maxId}');
-
     // merge loaded and existing prefs data
     PrefsData.shared.merge(newPrefsData);
-
-    debugPrint(
-      'DEBUG in lib/controllers/network_controllers.dart:141' +
-          ' getPrefsData() Plan.maxId = ${Plan.maxId}',
-    );
   }
 
   // Async function which returns the questions
@@ -261,7 +253,7 @@ class NetworkController {
     } catch (error) {
       http.Response response = http.Response(error.toString(), 400);
       debugPrint(
-        'ERROR in lib/controllers/network_controllers.dart:261' +
+        'ERROR in lib/controllers/network_controllers.dart:256' +
             ' postServerData($serverData, url: $url) response = $response',
       );
       return response;
@@ -270,9 +262,6 @@ class NetworkController {
 
   // Remove app data shared preferences
   void removePrefsData() async {
-    debugPrint(
-      'DEBUG in lib/controllers/network_controllers.dart:271 removePrefsData()',
-    );
     final prefs = await SharedPreferences.getInstance();
     prefs.remove(globals.prefsKeyForPrefsData);
   }
@@ -308,10 +297,6 @@ class NetworkController {
       if (newPrefsData.questions != null)
         params.add('${newPrefsData.questions.length} questions');
     }
-    debugPrint(
-      'DEBUG in lib/controllers/network_controllers.dart:309' +
-          ' savePrefsData($params) Plan.maxId = ${Plan.maxId}',
-    );
 
     // don't save null data
     if (prefsData == null || !prefsData.hasData) return;

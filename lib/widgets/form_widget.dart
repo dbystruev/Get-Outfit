@@ -36,6 +36,7 @@ class FormWidget extends StatelessWidget {
     double fontSize,
     String hintText,
     String initialValue,
+    TextInputType keyboardType,
     String labelText,
     Function(String) onChanged,
   }) =>
@@ -51,6 +52,7 @@ class FormWidget extends StatelessWidget {
         fontFamily: 'FuturaBook',
         fontSize: fontSize,
         fontWeight: FontWeight.normal,
+        keyboardType: keyboardType,
         hintText: hintText,
         labelText: labelText,
         onChanged: onChanged,

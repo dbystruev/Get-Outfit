@@ -12,31 +12,18 @@ class Order {
   DateTime creationDate;
   int id;
   int planId;
+  String promoCode;
 
   bool get isPending => planId != null;
 
-  Order({DateTime creationDate, this.id, this.planId})
+  Order({DateTime creationDate, this.id, this.planId, this.promoCode})
       : this.creationDate = creationDate ?? DateTime.now();
 
   factory Order.merge(Order order, Order newData) => Order(
         creationDate: order?.creationDate ?? newData?.creationDate,
         id: newData?.id ?? order?.id,
         planId: newData?.planId ?? order?.planId,
-      );
-
-  factory Order.over(
-    Order order, {
-    DateTime cleaningDate,
-    DateTime creationDate,
-    int id,
-    double meters,
-    int planId,
-    String service,
-  }) =>
-      Order(
-        creationDate: creationDate ?? order.creationDate,
-        id: id ?? order.id,
-        planId: planId ?? order.planId,
+        promoCode: newData?.promoCode ?? order?.promoCode,
       );
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);

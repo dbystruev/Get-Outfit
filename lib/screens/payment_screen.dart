@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_outfit/controllers/network_controller.dart';
 import 'package:get_outfit/design/scale.dart';
+import 'package:get_outfit/globals.dart';
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/order.dart';
@@ -15,36 +16,68 @@ import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/question_type.dart';
 import 'package:get_outfit/models/server_data.dart';
+import 'package:get_outfit/models/user.dart';
 import 'package:get_outfit/screens/thank_you_screen.dart';
 import 'package:get_outfit/widgets/button_widget.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:get_outfit/widgets/question_widget.dart';
 
-class PaymentScreen extends StatelessWidget with Scale {
+class PaymentScreen extends StatefulWidget {
   final Plan plan;
 
   PaymentScreen(this.plan);
 
   @override
+  _PaymentScreenState createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> with Scale {
+  final TextEditingController controllerForEmail = TextEditingController();
+  final TextEditingController controllerForName = TextEditingController();
+  final TextEditingController controllerForPhone = TextEditingController();
+  final TextEditingController controllerForPromocode = TextEditingController();
+
+  bool get isValidInput => validateInputData().isEmpty;
+  Plan get plan => widget.plan;
+
+  @override
   Widget build(BuildContext context) {
     final String priceString = '${plan.price} ${plan.currency}';
     final List<Question> questions = [
-      Question('Имя', type: QuestionType.inlineText),
-      Question('E-mail', type: QuestionType.inlineText),
-      Question('Мобильный телефон', type: QuestionType.inlineText),
-      Question('Промокод', type: QuestionType.inlineText),
+      Question(
+        'Имя',
+        controller: controllerForName,
+        type: QuestionType.inlineText,
+      ),
+      Question(
+        'E-mail',
+        controller: controllerForEmail,
+        keyboardType: TextInputType.emailAddress,
+        type: QuestionType.inlineText,
+      ),
+      Question(
+        'Мобильный телефон',
+        controller: controllerForPhone,
+        keyboardType: TextInputType.phone,
+        type: QuestionType.inlineText,
+      ),
+      Question(
+        'Промокод',
+        controller: controllerForPromocode,
+        type: QuestionType.inlineText,
+      ),
     ];
     int index = 0;
     final double scale = getScale(context);
     final List<Widget> questionWidgets = questions
-        .map((question) => QuestionWidget(
-              index++,
-              question,
-              onAnswer: (Answer answer, {String label}) => debugPrint(
-                'DEBUG in lib/screens/payment_screen.dart line 44: answer = $answer',
-              ),
-              scale: scale,
-            ))
+        .map(
+          (question) => QuestionWidget(
+            index++,
+            question,
+            onAnswer: (Answer answer, {String label}) => setState(() {}),
+            scale: scale,
+          ),
+        )
         .toList();
     final List<Widget> children = [
           FuturaDemiText.w600(
@@ -116,15 +149,17 @@ class PaymentScreen extends StatelessWidget with Scale {
             buttonColor: Theme.of(context).primaryColor,
             fontSize: 12,
             height: 30,
-            onPressed: () {
-              saveOrderAndUser();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => ThankYouScreen(),
-                ),
-              );
-            },
+            onPressed: isValidInput
+                ? () {
+                    saveOrderAndUser();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => ThankYouScreen(),
+                      ),
+                    );
+                  }
+                : null,
             scale: scale,
             width: 140,
           ),
@@ -147,31 +182,57 @@ class PaymentScreen extends StatelessWidget with Scale {
         onHorizontalDragUpdate: (DragUpdateDetails details) {
           if (0 < details.delta.dx) Navigator.pop(context);
         },
+        onTap: hideKeyboard,
       ),
     );
   }
 
+  // Hide keyboard
+  void hideKeyboard() => FocusScope.of(context).unfocus();
+
+  @override
+  void initState() {
+    super.initState();
+    controllerForEmail.text = PrefsData.shared.user?.email;
+    controllerForName.text = PrefsData.shared.user?.name;
+    controllerForPhone.text = digits(PrefsData.shared.user?.phone);
+    controllerForPromocode.text = PrefsData.shared.order?.promoCode;
+  }
+
   // Get all enterd data and save it to prefs and the server
   void saveOrderAndUser() async {
+    PrefsData.shared.user.merge(
+      User(
+        email: controllerForEmail.text,
+        name: controllerForName.text,
+        phone: controllerForPhone.text,
+      ),
+    );
     await NetworkController.shared.savePrefsData(
       PrefsData(
         appData: AppData(
           serverData: ServerData(
-            order: Order(planId: plan.id),
+            order:
+                Order(planId: plan.id, promoCode: controllerForPromocode.text),
           ),
         ),
       ),
     );
-    AppData appData = await NetworkController.shared
+    await NetworkController.shared
         .postAppData(PrefsData.shared.appData)
         .catchError(
           (error) => debugPrint(
-            'ERROR in lib/screens/payment_screen.dart:169 saveOrderAndUser() ' +
+            'ERROR in lib/screens/payment_screen.dart:225 saveOrderAndUser() ' +
                 error.toString(),
           ),
         );
-    debugPrint(
-        'DEBUG in lib/screens/payment_screen.dart:174 saveOrderAndUser() ' +
-            'appData = $appData');
+  }
+
+  // Validate input data, return '' if everything is OK
+  String validateInputData() {
+    if (controllerForEmail.text.isEmpty) return 'E-mail should not be empty';
+    if (controllerForName.text.isEmpty) return 'The name should not be empty';
+    if (controllerForPhone.text.isEmpty) return 'The phone should not be empty';
+    return '';
   }
 }

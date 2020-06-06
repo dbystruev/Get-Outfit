@@ -16,6 +16,9 @@ const String appName = 'getoutfit';
 const String appPassword = 'toh0ung2ohY8Uyev';
 const String appVersion = '2020.04.21.13:45:00';
 
+// Get digits from a string
+String digits(String number) => number?.replaceAll(RegExp(r'[^\d]'), '');
+
 // True if running in release mode
 const bool isProduction = bool.fromEnvironment('dart.vm.product');
 

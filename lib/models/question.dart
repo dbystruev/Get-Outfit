@@ -6,6 +6,7 @@
 
 // https://flutter.dev/docs/development/data-and-backend/json
 import 'dart:math';
+import 'package:flutter/widgets.dart';
 import 'package:get_outfit/models/question_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:get_outfit/models/answer.dart';
@@ -19,6 +20,10 @@ class Question {
   static int get maxId => _maxId;
 
   final List<String> answers;
+
+  @JsonKey(ignore: true)
+  final TextEditingController controller;
+
   final Answer defaultAnswer;
   final Gender gender;
   Answer givenAnswer;
@@ -26,18 +31,23 @@ class Question {
   final int id;
   final bool isEnabled;
   final bool isVisual;
+
+  @JsonKey(ignore: true)
+  final TextInputType keyboardType;
+  
   final int maxValue;
   final int minValue;
   final String subtitle;
   final String title;
   final QuestionType type;
-  
+
   bool get isValid => id != null && 0 < id && id <= _maxId;
   List<String> get imageUrls => isVisual ? answers : [];
 
   Question(
     this.title, {
     this.answers,
+    this.controller,
     this.defaultAnswer = const Answer.defaultIndex(),
     this.gender = Gender.both,
     Answer givenAnswer,
@@ -45,6 +55,7 @@ class Question {
     int id,
     bool isEnabled,
     this.isVisual = false,
+    this.keyboardType,
     this.maxValue,
     this.minValue,
     this.subtitle,

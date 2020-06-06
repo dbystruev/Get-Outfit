@@ -9,7 +9,6 @@ import 'package:get_outfit/controllers/network_controller.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/app_data.dart';
-import 'package:get_outfit/models/plan.dart';
 import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/question.dart';
@@ -91,14 +90,14 @@ class LaunchScreen extends StatelessWidget with Scale {
         PrefsData(questions: questions),
       );
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:91 getAppData()' +
+        'DEBUG in lib/screens/launch_screen.dart:93 getAppData()' +
             ' ${questions.length} questions' +
             ' are loaded in ${DateTime.now().difference(startTime)}',
       );
       networkController.createNewUser(appData);
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:98 questions are not valid' +
+        'DEBUG in lib/screens/launch_screen.dart:100 questions are not valid' +
             ', appData = $appData, questions = $questions',
       );
       // questions.questions = allQuestions;
@@ -112,8 +111,10 @@ class LaunchScreen extends StatelessWidget with Scale {
     List<List<Question>> localQuestions,
   }) {
     if (loadedQuestions?.length == localQuestions.length) {
-      debugPrint('DEBUG in lib/screens/launch_screen.dart:114' +
-          ' matchQuestionPages() ${loadedQuestions.length} pages');
+      debugPrint(
+        'DEBUG in lib/screens/launch_screen.dart:115' +
+            ' matchQuestionPages() ${loadedQuestions.length} pages',
+      );
       for (int pageIndex = 0; pageIndex < loadedQuestions.length; pageIndex++) {
         if (loadedQuestions[pageIndex].length ==
             localQuestions[pageIndex].length) {
@@ -139,7 +140,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       }
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:141 The number of pages does not match:' +
+        'DEBUG in lib/screens/launch_screen.dart:143 The number of pages does not match:' +
             '\n\tloadedQuestions.length = ${loadedQuestions?.length}' +
             '\n\tlocalQuestions.length = ${localQuestions.length}',
       );
@@ -284,7 +285,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       url = result.headers['location'];
     }
     debugPrint(
-      'DEBUG in lib/screens/launch_screen.dart:286 postQuestions()' +
+      'DEBUG in lib/screens/launch_screen.dart:288 postQuestions()' +
           '\n\tstatusCode = $statusCode' +
           '\n\theaders = ${result.headers}' +
           // '\n\tbody = ${result.body}' +

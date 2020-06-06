@@ -13,6 +13,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['creationDate'] as String),
     id: json['id'] as int,
     planId: json['planId'] as int,
+    promoCode: json['promoCode'] as String,
   );
 }
 
@@ -20,4 +21,5 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'creationDate': instance.creationDate?.toIso8601String(),
       'id': instance.id,
       'planId': instance.planId,
+      'promoCode': instance.promoCode,
     };

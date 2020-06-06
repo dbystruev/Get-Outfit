@@ -10,7 +10,7 @@ import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/screens/launch_screen.dart';
 
 void main() {
-  // Disable debugPring in release mode
+  // Disable debugPrint in release mode
   if (globals.isProduction) debugPrint = (String message, {int wrapWidth}) {};
   runApp(
     Main(),
