@@ -5,8 +5,6 @@
 //
 
 // https://flutter.dev/docs/development/data-and-backend/json
-import 'dart:math';
-
 import 'package:json_annotation/json_annotation.dart';
 
 /// This allows the `Plan` class to access private members in
@@ -18,8 +16,26 @@ part 'plan.g.dart';
 /// JSON serialization logic to be generated.
 @JsonSerializable()
 class Plan {
-  static int _maxId = 0;
-  static int get maxId => _maxId;
+  static List<Plan> _allPlans;
+  static int get length => _allPlans?.length ?? 0;
+  static int get maxId => length < 1 ? null : length - 1;
+
+  // Return plan id if this plan is already present or null if not
+  static int findPlanId({
+    String currency,
+    String description,
+    int price,
+    String title,
+  }) =>
+      _allPlans
+          ?.firstWhere(
+              (plan) =>
+                  plan.currency == currency &&
+                  plan.price == price &&
+                  plan.description == description &&
+                  plan.title == title,
+              orElse: () => null)
+          ?.id;
 
   final String currency;
   final String description;
@@ -34,7 +50,7 @@ class Plan {
       description.isNotEmpty &&
       id != null &&
       0 < id &&
-      id <= _maxId &&
+      id <= length &&
       price != null &&
       0 < price &&
       title != null &&
@@ -46,21 +62,27 @@ class Plan {
     this.description,
     int id,
     this.price,
-  }) : this.id = id ?? ++_maxId {
-    _maxId = max(this.id, _maxId);
+  }) : this.id = id ??
+            findPlanId(
+              currency: currency,
+              description: description,
+              price: price,
+              title: title,
+            ) ??
+            length {
+    if (length == this.id) {
+      if (_allPlans == null)
+        _allPlans = [this];
+      else
+        _allPlans.add(this);
+    }
   }
 
-  Plan.by(this.title, {this.description, int id, this.price})
-      : currency = 'BYN',
-        this.id = id ?? ++_maxId {
-    _maxId = max(this.id, _maxId);
-  }
+  factory Plan.by(String title, {String description, int id, int price}) =>
+      Plan(title, currency: 'BYN', description: description, price: price);
 
-  Plan.ru(this.title, {this.description, int id, this.price})
-      : currency = '₽',
-        this.id = id ?? ++_maxId {
-    _maxId = max(this.id, _maxId);
-  }
+  factory Plan.ru(String title, {String description, int id, int price}) =>
+      Plan(title, currency: '₽', description: description, price: price);
 
   /// A necessary factory constructor for creating a new Plan instance
   /// from a map. Pass the map to the generated `_$PlanFromJson()` constructor.
@@ -72,7 +94,10 @@ class Plan {
   /// helper method `_$PlanToJson`.
   Map<String, dynamic> toJson() => _$PlanToJson(this);
 
-  void dispose() => _maxId -= id == _maxId ? 1 : 0;
+  void dispose() {
+    _allPlans?.clear();
+    _allPlans = null;
+  }
 
   @override
   String toString() =>

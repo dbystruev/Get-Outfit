@@ -5,6 +5,7 @@
 //
 
 // https://flutter.dev/docs/development/data-and-backend/json
+import 'package:flutter/material.dart';
 import 'package:get_outfit/models/plan+all.dart';
 import 'package:get_outfit/models/plan.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -12,12 +13,24 @@ part 'plans.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Plans {
-  static final Plans shared = Plans(AllPlans.local);
+  static List<Plan> _plans;
+  static Plans _shared;
+  static Plans get shared {
+    if (_shared == null) _shared = Plans(AllPlans.local);
+    return _shared;
+  }
 
   String message;
-  List<Plan> plans;
   String status;
   int time;
+
+  List<Plan> get plans => _plans ?? [];
+  set plans(List<Plan> newPlans) {
+    if (newPlans != null &&
+        newPlans.isNotEmpty &&
+        (_plans == null || _plans.isEmpty || _plans.length != newPlans.length))
+      _plans = newPlans;
+  }
 
   bool get areValid => plans != null && plans.any((plan) => plan.isValid);
   String get version => versionDynamic.toString();
@@ -26,12 +39,16 @@ class Plans {
   dynamic versionDynamic;
 
   Plans(
-    this.plans, {
+    List<Plan> plans, {
     this.message,
     this.status,
     this.time,
     this.versionDynamic,
-  });
+  }) {
+    this.plans = plans;
+    debugPrint(
+        'Plans() plans.length = ${plans.length}, Plan.maxId = ${Plan.maxId}');
+  }
 
   factory Plans.fromJson(Map<String, dynamic> json) => _$PlansFromJson(json);
 

@@ -7,7 +7,10 @@
 import 'package:get_outfit/models/plan.dart';
 
 extension AllPlans on Plan {
-  static List<Plan> get local => [
+  static List<Plan> _local;
+  static List<Plan> get local {
+    if (_local == null)
+      _local = [
         Plan.ru(
           'Get Outfit',
           description: 'Получите образ из 5 вещей. Вы увидите их в день доставки. Мы приятно удивим.\n\n' +
@@ -29,4 +32,6 @@ extension AllPlans on Plan {
           price: 3490,
         ),
       ];
+    return _local;
+  }
 }

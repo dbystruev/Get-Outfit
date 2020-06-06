@@ -5,11 +5,16 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:get_outfit/controllers/network_controller.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/models/answer.dart';
+import 'package:get_outfit/models/app_data.dart';
+import 'package:get_outfit/models/order.dart';
 import 'package:get_outfit/models/plan.dart';
+import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/question_type.dart';
+import 'package:get_outfit/models/server_data.dart';
 import 'package:get_outfit/screens/thank_you_screen.dart';
 import 'package:get_outfit/widgets/button_widget.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
@@ -36,7 +41,7 @@ class PaymentScreen extends StatelessWidget with Scale {
               index++,
               question,
               onAnswer: (Answer answer, {String label}) => debugPrint(
-                'DEBUG in lib/screens/payment_screen.dart line 39: answer = $answer',
+                'DEBUG in lib/screens/payment_screen.dart line 44: answer = $answer',
               ),
               scale: scale,
             ))
@@ -112,6 +117,7 @@ class PaymentScreen extends StatelessWidget with Scale {
             fontSize: 12,
             height: 30,
             onPressed: () {
+              saveOrderAndUser();
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -143,5 +149,29 @@ class PaymentScreen extends StatelessWidget with Scale {
         },
       ),
     );
+  }
+
+  // Get all enterd data and save it to prefs and the server
+  void saveOrderAndUser() async {
+    await NetworkController.shared.savePrefsData(
+      PrefsData(
+        appData: AppData(
+          serverData: ServerData(
+            order: Order(planId: plan.id),
+          ),
+        ),
+      ),
+    );
+    AppData appData = await NetworkController.shared
+        .postAppData(PrefsData.shared.appData)
+        .catchError(
+          (error) => debugPrint(
+            'ERROR in lib/screens/payment_screen.dart:169 saveOrderAndUser() ' +
+                error.toString(),
+          ),
+        );
+    debugPrint(
+        'DEBUG in lib/screens/payment_screen.dart:174 saveOrderAndUser() ' +
+            'appData = $appData');
   }
 }

@@ -20,10 +20,10 @@ function doGet(request) {
     let response = { 'status': 'FAILED', 'message': message };
 
     try {
-        // Disable due to replacement with POST methods
+        // Disable due when needed
         // throw 'not implemented.  Contact developer at dbystruev@me.com or github.com/dbystruev';
 
-        // Try to open the sheet bound with this script and throw if it fails
+        // Try to open the sheet bound to this script and throw if it fails
         const spreadsheet = tryToGetActiveSpreadsheet();
 
         // Get the users sheet
@@ -61,6 +61,9 @@ function doGet(request) {
         // Create user object for future response
         let user = {};
 
+        // Get the response code
+        const responseCode = request.parameter.responseCode;
+
         // Check if any matching users found
         if (isNotEmpty(matchingUser) && 5 < matchingUser.length && phone != 'newuser') {
             // Get matching user's id
@@ -91,7 +94,7 @@ function doGet(request) {
             );
 
             // Compose a row for appending to the table
-            const row = [userId, null, null, null, '\'' + phone, registrationDate];
+            const row = [userId, null, null, null, '\'' + phone, registrationDate, responseCode];
 
             // Add row to the table
             userSheet.appendRow(row);
@@ -108,7 +111,6 @@ function doGet(request) {
         }
 
         // Check that the response code was provided
-        const responseCode = request.parameter.responseCode;
         if (isEmpty(responseCode)) {
             // It wasn't — we need to generate one a random one from 0 to 9999
             let generatedCode = Math.floor(10000 * Math.random()).toString();
@@ -188,9 +190,15 @@ function doGet(request) {
 }
 
 function doPost(request) {
+    // Plans for filling order table (should match lib/models/plan+all.dart)
+    const plans = [
+        { name: 'Get Outfit', price: 1490 },
+        { name: 'Get Wardrobe', price: 3490 },
+    ];
+
     // Make sheets available outside of try/catch block
+    let answerSheet;
     let orderSheet;
-    let userFeedbackSheet;
     let userSheet;
 
     // Failing by default
@@ -202,13 +210,13 @@ function doPost(request) {
         // Try to open the sheet bound with this script and throw if it fails
         const spreadsheet = tryToGetActiveSpreadsheet();
 
-        // Get the order, user, and user feedback sheets
+        // Get the answer, order, and user sheets
+        answerSheet = spreadsheet.getSheetByName('Answers');
         orderSheet = spreadsheet.getSheetByName('Orders');
-        userFeedbackSheet = spreadsheet.getSheetByName('Feedback');
         userSheet = spreadsheet.getSheetByName('Users');
 
-        if (isEmpty(orderSheet) || isEmpty(userFeedbackSheet) || isEmpty(userSheet))
-            throw 'The spreadsheet should have Feedback, Orders, and Users sheets';
+        if (isEmpty(answerSheet) || isEmpty(orderSheet) || isEmpty(userSheet))
+            throw 'The spreadsheet should have Answers, Orders, and Users sheets';
 
         // Get the tokens, check them and throw if they are absent or are not correct
         tryToCheckTokens(userSheet, request);
@@ -233,6 +241,31 @@ function doPost(request) {
         // Check that the user is present, their id and user token are valid
         tryToValidateUser(userSheet, user);
 
+        // Check if answers are present and were not submitted earlier
+        // TODO: change answers model
+        let answers = serverData.answers;
+        if (areValidAnswers(answers)) {
+            dataFound = true;
+
+            // Compose the row of answers data
+            // Id is the number of filled rows minus the number of frozen rows + 1
+            const answerId = getNextId(answerSheet);
+
+            // Update the answers with the new id
+            answers = getMergedObject(answers, { 'id': answerId });
+
+            // Compose and add the answer row
+            const answerRow = [answerId, user.id, answers.date, answers.text];
+            answerSheet.appendRow(answerRow);
+
+            // Update the response with the ansers
+            serverData = getMergedObject(serverData, { 'answers': answers });
+            response = getMergedObject(response, { 'serverData': serverData });
+
+            // Update the version of the feedback sheet
+            updateVersion(answerSheet);
+        }
+
         // Check if order is present and wasn't submitted earlier
         let order = serverData.order;
         if (isValidOrder(order) && isEmpty(order.id)) {
@@ -245,15 +278,23 @@ function doPost(request) {
             // Update the order with the new id
             order = getMergedObject(order, { 'id': orderId });
 
+            // Get plan id
+            const planId = order.planId;
+
+            // Check that plan id is valid
+            if (isEmpty(planId) || !Number.isInteger(planId) || planId < 0 || plans.length <= planId)
+                throw 'Plan id ' + planId + ' is not valid';
+
+            // Get the plan
+            const plan = plans[planId];
+
             // Compose and add the order row
             const orderRow = [
                 orderId,
                 user.id,
-                order.cleaningDate,
-                order.creationDate,
-                order.meters,
-                order.planId,
-                order.service
+                planId,
+                plan.price,
+                plan.name
             ];
             orderSheet.appendRow(orderRow);
 
@@ -265,31 +306,7 @@ function doPost(request) {
             updateVersion(orderSheet);
         }
 
-        // Check if userFeedback is present and wasn't submitted earlier
-        let userFeedback = serverData.userFeedback;
-        if (isValidFeedback(userFeedback) && isEmpty(userFeedback.id)) {
-            dataFound = true;
-
-            // Compose the row of user feedback data
-            // Id is the number of filled rows minus the number of frozen rows + 1
-            const feedbackId = getNextId(userFeedbackSheet);
-
-            // Update the user feedback with the new id
-            userFeedback = getMergedObject(userFeedback, { 'id': feedbackId });
-
-            // Compose and add the feedback row
-            const feedbackRow = [feedbackId, user.id, userFeedback.date, userFeedback.text];
-            userFeedbackSheet.appendRow(feedbackRow);
-
-            // Update the response with the user feedback
-            serverData = getMergedObject(serverData, { 'userFeedback': userFeedback });
-            response = getMergedObject(response, { 'serverData': serverData });
-
-            // Update the version of the feedback sheet
-            updateVersion(userFeedbackSheet);
-        }
-
-        // Check if the user is present and order/feedback are not
+        // Check if the user is present
         if (isNotEmpty(user)
             // && !isValidOrder(order) && !isValidFeedback(userFeedback)
         ) {
@@ -365,6 +382,11 @@ function doPost(request) {
     return ContentService
         .createTextOutput(JSON.stringify(response))
         .setMimeType(ContentService.MimeType.JSON);
+}
+
+// Check if the answers are valid
+function areValidAnswers(answers) {
+    return isNotEmpty(answers);
 }
 
 // Define the range with non-empty data
@@ -486,11 +508,6 @@ function isEmpty(value) {
 
 function isNotEmpty(value) {
     return value || value === 0 || value === false ? true : undefined;
-}
-
-function isValidFeedback(feedback) {
-    return isNotEmpty(feedback) &&
-        isNotEmpty(feedback.text);
 }
 
 function isValidOrder(order) {

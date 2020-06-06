@@ -5,9 +5,11 @@
 //
 //  https://flutter.dev/docs/development/data-and-backend/json
 
+import 'package:flutter/material.dart';
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/order.dart';
+import 'package:get_outfit/models/plan.dart';
 import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/questions.dart';
 import 'package:get_outfit/models/server_data.dart';
@@ -18,10 +20,15 @@ part 'prefs_data.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PrefsData {
-  static final PrefsData shared = PrefsData(
-    plans: Plans.shared,
-    questions: Questions.shared,
-  );
+  static PrefsData _shared;
+  static PrefsData get shared {
+    if (_shared == null)
+      _shared = PrefsData(
+        plans: Plans.shared,
+        questions: Questions.shared,
+      );
+    return _shared;
+  }
 
   AppData appData;
   Plans plans;

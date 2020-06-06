@@ -11,6 +11,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/app_data.dart';
+import 'package:get_outfit/models/plan.dart';
 import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/questions.dart';
@@ -40,27 +41,32 @@ class NetworkController {
 
     try {
       final String url = appData.feedbackUrl;
-      final String generatedCode = '0000';
+      final String generatedCode = '1111';
       final String phone = 'newuser';
       final String token = appData.token;
       final String responseToken = getResponseToken(token);
       final String request = '$url' +
           '?generatedCode=$generatedCode' +
           '&phone=$phone' +
+          '&responseCode=$generatedCode' +
           '&responseToken=$responseToken' +
           '&token=$token';
       final http.Response response = await http.get(request);
       final Map<String, dynamic> appDataMap = convert.jsonDecode(response.body);
       final AppData responseAppData = AppData.fromJson(appDataMap);
       final ServerData serverData = responseAppData?.serverData;
+      appData.merge(
+        AppData(serverData: serverData),
+      );
       savePrefsData(
         PrefsData(
-          appData: AppData(serverData: serverData),
+          appData: appData,
         ),
       );
     } catch (error) {
       debugPrint(
-        'ERROR in lib/controllers/network_controllers.dart:63 error = $error',
+        'ERROR in lib/controllers/network_controllers.dart:68' +
+            ' createNewUser($appData) error = $error',
       );
     }
   }
@@ -128,8 +134,15 @@ class NetworkController {
     // get new prefs data from decoded string
     final PrefsData newPrefsData = PrefsData.fromJson(prefsDataMap);
 
+    debugPrint('getPrefsData() Plan.maxId = ${Plan.maxId}');
+
     // merge loaded and existing prefs data
     PrefsData.shared.merge(newPrefsData);
+
+    debugPrint(
+      'DEBUG in lib/controllers/network_controllers.dart:141' +
+          ' getPrefsData() Plan.maxId = ${Plan.maxId}',
+    );
   }
 
   // Async function which returns the questions
@@ -173,6 +186,45 @@ class NetworkController {
     return getHash(hashString);
   }
 
+  // Post server data and redirect response
+  Future<http.Response> postAndRedirect(
+    ServerData serverData, {
+    String url,
+  }) async {
+    http.Response response =
+        await NetworkController.shared.postServerData(serverData, url: url);
+    int statusCode = response.statusCode;
+    String uri = response.headers['location'];
+    int count = 0;
+    while (300 <= statusCode && statusCode < 400 && ++count < 10) {
+      response = await http.get(uri);
+      statusCode = response.statusCode;
+      uri = response.headers['location'];
+    }
+    return response;
+  }
+
+  // Async function which posts app data
+  Future<AppData> postAppData(AppData appData) async {
+    try {
+      final String feedbackUrl = appData.feedbackUrl;
+      final String token = appData.token;
+      final String responseToken = getResponseToken(token);
+      final String url =
+          '$feedbackUrl' + '?responseToken=$responseToken' + '&token=$token';
+      final ServerData serverData = appData.serverData;
+      final http.Response response =
+          await postAndRedirect(serverData, url: url);
+      final Map<String, dynamic> appDataMap = convert.jsonDecode(response.body);
+      return AppData.fromJson(appDataMap);
+    } catch (error) {
+      return AppData(
+        message: error.toString(),
+        status: globals.statusError,
+      );
+    }
+  }
+
   // Async function which posts the questions
   Future<http.Response> postQuestions(
     Questions questions, {
@@ -184,12 +236,6 @@ class NetworkController {
       final Map<String, String> headers = {
         'Content-Type': 'application/json; charset=UTF-8',
       };
-      debugPrint(
-        'DEBUG in lib/controllers/network_controller.dart line 193: POST request' +
-            '\n  url = $url' +
-            '\n  body = $body' +
-            '\n  headers = $headers',
-      );
       final http.Response response =
           await http.post('$url?token=$token', body: body, headers: headers);
       return response;
@@ -199,8 +245,34 @@ class NetworkController {
     }
   }
 
+  // Async function which posts the server data
+  Future<http.Response> postServerData(
+    ServerData serverData, {
+    String url,
+  }) async {
+    try {
+      final String body = convert.json.encode({'serverData': serverData});
+      final Map<String, String> headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+      };
+      final http.Response response =
+          await http.post(url, body: body, headers: headers);
+      return response;
+    } catch (error) {
+      http.Response response = http.Response(error.toString(), 400);
+      debugPrint(
+        'ERROR in lib/controllers/network_controllers.dart:261' +
+            ' postServerData($serverData, url: $url) response = $response',
+      );
+      return response;
+    }
+  }
+
   // Remove app data shared preferences
   void removePrefsData() async {
+    debugPrint(
+      'DEBUG in lib/controllers/network_controllers.dart:271 removePrefsData()',
+    );
     final prefs = await SharedPreferences.getInstance();
     prefs.remove(globals.prefsKeyForPrefsData);
   }
@@ -212,6 +284,34 @@ class NetworkController {
 
     // get merged prefs data
     final PrefsData prefsData = PrefsData.shared;
+
+    // DEBUG
+    List<String> params = [];
+    if (newPrefsData != null) {
+      final AppData appData = newPrefsData.appData;
+      if (appData != null) {
+        final ServerData serverData = appData.serverData;
+        if (serverData != null) {
+          if (serverData.answers != null)
+            params.add('${serverData.answers.length} answers');
+          if (serverData.order != null)
+            params.add('order.planId: ${serverData.order.planId}');
+          if (serverData.user != null)
+            params.add('user.id: ${serverData.user.id}');
+          if (params.isEmpty) params.add('server data');
+        } else {
+          params.add('app data');
+        }
+      }
+      if (newPrefsData.plans != null)
+        params.add('${newPrefsData.plans.plans.length} plans');
+      if (newPrefsData.questions != null)
+        params.add('${newPrefsData.questions.length} questions');
+    }
+    debugPrint(
+      'DEBUG in lib/controllers/network_controllers.dart:309' +
+          ' savePrefsData($params) Plan.maxId = ${Plan.maxId}',
+    );
 
     // don't save null data
     if (prefsData == null || !prefsData.hasData) return;
