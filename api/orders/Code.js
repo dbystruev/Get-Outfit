@@ -268,7 +268,7 @@ function doPost(request) {
 
         // Check if order is present and wasn't submitted earlier
         let order = serverData.order;
-        if (isValidOrder(order) && isEmpty(order.id)) {
+        if (isNotEmpty(order) && isEmpty(order.id)) {
             dataFound = true;
 
             // Compose the row of order data
@@ -277,6 +277,13 @@ function doPost(request) {
 
             // Update the order with the new id
             order = getMergedObject(order, { 'id': orderId });
+
+            // Get order creation date
+            const creationDate = order.creationDate;
+
+            // Check that order creation data is present
+            if (isEmpty(creationDate))
+                throw 'Order creation date ' + creationDate + ' is not valid';
 
             // Get plan id
             const planId = order.planId;
@@ -292,6 +299,7 @@ function doPost(request) {
             const orderRow = [
                 orderId,
                 user.id,
+                creationDate,
                 planId,
                 plan.price,
                 plan.name
@@ -508,14 +516,6 @@ function isEmpty(value) {
 
 function isNotEmpty(value) {
     return value || value === 0 || value === false ? true : undefined;
-}
-
-function isValidOrder(order) {
-    return isNotEmpty(order) &&
-        isNotEmpty(order.cleaningDate) &&
-        isNotEmpty(order.meters) &&
-        isNotEmpty(order.planId) &&
-        isNotEmpty(order.service);
 }
 
 function nonEmptyValue(value) {
