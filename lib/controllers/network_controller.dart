@@ -298,6 +298,10 @@ class NetworkController {
         params.add('${newPrefsData.questions.length} questions');
     }
 
+    debugPrint(
+      'DEBUG lib/controllers/network_controllers.dart:302 savePrefsData($params)',
+    );
+
     // don't save null data
     if (prefsData == null || !prefsData.hasData) return;
 

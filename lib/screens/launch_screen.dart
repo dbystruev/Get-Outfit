@@ -258,6 +258,9 @@ class LaunchScreen extends StatelessWidget with Scale {
     final Duration waitDuration = Duration(seconds: delayInSeconds);
     // await networkController.removePrefsData(); // DEBUG: remove in release
     await networkController.getPrefsData();
+    debugPrint(
+      'DEBUG lib/screens/launch_screen.dart:262 PrefsData.shared.user = ${PrefsData.shared.user}',
+    );
     getAppData();
     final Duration elapsedTime = DateTime.now().difference(startTime);
     if (elapsedTime < waitDuration)

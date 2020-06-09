@@ -241,22 +241,50 @@ function doPost(request) {
         // Check that the user is present, their id and user token are valid
         tryToValidateUser(userSheet, user);
 
+        // Get the user id from the load
+        const userId = user.id;
+
         // Check if answers are present and were not submitted earlier
-        // TODO: change answers model
-        let answers = serverData.answers;
+        const answers = serverData.answers;
         if (areValidAnswers(answers)) {
             dataFound = true;
 
+            // Define the range where we'll get the answers from
+            const answerRange = getDataRange(answerSheet);
+
+            // Get the answers for the whole range
+            const answerRangeValues = answerRange.getValues();
+
+            // Get the answers whose user.id matches
+            // 1 is the index of the user.id in the answer sheet (2nd column — B)
+            let matchingAnswer = answerRangeValues.find(row => row[1] == userId);
+
+            // Remember if there is matching answer
+            const foundMatchingAnswer = isNotEmpty(matchingAnswer) && 3 < matchingAnswer.length;
+
+            // Use answer id from matchingAnswer if found, create new answer if not
+            const answerId = foundMatchingAnswer ? matchingAnswer[0] : getNextId(answerSheet);
+
             // Compose the row of answers data
-            // Id is the number of filled rows minus the number of frozen rows + 1
-            const answerId = getNextId(answerSheet);
+            const answerValues = [answerId, userId, answers.date, ...answers.answers];
 
-            // Update the answers with the new id
-            answers = getMergedObject(answers, { 'id': answerId });
+            // Check if answers already exist in the table
+            if (foundMatchingAnswer) {
+                // Answers' position in the table is their id + number of frozen rows
+                const answerRow = answerSheet.getFrozenRows() + answerId;
 
-            // Compose and add the answer row
-            const answerRow = [answerId, user.id, answers.date, answers.text];
-            answerSheet.appendRow(answerRow);
+                // Number of answer columns is defined by answers array
+                const answersLength = answers.answers.length + 3;
+
+                // Get saved answers' range from the table
+                const savedAnswerRange = answerSheet.getRange(answerRow, 1, 1, answersLength);
+
+                // Save values back to the table
+                savedAnswerRange.setValues([answerValues]);
+            } else {
+                // Add the new row with answers
+                answerSheet.appendRow(answerValues);
+            }
 
             // Update the response with the ansers
             serverData = getMergedObject(serverData, { 'answers': answers });
@@ -319,9 +347,6 @@ function doPost(request) {
             // && !isValidOrder(order) && !isValidFeedback(userFeedback)
         ) {
             dataFound = true;
-
-            // Get the user id from the load
-            let userId = user.id;
 
             // User's position in the table is their id + number of frozen rows
             const userRow = userSheet.getFrozenRows() + userId;
@@ -394,7 +419,13 @@ function doPost(request) {
 
 // Check if the answers are valid
 function areValidAnswers(answers) {
-    return isNotEmpty(answers);
+    if (isEmpty(answers)) return false;
+    if (isEmpty(answers.answers) || !Array.isArray(answers.answers))
+        throw 'Answers array is not present';
+    const answersLength = answers.answers.length;
+    if (1000 < answersLength) throw 'Too many (' + answersLength + ') answers';
+    if (isEmpty(answers.date)) throw 'Answers\' date is empty';
+    return true;
 }
 
 // Define the range with non-empty data
@@ -402,7 +433,7 @@ function getDataRange(sheet) {
     const firstRow = sheet.getFrozenRows() + 1;
     const lastRow = sheet.getLastRow();
     const numberOfRows = lastRow < firstRow ? 1 : lastRow - firstRow + 1;
-    const firstColumn = sheet.getFrozenColumns() + 1;
+    const firstColumn = 1; // sheet.getFrozenColumns() + 1;
     const lastColumn = sheet.getLastColumn();
     const numberOfColumns = lastColumn < firstColumn ? 1 : lastColumn - firstColumn + 1;
     return sheet.getRange(firstRow, firstColumn, numberOfRows, numberOfColumns);
