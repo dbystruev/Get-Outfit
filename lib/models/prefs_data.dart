@@ -6,6 +6,7 @@
 //  https://flutter.dev/docs/development/data-and-backend/json
 
 import 'package:get_outfit/models/answer.dart';
+import 'package:get_outfit/models/answers.dart';
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/order.dart';
 import 'package:get_outfit/models/plans.dart';
@@ -32,7 +33,7 @@ class PrefsData {
   Plans plans;
   Questions questions;
 
-  List<Answer> get answers => serverData?.answers;
+  Answers get answers => serverData?.answers;
   bool get hasData =>
       appData != null ||
       plans != null ||

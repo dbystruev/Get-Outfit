@@ -8,10 +8,9 @@ part of 'server_data.dart';
 
 ServerData _$ServerDataFromJson(Map<String, dynamic> json) {
   return ServerData(
-    answers: (json['answers'] as List)
-        ?.map((e) =>
-            e == null ? null : Answer.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    answers: json['answers'] == null
+        ? null
+        : Answers.fromJson(json['answers'] as Map<String, dynamic>),
     order: json['order'] == null
         ? null
         : Order.fromJson(json['order'] as Map<String, dynamic>),
@@ -23,7 +22,7 @@ ServerData _$ServerDataFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ServerDataToJson(ServerData instance) =>
     <String, dynamic>{
-      'answers': instance.answers?.map((e) => e?.toJson())?.toList(),
+      'answers': instance.answers?.toJson(),
       'order': instance.order?.toJson(),
       'user': instance.user?.toJson(),
     };

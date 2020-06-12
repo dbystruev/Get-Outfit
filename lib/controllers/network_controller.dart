@@ -281,8 +281,8 @@ class NetworkController {
       if (appData != null) {
         final ServerData serverData = appData.serverData;
         if (serverData != null) {
-          if (serverData.answers != null)
-            params.add('${serverData.answers.length} answers');
+          if (serverData.answers?.answers != null)
+            params.add('${serverData.answers.answers.length} answers');
           if (serverData.order != null)
             params.add('order.planId: ${serverData.order.planId}');
           if (serverData.user != null)

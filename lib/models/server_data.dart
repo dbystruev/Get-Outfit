@@ -5,7 +5,7 @@
 //
 //  https://flutter.dev/docs/development/data-and-backend/json
 
-import 'package:get_outfit/models/answer.dart';
+import 'package:get_outfit/models/answers.dart';
 import 'package:get_outfit/models/order.dart';
 import 'package:get_outfit/models/user.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -14,7 +14,7 @@ part 'server_data.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ServerData {
-  List<Answer> answers;
+  Answers answers;
   Order order;
   User user;
 

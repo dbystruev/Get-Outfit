@@ -18,6 +18,7 @@ import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:http/http.dart' as http;
 
 class LaunchScreen extends StatelessWidget with Scale {
+  // final List<List<Question>> allQuestions = Questions.shared.questions;
   static bool built = false;
   final NetworkController networkController = NetworkController.shared;
   final DateTime startTime = DateTime.now();
@@ -259,7 +260,7 @@ class LaunchScreen extends StatelessWidget with Scale {
     // await networkController.removePrefsData(); // DEBUG: remove in release
     await networkController.getPrefsData();
     debugPrint(
-      'DEBUG lib/screens/launch_screen.dart:262 PrefsData.shared.user = ${PrefsData.shared.user}',
+      'DEBUG lib/screens/launch_screen.dart:263 PrefsData.shared = ${PrefsData.shared}',
     );
     getAppData();
     final Duration elapsedTime = DateTime.now().difference(startTime);
