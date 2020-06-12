@@ -323,6 +323,9 @@ function doPost(request) {
             // Get the plan
             const plan = plans[planId];
 
+            // Get the promo code
+            const promoCode = isEmpty(order.promoCode) ? '' : order.promoCode;
+
             // Compose and add the order row
             const orderRow = [
                 orderId,
@@ -330,7 +333,8 @@ function doPost(request) {
                 creationDate,
                 planId,
                 plan.price,
-                plan.name
+                plan.name,
+                promoCode
             ];
             orderSheet.appendRow(orderRow);
 

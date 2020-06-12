@@ -7,7 +7,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_outfit/controllers/network_controller.dart';
 import 'package:get_outfit/design/scale.dart';
-import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/answers.dart';
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/gender.dart';

@@ -4,7 +4,6 @@
 //  Created by Denis Bystruev on 1/05/2020.
 //
 
-import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'order.g.dart';
 
