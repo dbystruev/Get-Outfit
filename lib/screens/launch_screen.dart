@@ -102,7 +102,7 @@ class LaunchScreen extends StatelessWidget with Scale {
             ' ${questions.length} questions' +
             ' are loaded in ${DateTime.now().difference(startTime)}',
       );
-      networkController.createNewUser(appData);
+      await networkController.createNewUser();
     } else {
       debugPrint(
         'DEBUG in lib/screens/launch_screen.dart:108 questions are not valid' +

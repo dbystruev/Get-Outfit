@@ -36,12 +36,30 @@ class NetworkController {
         'macros/s/AKfycbyVJAPvLhbZtKwJ6-p00NERFQbEK22B4xTdkTL4ReHYYdKMRIV8/exec',
   });
 
-  // Create new user and save user id in User.shared.id
-  Future<void> createNewUser(AppData appData) async {
-    // check if no user already created
-    if (PrefsData.shared.user?.id != null) return;
+  // Prints error if status is not success
+  AppData checkStatus(AppData appData, int line, String function) {
+    if (appData?.status == globals.statusSuccess) return appData;
+    debugPrint(
+      'ERROR in lib/controllers/network_controllers.dart:$line $function appData = $appData',
+    );
+    return appData;
+  }
 
+  // Create new user and save user id in User.shared.id
+  Future<AppData> createNewUser() async {
+    final AppData appData = PrefsData.shared.appData;
     try {
+      // check if no user already created
+      if (PrefsData.shared.user?.id != null) {
+        final AppData newAppData = await postAppData(appData);
+        if (newAppData?.status == globals.statusSuccess) {
+          appData.merge(newAppData);
+          savePrefsData(
+            PrefsData(appData: appData),
+          );
+          return checkStatus(appData, 60, 'createNewUser()');
+        }
+      }
       final String url = appData.feedbackUrl;
       final String generatedCode = '1111';
       final String phone = 'newuser';
@@ -65,11 +83,12 @@ class NetworkController {
           appData: appData,
         ),
       );
+      return checkStatus(appData, 86, 'createNewUser()');
     } catch (error) {
-      debugPrint(
-        'ERROR in lib/controllers/network_controllers.dart:70' +
-            ' createNewUser($appData) error = $error',
+      appData.merge(
+        AppData(message: error.toString(), status: globals.statusError),
       );
+      return checkStatus(appData, 91, 'createNewUser()');
     }
   }
 
@@ -82,11 +101,19 @@ class NetworkController {
       final String request = '$url?appName=$appName&password=$appPassword';
       final http.Response response = await http.get(request);
       final Map<String, dynamic> appDataMap = convert.jsonDecode(response.body);
-      return AppData.fromJson(appDataMap);
+      return checkStatus(
+        AppData.fromJson(appDataMap),
+        106,
+        'getAppData()',
+      );
     } catch (error) {
-      return AppData(
-        message: error.toString(),
-        status: globals.statusError,
+      return checkStatus(
+        AppData(
+          message: error.toString(),
+          status: globals.statusError,
+        ),
+        115,
+        'getAppData()',
       );
     }
   }
@@ -202,7 +229,8 @@ class NetworkController {
   // Async function to post answers
   Future<AppData> postAnswers() async {
     final AppData appData = PrefsData.shared.appData;
-    if (appData?.serverData?.answers == null) return appData;
+    if (appData?.serverData?.answers == null)
+      return checkStatus(appData, 233, 'postAnswers()');
     final List<String> answers = appData.serverData?.answers?.answers;
     final Questions questions = PrefsData.shared.questions;
     if (answers == null ||
@@ -239,7 +267,7 @@ class NetworkController {
           break;
         default:
           debugPrint(
-              'ERROR in lib/controllers/network_controllers.dart:242 postAnswers()' +
+              'ERROR in lib/controllers/network_controllers.dart:270 postAnswers()' +
                   ' unknown question type \(question.type)');
       }
     }
@@ -258,12 +286,18 @@ class NetworkController {
       final http.Response response =
           await postAndRedirect(serverData, url: url);
       final Map<String, dynamic> appDataMap = convert.jsonDecode(response.body);
-      return AppData.fromJson(appDataMap);
-    } catch (error) {
-      return AppData(
-        message: error.toString(),
-        status: globals.statusError,
+      appData.merge(
+        AppData.fromJson(appDataMap),
       );
+      return checkStatus(appData, 292, 'postAppData()');
+    } catch (error) {
+      appData.merge(
+        AppData(
+          message: error.toString(),
+          status: globals.statusError,
+        ),
+      );
+      return checkStatus(appData, 300, 'postAppData()');
     }
   }
 
@@ -271,7 +305,8 @@ class NetworkController {
   Future<AppData> postOrder() async {
     final appData = PrefsData.shared.appData;
     if (appData?.serverData?.order == null ||
-        appData.serverData.order.id != null) return appData;
+        appData.serverData.order.id != null)
+      return checkStatus(appData, 309, 'postOrder()');
     return postAppData(appData);
   }
 
@@ -311,7 +346,7 @@ class NetworkController {
     } catch (error) {
       http.Response response = http.Response(error.toString(), 400);
       debugPrint(
-        'ERROR in lib/controllers/network_controllers.dart:314' +
+        'ERROR in lib/controllers/network_controllers.dart:349' +
             ' postServerData($serverData, url: $url) response = $response',
       );
       return response;
@@ -355,9 +390,8 @@ class NetworkController {
       if (newPrefsData.questions != null)
         params.add('${newPrefsData.questions.length} questions');
     }
-
     debugPrint(
-      'DEBUG lib/controllers/network_controllers.dart:360 savePrefsData($params)',
+      'DEBUG lib/controllers/network_controllers.dart:394 savePrefsData($params)',
     );
 
     // don't save null data

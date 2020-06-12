@@ -35,4 +35,7 @@ class Answers {
     for (int index = 0; index < length; index++)
       this.answers[index] = answers.answers[index] ?? this.answers[index];
   }
+
+  @override
+  String toString() => 'Answers(answers: $answers, date: $date)';
 }
