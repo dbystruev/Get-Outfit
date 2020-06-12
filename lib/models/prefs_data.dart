@@ -71,5 +71,5 @@ class PrefsData {
 
   @override
   String toString() =>
-      'PrefsData(appData: $appData,\nplans: ${plans.plans.length},\nquestions: ${questions.length})';
+      'PrefsData(appData: $appData,\nplans: ${plans?.plans?.length},\nquestions: ${questions?.length})';
 }

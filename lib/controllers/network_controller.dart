@@ -202,7 +202,7 @@ class NetworkController {
   // Async function to post answers
   Future<AppData> postAnswers() async {
     final AppData appData = PrefsData.shared.appData;
-    if (appData?.serverData?.answers == null) return null;
+    if (appData?.serverData?.answers == null) return appData;
     final List<String> answers = appData.serverData?.answers?.answers;
     final Questions questions = PrefsData.shared.questions;
     if (answers == null ||
@@ -270,8 +270,8 @@ class NetworkController {
   // Async function which posts the order
   Future<AppData> postOrder() async {
     final appData = PrefsData.shared.appData;
-    if (appData?.serverData?.order == null) return null;
-    if (appData.serverData.order.id != null) return appData;
+    if (appData?.serverData?.order == null ||
+        appData.serverData.order.id != null) return appData;
     return postAppData(appData);
   }
 
@@ -333,7 +333,7 @@ class NetworkController {
     final PrefsData prefsData = PrefsData.shared;
 
     // DEBUG
-    List<String> params = [];
+    List<String> params = newPrefsData == null ? null : [];
     if (newPrefsData != null) {
       final AppData appData = newPrefsData.appData;
       if (appData != null) {

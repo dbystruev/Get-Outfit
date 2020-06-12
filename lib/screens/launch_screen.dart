@@ -87,19 +87,25 @@ class LaunchScreen extends StatelessWidget with Scale {
     //   localQuestions: allQuestions,
     // );
     if (questions.areValid) {
-      questions.givenAnswers = PrefsData.shared.answers;
+      final List<Question> savedQuestions =
+          PrefsData.shared.questions?.expanded;
+      if (questions.length == savedQuestions?.length)
+        questions.expanded.asMap().forEach(
+              (index, question) =>
+                  question.givenAnswer = savedQuestions[index].givenAnswer,
+            );
       await networkController.savePrefsData(
         PrefsData(questions: questions),
       );
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:95 getAppData()' +
+        'DEBUG in lib/screens/launch_screen.dart:101 getAppData()' +
             ' ${questions.length} questions' +
             ' are loaded in ${DateTime.now().difference(startTime)}',
       );
       networkController.createNewUser(appData);
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:102 questions are not valid' +
+        'DEBUG in lib/screens/launch_screen.dart:108 questions are not valid' +
             ', appData = $appData, questions = $questions',
       );
       // questions.questions = allQuestions;
@@ -114,7 +120,7 @@ class LaunchScreen extends StatelessWidget with Scale {
   }) {
     if (loadedQuestions?.length == localQuestions.length) {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:117' +
+        'DEBUG in lib/screens/launch_screen.dart:123' +
             ' matchQuestionPages() ${loadedQuestions.length} pages',
       );
       for (int pageIndex = 0; pageIndex < loadedQuestions.length; pageIndex++) {
@@ -142,7 +148,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       }
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:145 The number of pages does not match:' +
+        'DEBUG in lib/screens/launch_screen.dart:151 The number of pages does not match:' +
             '\n\tloadedQuestions.length = ${loadedQuestions?.length}' +
             '\n\tlocalQuestions.length = ${localQuestions.length}',
       );
@@ -261,7 +267,7 @@ class LaunchScreen extends StatelessWidget with Scale {
     // await networkController.removePrefsData(); // DEBUG: remove in release
     await networkController.getPrefsData();
     // debugPrint(
-    //   'DEBUG lib/screens/launch_screen.dart:264 PrefsData.shared = ${PrefsData.shared}',
+    //   'DEBUG lib/screens/launch_screen.dart:270 PrefsData.shared = ${PrefsData.shared}',
     // );
     getAppData();
     final Duration elapsedTime = DateTime.now().difference(startTime);
@@ -290,7 +296,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       url = result.headers['location'];
     }
     debugPrint(
-      'DEBUG in lib/screens/launch_screen.dart:293 postQuestions()' +
+      'DEBUG in lib/screens/launch_screen.dart:299 postQuestions()' +
           '\n\tstatusCode = $statusCode' +
           '\n\theaders = ${result.headers}' +
           // '\n\tbody = ${result.body}' +

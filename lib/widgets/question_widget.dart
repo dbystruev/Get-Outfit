@@ -108,7 +108,7 @@ class QuestionWidget extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 6 * scale, top: 10 * scale),
         );
       case QuestionType.singleChoice:
-        final int selectedIndex = question.givenAnswer.indexes.first ?? 0;
+        final int selectedIndex = question.givenAnswer?.indexes?.first ?? 0;
         final Iterable<int> textLengts =
             question.answers.map((text) => text.length);
         final int allTextLength =

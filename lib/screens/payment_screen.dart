@@ -151,7 +151,7 @@ class _PaymentScreenState extends State<PaymentScreen> with Scale {
             height: 30,
             onPressed: isValidInput
                 ? () {
-                    saveOrderAndUser();
+                    sendNewOrder();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -200,7 +200,7 @@ class _PaymentScreenState extends State<PaymentScreen> with Scale {
   }
 
   // Get all enterd data and save it to prefs and the server
-  void saveOrderAndUser() async {
+  void sendNewOrder() async {
     PrefsData.shared.user.merge(
       User(
         email: controllerForEmail.text,

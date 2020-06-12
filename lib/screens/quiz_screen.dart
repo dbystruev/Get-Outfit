@@ -8,10 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:get_outfit/controllers/network_controller.dart';
 import 'package:get_outfit/design/scale.dart';
 import 'package:get_outfit/models/answers.dart';
+import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/gender.dart';
 import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/questions.dart';
+import 'package:get_outfit/models/server_data.dart';
 import 'package:get_outfit/screens/plans_screen.dart';
 import 'package:get_outfit/widgets/footer_widget.dart';
 import 'package:get_outfit/widgets/question_widget.dart';
@@ -162,13 +164,19 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
       final question = allQuestions.expanded[index];
       answerList[question.id - 1] = question.givenAnswer?.toString();
     }
-    PrefsData.shared.answers = Answers(answers: answerList);
-    await NetworkController.shared.savePrefsData();
-    await NetworkController.shared
-        .postAnswers()
-        .catchError(
+    await NetworkController.shared.savePrefsData(
+      PrefsData(
+        appData: AppData(
+          serverData: ServerData(
+            answers: Answers(answers: answerList),
+          ),
+        ),
+        questions: allQuestions,
+      ),
+    );
+    await NetworkController.shared.postAnswers().catchError(
           (error) => debugPrint(
-            'ERROR in lib/screens/quiz_screen.dart:171 saveAnswers() ' +
+            'ERROR in lib/screens/quiz_screen.dart:179 saveAnswers() ' +
                 error.toString(),
           ),
         );
