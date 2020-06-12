@@ -218,14 +218,16 @@ class _PaymentScreenState extends State<PaymentScreen> with Scale {
         ),
       ),
     );
-    await NetworkController.shared
-        .postAppData(PrefsData.shared.appData)
-        .catchError(
-          (error) => debugPrint(
-            'ERROR in lib/screens/payment_screen.dart:225 saveOrderAndUser() ' +
-                error.toString(),
-          ),
-        );
+    final AppData appData =
+        await NetworkController.shared.postOrder().catchError(
+              (error) => debugPrint(
+                'ERROR in lib/screens/payment_screen.dart:224 saveOrderAndUser() ' +
+                    error.toString(),
+              ),
+            );
+    await NetworkController.shared.savePrefsData(
+      PrefsData(appData: appData),
+    );
   }
 
   // Validate input data, return '' if everything is OK

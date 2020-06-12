@@ -70,7 +70,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       );
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:72 getAppData()' +
+        'DEBUG in lib/screens/launch_screen.dart:73 getAppData()' +
             ' status is not ${globals.statusSuccess}, appData = $appData',
       );
       plans = Plans([], message: appData.message, status: appData.status);
@@ -79,7 +79,7 @@ class LaunchScreen extends StatelessWidget with Scale {
     }
     if (!plans.areValid) {
       debugPrint(
-        'ERROR in lib/screens/launch_screen.dart:81 getAppData() plans are not valid',
+        'ERROR in lib/screens/launch_screen.dart:82 getAppData() plans are not valid',
       );
     }
     // matchQuestionPages(
@@ -92,14 +92,14 @@ class LaunchScreen extends StatelessWidget with Scale {
         PrefsData(questions: questions),
       );
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:97 getAppData()' +
+        'DEBUG in lib/screens/launch_screen.dart:95 getAppData()' +
             ' ${questions.length} questions' +
             ' are loaded in ${DateTime.now().difference(startTime)}',
       );
       networkController.createNewUser(appData);
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:104 questions are not valid' +
+        'DEBUG in lib/screens/launch_screen.dart:102 questions are not valid' +
             ', appData = $appData, questions = $questions',
       );
       // questions.questions = allQuestions;
@@ -114,7 +114,7 @@ class LaunchScreen extends StatelessWidget with Scale {
   }) {
     if (loadedQuestions?.length == localQuestions.length) {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:115' +
+        'DEBUG in lib/screens/launch_screen.dart:117' +
             ' matchQuestionPages() ${loadedQuestions.length} pages',
       );
       for (int pageIndex = 0; pageIndex < loadedQuestions.length; pageIndex++) {
@@ -142,7 +142,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       }
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:143 The number of pages does not match:' +
+        'DEBUG in lib/screens/launch_screen.dart:145 The number of pages does not match:' +
             '\n\tloadedQuestions.length = ${loadedQuestions?.length}' +
             '\n\tlocalQuestions.length = ${localQuestions.length}',
       );
@@ -261,7 +261,7 @@ class LaunchScreen extends StatelessWidget with Scale {
     // await networkController.removePrefsData(); // DEBUG: remove in release
     await networkController.getPrefsData();
     // debugPrint(
-    //   'DEBUG lib/screens/launch_screen.dart:263 PrefsData.shared = ${PrefsData.shared}',
+    //   'DEBUG lib/screens/launch_screen.dart:264 PrefsData.shared = ${PrefsData.shared}',
     // );
     getAppData();
     final Duration elapsedTime = DateTime.now().difference(startTime);
@@ -290,7 +290,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       url = result.headers['location'];
     }
     debugPrint(
-      'DEBUG in lib/screens/launch_screen.dart:288 postQuestions()' +
+      'DEBUG in lib/screens/launch_screen.dart:293 postQuestions()' +
           '\n\tstatusCode = $statusCode' +
           '\n\theaders = ${result.headers}' +
           // '\n\tbody = ${result.body}' +

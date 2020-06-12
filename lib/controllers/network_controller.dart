@@ -15,6 +15,7 @@ import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/question.dart';
+import 'package:get_outfit/models/question_type.dart';
 import 'package:get_outfit/models/questions.dart';
 import 'package:get_outfit/models/server_data.dart';
 import 'package:http/http.dart' as http;
@@ -66,7 +67,7 @@ class NetworkController {
       );
     } catch (error) {
       debugPrint(
-        'ERROR in lib/controllers/network_controllers.dart:67' +
+        'ERROR in lib/controllers/network_controllers.dart:70' +
             ' createNewUser($appData) error = $error',
       );
     }
@@ -199,8 +200,9 @@ class NetworkController {
   }
 
   // Async function to post answers
-  Future<AppData> postAnswers(AppData appData) async {
-    if (appData == null) return null;
+  Future<AppData> postAnswers() async {
+    final AppData appData = PrefsData.shared.appData;
+    if (appData?.serverData?.answers == null) return null;
     final List<String> answers = appData.serverData?.answers?.answers;
     final Questions questions = PrefsData.shared.questions;
     if (answers == null ||
@@ -210,18 +212,36 @@ class NetworkController {
     for (int questionId = 0; questionId < answers.length; questionId++) {
       final Answer answer = Answer.fromString(answers[questionId]);
       final Question question = questions.expanded[questionId];
-      final List<String> allAnswers = question.answers;
       answers[questionId] = '';
-      if (allAnswers == null) continue;
-      final List<int> indexes = answer.indexes
-          ?.where((index) => 0 <= index && index < allAnswers.length)
-          ?.toList();
-      if (indexes != null) {
-        if (indexes.isNotEmpty)
-          answers[questionId] =
-              indexes.map((index) => allAnswers[index]).join(', ');
-      } else
-        answers[questionId] = answer.toString();
+      switch (question.type) {
+        case QuestionType.header:
+          break;
+        case QuestionType.inlineText:
+        case QuestionType.text:
+          answers[questionId] = question.givenAnswer?.text ?? '';
+          break;
+        case QuestionType.multiChoice:
+        case QuestionType.singleChoice:
+          final List<String> allAnswers = question.answers;
+          if (allAnswers == null) break;
+          final List<int> indexes = answer.indexes
+              ?.where((index) => 0 <= index && index < allAnswers.length)
+              ?.toList();
+          if (indexes != null) {
+            if (indexes.isNotEmpty)
+              answers[questionId] =
+                  indexes.map((index) => allAnswers[index]).join(', ');
+          } else
+            answers[questionId] = answer.toString();
+          break;
+        case QuestionType.range:
+          answers[questionId] = question.givenAnswer?.value?.toString() ?? '';
+          break;
+        default:
+          debugPrint(
+              'ERROR in lib/controllers/network_controllers.dart:242 postAnswers()' +
+                  ' unknown question type \(question.type)');
+      }
     }
     return postAppData(appData);
   }
@@ -245,6 +265,14 @@ class NetworkController {
         status: globals.statusError,
       );
     }
+  }
+
+  // Async function which posts the order
+  Future<AppData> postOrder() async {
+    final appData = PrefsData.shared.appData;
+    if (appData?.serverData?.order == null) return null;
+    if (appData.serverData.order.id != null) return appData;
+    return postAppData(appData);
   }
 
   // Async function which posts the questions
@@ -283,7 +311,7 @@ class NetworkController {
     } catch (error) {
       http.Response response = http.Response(error.toString(), 400);
       debugPrint(
-        'ERROR in lib/controllers/network_controllers.dart:256' +
+        'ERROR in lib/controllers/network_controllers.dart:314' +
             ' postServerData($serverData, url: $url) response = $response',
       );
       return response;
@@ -329,7 +357,7 @@ class NetworkController {
     }
 
     debugPrint(
-      'DEBUG lib/controllers/network_controllers.dart:302 savePrefsData($params)',
+      'DEBUG lib/controllers/network_controllers.dart:360 savePrefsData($params)',
     );
 
     // don't save null data
