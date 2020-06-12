@@ -87,18 +87,19 @@ class LaunchScreen extends StatelessWidget with Scale {
     //   localQuestions: allQuestions,
     // );
     if (questions.areValid) {
-      networkController.savePrefsData(
+      questions.givenAnswers = PrefsData.shared.answers;
+      await networkController.savePrefsData(
         PrefsData(questions: questions),
       );
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:93 getAppData()' +
+        'DEBUG in lib/screens/launch_screen.dart:97 getAppData()' +
             ' ${questions.length} questions' +
             ' are loaded in ${DateTime.now().difference(startTime)}',
       );
       networkController.createNewUser(appData);
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:100 questions are not valid' +
+        'DEBUG in lib/screens/launch_screen.dart:104 questions are not valid' +
             ', appData = $appData, questions = $questions',
       );
       // questions.questions = allQuestions;
@@ -259,9 +260,9 @@ class LaunchScreen extends StatelessWidget with Scale {
     final Duration waitDuration = Duration(seconds: delayInSeconds);
     // await networkController.removePrefsData(); // DEBUG: remove in release
     await networkController.getPrefsData();
-    debugPrint(
-      'DEBUG lib/screens/launch_screen.dart:263 PrefsData.shared = ${PrefsData.shared}',
-    );
+    // debugPrint(
+    //   'DEBUG lib/screens/launch_screen.dart:263 PrefsData.shared = ${PrefsData.shared}',
+    // );
     getAppData();
     final Duration elapsedTime = DateTime.now().difference(startTime);
     if (elapsedTime < waitDuration)

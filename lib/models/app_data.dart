@@ -44,16 +44,17 @@ class AppData {
       _$AppDataFromJson(json);
 
   void merge(AppData appData) {
-    data = appData?.data ?? data;
-    message = appData?.message ?? message;
+    if (appData == null) return;
+    data = appData.data ?? data;
+    message = appData.message ?? message;
     if (serverData == null)
       serverData = appData?.serverData;
     else
-      serverData.merge(appData?.serverData);
-    status = appData?.status ?? status;
-    time = appData?.time ?? time;
-    token = appData?.token ?? token;
-    versionDynamic = appData?.versionDynamic ?? versionDynamic;
+      serverData.merge(appData.serverData);
+    status = appData.status ?? status;
+    time = appData.time ?? time;
+    token = appData.token ?? token;
+    versionDynamic = appData.versionDynamic ?? versionDynamic;
   }
 
   Map<String, dynamic> toJson() => _$AppDataToJson(this);

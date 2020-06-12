@@ -5,7 +5,6 @@
 //
 //  https://flutter.dev/docs/development/data-and-backend/json
 
-import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/answers.dart';
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/order.dart';
@@ -34,6 +33,11 @@ class PrefsData {
   Questions questions;
 
   Answers get answers => serverData?.answers;
+  void set answers(Answers newAnswers) => serverData == null
+      ? serverData = ServerData(answers: newAnswers)
+      : serverData.merge(
+          ServerData(answers: newAnswers),
+        );
   bool get hasData =>
       appData != null ||
       plans != null ||
@@ -41,6 +45,11 @@ class PrefsData {
       serverData != null;
   Order get order => serverData?.order;
   ServerData get serverData => appData?.serverData;
+  void set serverData(ServerData newServerData) => appData == null
+      ? appData = AppData(serverData: newServerData)
+      : appData.merge(
+          AppData(serverData: newServerData),
+        );
   User get user => serverData?.user;
 
   PrefsData({this.appData, this.plans, this.questions});
@@ -49,12 +58,13 @@ class PrefsData {
       _$PrefsDataFromJson(json);
 
   void merge(PrefsData prefsData) {
+    if (prefsData == null) return;
     if (appData == null)
-      appData = prefsData?.appData;
+      appData = prefsData.appData;
     else
-      appData.merge(prefsData?.appData);
-    plans = prefsData?.plans ?? plans;
-    questions = prefsData?.questions ?? questions;
+      appData.merge(prefsData.appData);
+    plans = prefsData.plans ?? plans;
+    questions = prefsData.questions ?? questions;
   }
 
   Map<String, dynamic> toJson() => _$PrefsDataToJson(this);

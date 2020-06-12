@@ -25,6 +25,24 @@ class Answer {
 
   factory Answer.fromJson(Map<String, dynamic> json) => _$AnswerFromJson(json);
 
+  factory Answer.fromString(String answerString) {
+    if (answerString == null) return Answer.defaultIndex();
+    final int value = int.tryParse(answerString);
+    if (value != null) return Answer(value: value);
+    if (answerString.startsWith('[') && answerString.endsWith(']')) {
+      final String stringValues =
+          answerString.substring(1, answerString.length - 1);
+      if (stringValues.isEmpty) return Answer(indexes: []);
+      final List<String> stringIndexes = stringValues.split(', ');
+      final List<int> indexes = stringIndexes
+          .map((stringValue) => int.tryParse(stringValue))
+          .toList();
+      if (indexes.every((index) => index != null))
+        return Answer(indexes: indexes);
+    }
+    return Answer(text: answerString);
+  }
+
   factory Answer.invertIndex(int index, {List<int> oldIndexes}) =>
       Answer.setIndex(
         index,
@@ -82,9 +100,9 @@ class Answer {
   }
 
   @override
-  String toString() =>
-      'Answer(' +
-      'indexes: $indexes, ' +
-      'text: ${text == null ? null : '\'$text\''}, ' +
-      'value: $value)';
+  String toString() {
+    if (text != null) return text;
+    if (value != null) return value.toString();
+    return indexes?.toString();
+  }
 }

@@ -26,15 +26,19 @@ class ServerData {
   Map<String, dynamic> toJson() => _$ServerDataToJson(this);
 
   void merge(ServerData serverData) {
-    answers = serverData?.answers ?? answers;
+    if (serverData == null) return;
+    if (answers == null)
+      answers = serverData.answers;
+    else
+      answers.merge(serverData.answers);
     if (order == null)
-      order = serverData?.order;
+      order = serverData.order;
     else
-      order.merge(serverData?.order);
+      order.merge(serverData.order);
     if (user == null)
-      user = serverData?.user;
+      user = serverData.user;
     else
-      user.merge(serverData?.user);
+      user.merge(serverData.user);
   }
 
   @override

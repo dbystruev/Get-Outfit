@@ -5,10 +5,13 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:get_outfit/controllers/network_controller.dart';
 import 'package:get_outfit/design/scale.dart';
+import 'package:get_outfit/models/answers.dart';
 import 'package:get_outfit/models/gender.dart';
 import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/question.dart';
+import 'package:get_outfit/models/questions.dart';
 import 'package:get_outfit/screens/plans_screen.dart';
 import 'package:get_outfit/widgets/footer_widget.dart';
 import 'package:get_outfit/widgets/question_widget.dart';
@@ -23,9 +26,10 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> with Scale {
-  final List<List<Question>> allQuestions = PrefsData.shared.questions.questions;
+  final Questions allQuestions = PrefsData.shared.questions;
   final ScrollController controller = ScrollController();
   final Gender gender;
+  bool savingAnswers = false;
   Map<int, String> sliderLabels = {};
   int pageIndex = 0;
   List<List<Question>> questions;
@@ -94,7 +98,7 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
 
   @override
   void initState() {
-    questions = allQuestions
+    questions = allQuestions.questions
         .map(
           (questionPage) => questionPage
               .where(
@@ -110,6 +114,7 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
   }
 
   void onLeftPressed() {
+    saveAnswers();
     if (pageIndex < 1)
       Navigator.pop(context);
     else {
@@ -117,16 +122,23 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
     }
   }
 
-  void onRightPressed() {
+  void onRightPressed() async {
     if (pageIndex + 1 < questions.length) {
+      saveAnswers();
       setState(incrementPage);
-    } else
+    } else {
+      while (savingAnswers)
+        await Future.delayed(
+          Duration(milliseconds: 100),
+        );
+      saveAnswers();
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (BuildContext context) => PlansScreen(),
         ),
       );
+    }
   }
 
   void precacheImages() {
@@ -138,5 +150,28 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
           (url) => precacheImage(NetworkImage(url), context),
         );
     });
+  }
+
+  // Save answers to prefs and the server
+  void saveAnswers() async {
+    if (savingAnswers) return;
+    savingAnswers = true;
+    final int length = allQuestions.length;
+    List<String> answerList = List<String>(length);
+    for (int index = 0; index < length; index++) {
+      final question = allQuestions.expanded[index];
+      answerList[question.id - 1] = question.givenAnswer?.toString();
+    }
+    PrefsData.shared.answers = Answers(answers: answerList);
+    await NetworkController.shared.savePrefsData();
+    await NetworkController.shared
+        .postAppData(PrefsData.shared.appData)
+        .catchError(
+          (error) => debugPrint(
+            'ERROR in lib/screens/quiz_screen.dart:171 saveAnswers() ' +
+                error.toString(),
+          ),
+        );
+    savingAnswers = false;
   }
 }

@@ -20,7 +20,19 @@ class Answers {
       : this.answers = answers ?? const [],
         this.date = date ?? DateTime.now();
 
-  factory Answers.fromJson(Map<String, dynamic> json) => _$AnswersFromJson(json);
+  factory Answers.fromJson(Map<String, dynamic> json) =>
+      _$AnswersFromJson(json);
 
   Map<String, dynamic> toJson() => _$AnswersToJson(this);
+
+  void merge(Answers answers) {
+    final length = answers?.answers?.length;
+    if (length == null) return;
+    if (length != this.answers?.length) {
+      this.answers = answers.answers;
+      return;
+    }
+    for (int index = 0; index < length; index++)
+      this.answers[index] = answers.answers[index] ?? this.answers[index];
+  }
 }
