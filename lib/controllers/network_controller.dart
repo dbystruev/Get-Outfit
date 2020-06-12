@@ -10,9 +10,11 @@ import 'dart:convert' as convert;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:get_outfit/globals.dart' as globals;
+import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/prefs_data.dart';
+import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/questions.dart';
 import 'package:get_outfit/models/server_data.dart';
 import 'package:http/http.dart' as http;
@@ -194,6 +196,34 @@ class NetworkController {
       uri = response.headers['location'];
     }
     return response;
+  }
+
+  // Async function to post answers
+  Future<AppData> postAnswers(AppData appData) async {
+    if (appData == null) return null;
+    final List<String> answers = appData.serverData?.answers?.answers;
+    final Questions questions = PrefsData.shared.questions;
+    if (answers == null ||
+        questions == null ||
+        questions.minId < 1 ||
+        answers.length < questions.maxId) return postAppData(appData);
+    for (int questionId = 0; questionId < answers.length; questionId++) {
+      final Answer answer = Answer.fromString(answers[questionId]);
+      final Question question = questions.expanded[questionId];
+      final List<String> allAnswers = question.answers;
+      answers[questionId] = '';
+      if (allAnswers == null) continue;
+      final List<int> indexes = answer.indexes
+          ?.where((index) => 0 <= index && index < allAnswers.length)
+          ?.toList();
+      if (indexes != null) {
+        if (indexes.isNotEmpty)
+          answers[questionId] =
+              indexes.map((index) => allAnswers[index]).join(', ');
+      } else
+        answers[questionId] = answer.toString();
+    }
+    return postAppData(appData);
   }
 
   // Async function which posts app data

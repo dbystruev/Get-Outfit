@@ -165,7 +165,7 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
     PrefsData.shared.answers = Answers(answers: answerList);
     await NetworkController.shared.savePrefsData();
     await NetworkController.shared
-        .postAppData(PrefsData.shared.appData)
+        .postAnswers(PrefsData.shared.appData)
         .catchError(
           (error) => debugPrint(
             'ERROR in lib/screens/quiz_screen.dart:171 saveAnswers() ' +
