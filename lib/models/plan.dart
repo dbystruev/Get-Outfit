@@ -79,10 +79,22 @@ class Plan {
   }
 
   factory Plan.by(String title, {String description, int id, int price}) =>
-      Plan(title, currency: 'BYN', description: description, price: price);
+      Plan(
+        title,
+        currency: 'BYN',
+        description: description,
+        id: id,
+        price: price,
+      );
 
   factory Plan.ru(String title, {String description, int id, int price}) =>
-      Plan(title, currency: '₽', description: description, price: price);
+      Plan(
+        title,
+        currency: '₽',
+        description: description,
+        id: id,
+        price: price,
+      );
 
   /// A necessary factory constructor for creating a new Plan instance
   /// from a map. Pass the map to the generated `_$PlanFromJson()` constructor.

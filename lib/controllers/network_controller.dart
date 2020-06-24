@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/app_data.dart';
+import 'package:get_outfit/models/plan+all.dart';
 import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/question.dart';
@@ -163,6 +164,10 @@ class NetworkController {
     // get new prefs data from decoded string
     final PrefsData newPrefsData = PrefsData.fromJson(prefsDataMap);
 
+    // TODO: remove when load plans from the server is implemented
+    // replace prefs plans with local plans
+    newPrefsData.plans.plans = AllPlans.local;
+
     // merge loaded and existing prefs data
     PrefsData.shared.merge(newPrefsData);
   }
@@ -267,8 +272,9 @@ class NetworkController {
           break;
         default:
           debugPrint(
-              'ERROR in lib/controllers/network_controllers.dart:270 postAnswers()' +
-                  ' unknown question type \(question.type)');
+            'ERROR in lib/controllers/network_controllers.dart:275 postAnswers()' +
+                ' unknown question type \(question.type)',
+          );
       }
     }
     return postAppData(appData);
@@ -346,7 +352,7 @@ class NetworkController {
     } catch (error) {
       http.Response response = http.Response(error.toString(), 400);
       debugPrint(
-        'ERROR in lib/controllers/network_controllers.dart:349' +
+        'ERROR in lib/controllers/network_controllers.dart:355' +
             ' postServerData($serverData, url: $url) response = $response',
       );
       return response;
@@ -391,7 +397,7 @@ class NetworkController {
         params.add('${newPrefsData.questions.length} questions');
     }
     debugPrint(
-      'DEBUG lib/controllers/network_controllers.dart:394 savePrefsData($params)',
+      'DEBUG lib/controllers/network_controllers.dart:400 savePrefsData($params)',
     );
 
     // don't save null data

@@ -62,7 +62,7 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
               ),
               itemCount: questions[pageIndex].length,
             ),
-            padding: EdgeInsets.symmetric(horizontal: 22 * scale),
+            padding: EdgeInsets.fromLTRB(22 * scale, 22 * scale, 22 * scale, 0),
           ),
         ),
       ),
@@ -176,7 +176,7 @@ class _QuizScreenState extends State<QuizScreen> with Scale {
     );
     await NetworkController.shared.postAnswers().catchError(
           (error) => debugPrint(
-            'ERROR in lib/screens/quiz_screen.dart:180 saveAnswers() ' +
+            'ERROR in lib/screens/quiz_screen.dart:179 saveAnswers() ' +
                 error.toString(),
           ),
         );

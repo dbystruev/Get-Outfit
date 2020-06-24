@@ -25,10 +25,7 @@ class Plans {
 
   List<Plan> get plans => _plans ?? [];
   set plans(List<Plan> newPlans) {
-    if (newPlans != null &&
-        newPlans.isNotEmpty &&
-        (_plans == null || _plans.isEmpty || _plans.length != newPlans.length))
-      _plans = newPlans;
+    if (newPlans != null && newPlans.isNotEmpty) _plans = newPlans;
   }
 
   bool get areValid => plans != null && plans.any((plan) => plan.isValid);

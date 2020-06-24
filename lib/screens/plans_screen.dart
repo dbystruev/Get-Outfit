@@ -6,14 +6,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_outfit/design/scale.dart';
-import 'package:get_outfit/models/plan+all.dart';
 import 'package:get_outfit/models/plan.dart';
+import 'package:get_outfit/models/plans.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:get_outfit/widgets/plan_widget.dart';
 
 class PlansScreen extends StatelessWidget with Scale {
   final List<Plan> plans =
-      AllPlans.local.where((plan) => plan.currency == '₽').toList();
+      Plans.shared.plans.where((plan) => plan.currency == '₽').toList();
 
   @override
   Widget build(BuildContext context) {
