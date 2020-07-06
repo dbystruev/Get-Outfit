@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_outfit/controllers/network_controller.dart';
 import 'package:get_outfit/design/scale.dart';
-import 'package:get_outfit/globals.dart';
+import 'package:get_outfit/globals.dart' as globals;
 import 'package:get_outfit/models/answer.dart';
 import 'package:get_outfit/models/app_data.dart';
 import 'package:get_outfit/models/order.dart';
@@ -17,10 +17,10 @@ import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/question_type.dart';
 import 'package:get_outfit/models/server_data.dart';
 import 'package:get_outfit/models/user.dart';
-import 'package:get_outfit/screens/payment_form_screen.dart';
 import 'package:get_outfit/widgets/button_widget.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:get_outfit/widgets/question_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PaymentScreen extends StatefulWidget {
   final Plan plan;
@@ -151,13 +151,8 @@ class _PaymentScreenState extends State<PaymentScreen> with Scale {
             height: 30,
             onPressed: isValidInput
                 ? () {
+                    launchPaymentURL();
                     sendNewOrder();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => PaymentFormScreen.shared,
-                      ),
-                    );
                   }
                 : null,
             scale: scale,
@@ -195,8 +190,37 @@ class _PaymentScreenState extends State<PaymentScreen> with Scale {
     super.initState();
     controllerForEmail.text = PrefsData.shared.user?.email;
     controllerForName.text = PrefsData.shared.user?.name;
-    controllerForPhone.text = digits(PrefsData.shared.user?.phone);
+    controllerForPhone.text = globals.digits(PrefsData.shared.user?.phone);
     controllerForPromocode.text = PrefsData.shared.order?.promoCode;
+  }
+
+  void launchPaymentURL() {
+    final String url = '${globals.paymentUrl}' +
+        '?accountId=' +
+        Uri.encodeQueryComponent(PrefsData.shared.user.email) +
+        '&amount=' +
+        Uri.encodeQueryComponent('${plan.price}') +
+        '&currency=' +
+        Uri.encodeQueryComponent('RUB') +
+        '&escription=' +
+        Uri.encodeQueryComponent(plan.title) +
+        '&invoiceId=' +
+        Uri.encodeQueryComponent('${PrefsData.shared.user.id}') +
+        '&phone=' +
+        Uri.encodeQueryComponent(PrefsData.shared.user.phone);
+    launchURL(url);
+  }
+
+  void launchURL(String url) async {
+    debugPrint(
+      'DEBUG in lib/screens/payment_screen.dart:216 launchURL($url)',
+    );
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else
+      debugPrint(
+        'ERROR in lib/screens/payment_screen.dart:222 launchURL($url)',
+      );
   }
 
   // Get all enterd data and save it to prefs and the server
@@ -221,7 +245,7 @@ class _PaymentScreenState extends State<PaymentScreen> with Scale {
     final AppData appData =
         await NetworkController.shared.postOrder().catchError(
               (error) => debugPrint(
-                'ERROR in lib/screens/payment_screen.dart:224 saveOrderAndUser() ' +
+                'ERROR in lib/screens/payment_screen.dart:248 sendNewOrder() ' +
                     error.toString(),
               ),
             );

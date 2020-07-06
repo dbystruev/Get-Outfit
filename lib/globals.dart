@@ -22,6 +22,9 @@ String digits(String number) => number?.replaceAll(RegExp(r'[^\d]'), '');
 // True if running in release mode
 const bool isProduction = bool.fromEnvironment('dart.vm.product');
 
+// URL to redirect users for payment
+const String paymentUrl = 'https://getoutfit.ru/cloudpayments';
+
 // The background color for major parts of the app (toolbars, tab bars, etc)
 const Color primaryColor = Color(0xFF54615F);
 
