@@ -17,7 +17,7 @@ import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/question_type.dart';
 import 'package:get_outfit/models/server_data.dart';
 import 'package:get_outfit/models/user.dart';
-import 'package:get_outfit/screens/thank_you_screen.dart';
+import 'package:get_outfit/screens/payment_form_screen.dart';
 import 'package:get_outfit/widgets/button_widget.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:get_outfit/widgets/question_widget.dart';
@@ -155,7 +155,7 @@ class _PaymentScreenState extends State<PaymentScreen> with Scale {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (BuildContext context) => ThankYouScreen(),
+                        builder: (BuildContext context) => PaymentFormScreen.shared,
                       ),
                     );
                   }

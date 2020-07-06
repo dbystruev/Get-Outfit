@@ -14,6 +14,7 @@ import 'package:get_outfit/models/prefs_data.dart';
 import 'package:get_outfit/models/question.dart';
 import 'package:get_outfit/models/questions.dart';
 import 'package:get_outfit/screens/login_screen.dart';
+import 'package:get_outfit/screens/payment_form_screen.dart';
 import 'package:get_outfit/widgets/futura_widgets.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,6 +26,7 @@ class LaunchScreen extends StatelessWidget with Scale {
 
   @override
   Widget build(BuildContext context) {
+    loadPaymentFormScreen();
     if (!built) {
       built = true;
       navigateToLoginScreen(context, delayInSeconds: 2);
@@ -70,7 +72,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       );
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:73 getAppData()' +
+        'DEBUG in lib/screens/launch_screen.dart:75 getAppData()' +
             ' status is not ${globals.statusSuccess}, appData = $appData',
       );
       plans = Plans([], message: appData.message, status: appData.status);
@@ -79,7 +81,7 @@ class LaunchScreen extends StatelessWidget with Scale {
     }
     if (!plans.areValid) {
       debugPrint(
-        'ERROR in lib/screens/launch_screen.dart:82 getAppData() plans are not valid',
+        'ERROR in lib/screens/launch_screen.dart:84 getAppData() plans are not valid',
       );
     }
     // matchQuestionPages(
@@ -98,19 +100,26 @@ class LaunchScreen extends StatelessWidget with Scale {
         PrefsData(questions: questions),
       );
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:101 getAppData()' +
+        'DEBUG in lib/screens/launch_screen.dart:103 getAppData()' +
             ' ${questions.length} questions' +
             ' are loaded in ${DateTime.now().difference(startTime)}',
       );
       await networkController.createNewUser();
     } else {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:108 questions are not valid' +
+        'DEBUG in lib/screens/launch_screen.dart:110 questions are not valid' +
             ', appData = $appData, questions = $questions',
       );
       // questions.questions = allQuestions;
       // postQuestions(appData: appData, questions: questions);
     }
+  }
+
+  void loadPaymentFormScreen() {
+    final webView = PaymentFormScreen.shared.webView;
+    debugPrint(
+      'DEBUG in lib/screens/launch_screen.dart:121 loadPaymentFormScreen webView = $webView',
+    );
   }
 
   // Match local questions with loaded questions
@@ -120,7 +129,7 @@ class LaunchScreen extends StatelessWidget with Scale {
   }) {
     if (loadedQuestions?.length == localQuestions.length) {
       debugPrint(
-        'DEBUG in lib/screens/launch_screen.dart:123' +
+        'DEBUG in lib/screens/launch_screen.dart:129' +
             ' matchQuestionPages() ${loadedQuestions.length} pages',
       );
       for (int pageIndex = 0; pageIndex < loadedQuestions.length; pageIndex++) {
@@ -267,7 +276,7 @@ class LaunchScreen extends StatelessWidget with Scale {
     // await networkController.removePrefsData(); // DEBUG: remove in release
     await networkController.getPrefsData();
     // debugPrint(
-    //   'DEBUG lib/screens/launch_screen.dart:270 PrefsData.shared = ${PrefsData.shared}',
+    //   'DEBUG lib/screens/launch_screen.dart:276 PrefsData.shared = ${PrefsData.shared}',
     // );
     getAppData();
     final Duration elapsedTime = DateTime.now().difference(startTime);
@@ -296,7 +305,7 @@ class LaunchScreen extends StatelessWidget with Scale {
       url = result.headers['location'];
     }
     debugPrint(
-      'DEBUG in lib/screens/launch_screen.dart:299 postQuestions()' +
+      'DEBUG in lib/screens/launch_screen.dart:305 postQuestions()' +
           '\n\tstatusCode = $statusCode' +
           '\n\theaders = ${result.headers}' +
           // '\n\tbody = ${result.body}' +
