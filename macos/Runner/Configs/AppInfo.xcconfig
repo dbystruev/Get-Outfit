@@ -8,7 +8,7 @@
 PRODUCT_NAME = getoutfit
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = app.getoutfit.getoutfit
+PRODUCT_BUNDLE_IDENTIFIER = app.getoutfit.quiz
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2020 app.getoutfit. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2020 GetOutfit. All rights reserved.

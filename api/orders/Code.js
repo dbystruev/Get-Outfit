@@ -194,7 +194,8 @@ function doPost(request) {
     const plans = [
         { name: 'Get Outfit', price: 1490 },
         { name: 'Get Wardrobe', price: 3490 },
-        { name: 'Get Styled', price: 6990 }
+        { name: 'Get Styled', price: 6990 },
+        { name: 'Test', price: 1 }
     ];
 
     // Make sheets available outside of try/catch block
